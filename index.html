@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>vibes - Web Utilities</title>
+  <style>
+    :root {
+      --bg: #1d1d1d;
+      --text: #ffffff;
+      --blue: #0078d4;
+      --green: #107c10;
+      --orange: #ff8c00;
+      --red: #e81123;
+      --purple: #5c2d91;
+      --teal: #008272;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+    }
+
+    header {
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-size: 18px;
+      font-weight: 300;
+      color: #999;
+    }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 1400px;
+    }
+
+    @media (min-width: 641px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .tile {
+      aspect-ratio: 2/1;
+      background: var(--tile-color);
+      color: white;
+      padding: 20px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: transform 0.15s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tile:hover {
+      transform: scale(1.05);
+    }
+
+    .tile:active {
+      transform: scale(0.98);
+    }
+
+    .tile-name {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .tile-description {
+      font-size: 14px;
+      font-weight: 300;
+      opacity: 0.9;
+      line-height: 1.3;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid #333;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .wide {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 36px;
+      }
+
+      .tile-name {
+        font-size: 20px;
+      }
+
+      .tile-description {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>vibes</h1>
+    <p class="tagline">Single-file web utilities</p>
+  </header>
+
+  <div class="grid" id="tiles"></div>
+
+  <footer>
+    <p>
+      <a href="https://github.com/jukkan/vibes">View on GitHub</a> |
+      Built with AI assistance
+    </p>
+  </footer>
+
+  <script>
+    const tools = [
+      {
+        name: "Image to Base64",
+        description: "Convert images to Base64 data URLs",
+        color: "#5c2d91",
+        path: "image-to-base64.html"
+      },
+      {
+        name: "JSON Formatter",
+        description: "Format and validate JSON data",
+        color: "#0078d4",
+        path: "json-formatter.html"
+      },
+      {
+        name: "Text Diff",
+        description: "Compare two text blocks side-by-side",
+        color: "#e81123",
+        path: "text-diff.html"
+      }
+    ];
+
+    function renderTiles() {
+      const container = document.getElementById('tiles');
+
+      tools.forEach(tool => {
+        const tile = document.createElement('a');
+        tile.className = 'tile';
+        tile.href = tool.path;
+        tile.style.setProperty('--tile-color', tool.color);
+
+        tile.innerHTML = `
+          <div class="tile-name">${tool.name}</div>
+          <div class="tile-description">${tool.description}</div>
+        `;
+
+        container.appendChild(tile);
+      });
+    }
+
+    renderTiles();
+  </script>
+</body>
+</html>
