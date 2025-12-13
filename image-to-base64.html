@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image to Base64 - vibes</title>
+  <style>
+    :root {
+      --primary: #5c2d91;
+      --bg: #1d1d1d;
+      --text: #ffffff;
+      --surface: #2d2d2d;
+      --border: #404040;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 20px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header a {
+      color: #0078d4;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    header a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 10px 0 5px 0;
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    header p {
+      color: #999;
+      font-size: 16px;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .drop-zone {
+      border: 3px dashed var(--border);
+      border-radius: 8px;
+      padding: 60px 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragover {
+      border-color: var(--primary);
+      background: rgba(92, 45, 145, 0.1);
+    }
+
+    .drop-zone p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .drop-zone small {
+      color: #999;
+      font-size: 14px;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .preview-container {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .preview-container.active {
+      display: block;
+    }
+
+    .preview-image {
+      max-width: 100%;
+      max-height: 400px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .output-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .output-label {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    textarea {
+      width: 100%;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    button:active {
+      opacity: 0.7;
+    }
+
+    button.secondary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .info-item {
+      background: var(--surface);
+      padding: 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .info-label {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      color: #666;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a {
+      color: #0078d4;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      .drop-zone {
+        padding: 40px 15px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/">← vibes</a>
+    <h1>Image to Base64</h1>
+    <p>Convert images to Base64 data URLs</p>
+  </header>
+
+  <main>
+    <div class="drop-zone" id="dropZone">
+      <p>📸 Drop image here or click to select</p>
+      <small>Supports JPG, PNG, GIF, WebP, SVG</small>
+    </div>
+    <input type="file" id="fileInput" accept="image/*">
+
+    <div class="preview-container" id="previewContainer">
+      <img id="preview" class="preview-image" alt="Preview">
+
+      <div class="info">
+        <div class="info-item">
+          <div class="info-label">File Name</div>
+          <div class="info-value" id="fileName">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">File Size</div>
+          <div class="info-value" id="fileSize">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Dimensions</div>
+          <div class="info-value" id="dimensions">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Base64 Size</div>
+          <div class="info-value" id="base64Size">-</div>
+        </div>
+      </div>
+
+      <div class="output-container">
+        <div class="output-label">
+          <span>Base64 Data URL</span>
+        </div>
+        <textarea id="output" readonly></textarea>
+      </div>
+
+      <div class="button-group">
+        <button id="copyBtn">Copy to Clipboard</button>
+        <button id="copyDataBtn" class="secondary">Copy Data Only (no prefix)</button>
+        <button id="resetBtn" class="secondary">Convert Another Image</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="/">← Back to launcher</a> |
+    <a href="https://github.com/jukkan/vibes">View source</a>
+  </footer>
+
+  <script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const previewContainer = document.getElementById('previewContainer');
+    const preview = document.getElementById('preview');
+    const output = document.getElementById('output');
+    const copyBtn = document.getElementById('copyBtn');
+    const copyDataBtn = document.getElementById('copyDataBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    const dimensions = document.getElementById('dimensions');
+    const base64Size = document.getElementById('base64Size');
+
+    // Click to select file
+    dropZone.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // File selection
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    // Drag and drop
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+
+      if (e.dataTransfer.files.length > 0) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const base64String = e.target.result;
+
+        // Update preview
+        preview.src = base64String;
+
+        // Get image dimensions
+        preview.onload = () => {
+          dimensions.textContent = `${preview.naturalWidth} × ${preview.naturalHeight}`;
+        };
+
+        // Update info
+        fileName.textContent = file.name;
+        fileSize.textContent = formatBytes(file.size);
+        base64Size.textContent = formatBytes(base64String.length);
+
+        // Update output
+        output.value = base64String;
+
+        // Show preview container
+        previewContainer.classList.add('active');
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    // Copy full data URL
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(output.value);
+      const originalText = copyBtn.textContent;
+      copyBtn.textContent = '✓ Copied!';
+      setTimeout(() => {
+        copyBtn.textContent = originalText;
+      }, 2000);
+    });
+
+    // Copy data only (without data:image/... prefix)
+    copyDataBtn.addEventListener('click', async () => {
+      const dataOnly = output.value.split(',')[1];
+      await navigator.clipboard.writeText(dataOnly);
+      const originalText = copyDataBtn.textContent;
+      copyDataBtn.textContent = '✓ Copied!';
+      setTimeout(() => {
+        copyDataBtn.textContent = originalText;
+      }, 2000);
+    });
+
+    // Reset
+    resetBtn.addEventListener('click', () => {
+      previewContainer.classList.remove('active');
+      fileInput.value = '';
+      output.value = '';
+    });
+  </script>
+</body>
+</html>
