@@ -1,0 +1,84 @@
+/* index.html critical styles */
+:root {
+  --metro-blue: #0078d4;
+  --metro-green: #107c10;
+  --metro-orange: #ff8c00;
+  --metro-red: #e81123;
+  --metro-purple: #5c2d91;
+  --metro-teal: #008272;
+  --bg-dark: #1d1d1d;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: var(--bg-dark);
+  color: white;
+}
+
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Mobile: 2 columns */
+  gap: 10px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .tiles-grid {
+    grid-template-columns: repeat(4, 1fr); /* Tablet: 4 columns */
+  }
+}
+
+@media (min-width: 1200px) {
+  .tiles-grid {
+    grid-template-columns: repeat(6, 1fr); /* Desktop: 6 columns */
+  }
+}
+
+.tile {
+  aspect-ratio: 2 / 1; /* Wide Metro tiles */
+  background: var(--metro-blue);
+  padding: 20px;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform 0.15s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.tile:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.tile:active {
+  transform: scale(0.98);
+}
+
+.tile h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tile p {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+/* Optional: Tile size variants (like Windows Phone) */
+.tile.large {
+  grid-column: span 2;
+}
+
+.tile.tall {
+  aspect-ratio: 1 / 1; /* Square tile */
+}
