@@ -126,6 +126,40 @@
       border-color: var(--primary);
     }
 
+    .toggle-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .toggle-btn:disabled:hover {
+      border-color: var(--border);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      font-size: 13px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .checkbox-group .help-text {
+      font-size: 11px;
+      color: #888;
+      margin-left: 4px;
+    }
+
     .chart-container {
       background: var(--surface);
       border-radius: 8px;
@@ -322,6 +356,12 @@
         </select>
       </div>
 
+      <div class="checkbox-group">
+        <input type="checkbox" id="exactYearCheck">
+        <label for="exactYearCheck">Exact-year only</label>
+        <span class="help-text" title="Disable Adjusted/Stacked when pensions data year differs">(?)</span>
+      </div>
+
       <div class="toggle-group">
         <button class="toggle-btn active" id="btnOfficial" title="Show Eurostat official totals for all countries">
           Official
@@ -431,9 +471,11 @@
     let currentYear = null;
     let currentMode = 'official'; // official, adjusted, stacked
     let availableYears = [];
+    let exactYearOnly = false;
 
     // DOM elements
     const yearSelect = document.getElementById('yearSelect');
+    const exactYearCheck = document.getElementById('exactYearCheck');
     const btnOfficial = document.getElementById('btnOfficial');
     const btnAdjusted = document.getElementById('btnAdjusted');
     const btnStacked = document.getElementById('btnStacked');
@@ -928,19 +970,10 @@
 
         // Fetch Finland pension data
         const pensionInfo = await getFinlandPension(year);
+        finlandPensionData.current = pensionInfo || null;
 
-        if (pensionInfo) {
-          if (pensionInfo.source === 'snapshot' && pensionInfo.year !== parseInt(year)) {
-            showWarning(`Finland pension data from ${pensionInfo.year} (${year} not available)`);
-          }
-          finlandPensionData.current = pensionInfo;
-        } else {
-          finlandPensionData.current = null;
-          if (currentMode !== 'official') {
-            showWarning('Finland pension data unavailable. Showing official data only.');
-            setMode('official');
-          }
-        }
+        // Apply mode availability (handles warnings, button states, mode forcing)
+        applyModeAvailability();
 
         // Update stats and chart
         updateStats(eurostatData, finlandPensionData.current);
@@ -987,6 +1020,7 @@
       const params = new URLSearchParams();
       if (currentYear) params.set('year', currentYear);
       if (currentMode !== 'official') params.set('mode', currentMode);
+      if (exactYearOnly) params.set('exact', '1');
 
       const newURL = params.toString() ? `?${params.toString()}` : window.location.pathname;
       history.replaceState(null, '', newURL);
@@ -1004,6 +1038,64 @@
         if (['official', 'adjusted', 'stacked'].includes(mode)) {
           currentMode = mode;
           setMode(mode);
+        }
+      }
+
+      if (params.get('exact') === '1') {
+        exactYearOnly = true;
+        exactYearCheck.checked = true;
+      }
+    }
+
+    // Mode availability based on exact-year setting
+    function applyModeAvailability() {
+      const pensionInfo = finlandPensionData.current;
+      const pensionYear = pensionInfo ? pensionInfo.year : null;
+      const selectedYear = parseInt(currentYear);
+      const yearMatches = pensionYear === selectedYear;
+
+      if (exactYearOnly) {
+        if (!pensionYear || !yearMatches) {
+          // Disable adjusted/stacked buttons
+          btnAdjusted.disabled = true;
+          btnStacked.disabled = true;
+
+          // Force mode to official if currently in adjusted/stacked
+          if (currentMode !== 'official') {
+            setMode('official');
+          }
+
+          // Show warning
+          if (pensionYear) {
+            showWarning(`Exact-year only enabled: Finland pension data not available for ${selectedYear}. Switch to ${pensionYear} or disable Exact-year only.`);
+          } else {
+            showWarning(`Exact-year only enabled: Finland pension data not available for ${selectedYear}.`);
+          }
+        } else {
+          // Year matches, enable buttons
+          btnAdjusted.disabled = false;
+          btnStacked.disabled = false;
+          hideWarning();
+        }
+      } else {
+        // Exact-year only is off, always enable buttons
+        btnAdjusted.disabled = false;
+        btnStacked.disabled = false;
+
+        // Handle pension data warnings
+        if (!pensionInfo) {
+          // Pension data completely unavailable
+          if (currentMode !== 'official') {
+            showWarning('Finland pension data unavailable. Showing official data only.');
+            setMode('official');
+          } else {
+            hideWarning();
+          }
+        } else if (pensionInfo.source === 'snapshot' && pensionInfo.year !== selectedYear) {
+          // Show existing mismatch warning
+          showWarning(`Finland pension data from ${pensionInfo.year} (${selectedYear} not available)`);
+        } else {
+          hideWarning();
         }
       }
     }
@@ -1038,9 +1130,19 @@
           loadData(currentYear);
         });
 
+        exactYearCheck.addEventListener('change', (e) => {
+          exactYearOnly = e.target.checked;
+          applyModeAvailability();
+          updateURL();
+        });
+
         btnOfficial.addEventListener('click', () => setMode('official'));
-        btnAdjusted.addEventListener('click', () => setMode('adjusted'));
-        btnStacked.addEventListener('click', () => setMode('stacked'));
+        btnAdjusted.addEventListener('click', () => {
+          if (!btnAdjusted.disabled) setMode('adjusted');
+        });
+        btnStacked.addEventListener('click', () => {
+          if (!btnStacked.disabled) setMode('stacked');
+        });
 
         // Initial load
         await loadData(currentYear);
