@@ -722,27 +722,41 @@
 
     // Build chart
     function buildChart(data, pensionInfo, mode) {
-      const ctx = mainChart.getContext('2d');
+      try {
+        // Destroy existing chart first
+        if (chart) {
+          chart.destroy();
+          chart = null;
+        }
 
-      if (chart) {
-        chart.destroy();
-      }
+        // Get fresh canvas context after destroy
+        const ctx = mainChart.getContext('2d');
 
-      // Prepare data based on mode
-      let chartData;
+        // Prepare data based on mode
+        let chartData;
 
-      if (mode === 'official') {
-        chartData = prepareOfficialData(data);
-        legendCustom.style.display = 'none';
-      } else if (mode === 'adjusted') {
-        chartData = prepareAdjustedData(data, pensionInfo);
-        legendCustom.style.display = 'none';
-      } else if (mode === 'stacked') {
-        chartData = prepareStackedData(data, pensionInfo);
-        legendCustom.style.display = 'flex';
-      }
+        if (mode === 'official') {
+          chartData = prepareOfficialData(data);
+          legendCustom.style.display = 'none';
+        } else if (mode === 'adjusted') {
+          chartData = prepareAdjustedData(data, pensionInfo);
+          legendCustom.style.display = 'none';
+        } else if (mode === 'stacked') {
+          chartData = prepareStackedData(data, pensionInfo);
+          legendCustom.style.display = 'flex';
+        } else {
+          // Fallback to official if mode is unexpected
+          console.warn('Unexpected mode:', mode, '- falling back to official');
+          chartData = prepareOfficialData(data);
+          legendCustom.style.display = 'none';
+        }
 
-      chart = new Chart(ctx, {
+        if (!chartData || !chartData.data) {
+          console.error('Failed to prepare chart data');
+          return;
+        }
+
+        chart = new Chart(ctx, {
         type: 'bar',
         data: chartData.data,
         options: {
@@ -792,6 +806,10 @@
           }
         }
       });
+      } catch (e) {
+        console.error('Chart build error:', e);
+        showError('Failed to render chart. Please try again.');
+      }
     }
 
     function prepareOfficialData(data) {
@@ -948,8 +966,17 @@
       btnAdjusted.classList.toggle('active', mode === 'adjusted');
       btnStacked.classList.toggle('active', mode === 'stacked');
 
+      // Clear any previous errors when switching modes
+      hideError();
+
+      // Ensure canvas is visible (in case of any state issues)
+      mainChart.style.display = 'block';
+      loadingIndicator.style.display = 'none';
+
       if (eurostatData.length > 0) {
         buildChart(eurostatData, finlandPensionData.current, mode);
+      } else {
+        console.warn('No data available for chart - eurostatData is empty');
       }
 
       updateURL();
