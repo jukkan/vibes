@@ -775,17 +775,6 @@
     function buildChart(data, pensionInfo, mode) {
       console.log(`buildChart called - data: ${data.length} items, mode: ${mode}`);
       try {
-        // Destroy existing chart first
-        if (chart) {
-          console.log('Destroying existing chart');
-          chart.destroy();
-          chart = null;
-        }
-
-        // Get fresh canvas context after destroy
-        const ctx = mainChart.getContext('2d');
-        console.log('Got canvas context:', ctx ? 'yes' : 'no');
-
         // Prepare data based on mode
         let chartData;
 
@@ -799,7 +788,6 @@
           chartData = prepareStackedData(data, pensionInfo);
           legendCustom.style.display = 'flex';
         } else {
-          // Fallback to official if mode is unexpected
           console.warn('Unexpected mode:', mode, '- falling back to official');
           chartData = prepareOfficialData(data);
           legendCustom.style.display = 'none';
@@ -811,58 +799,73 @@
           return;
         }
 
+        // If chart exists, update it instead of recreating
+        if (chart) {
+          console.log('Updating existing chart...');
+          chart.data = chartData.data;
+          chart.options.scales.x.stacked = mode === 'stacked';
+          chart.options.scales.y.stacked = mode === 'stacked';
+          chart.options.plugins.legend.display = mode === 'stacked';
+          chart.update('none'); // 'none' disables animation for instant update
+          console.log('Chart updated successfully');
+          return;
+        }
+
+        // Create new chart only if one doesn't exist
         console.log('Creating new Chart.js instance...');
+        const ctx = mainChart.getContext('2d');
+
         chart = new Chart(ctx, {
-        type: 'bar',
-        data: chartData.data,
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: mode === 'stacked',
-              position: 'top',
-              labels: {
-                color: '#ccc',
-                font: { size: 12 }
-              }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  const value = context.raw;
-                  if (mode === 'stacked' && context.dataset.label) {
-                    return `${context.dataset.label}: ${value.toFixed(1)}%`;
+          type: 'bar',
+          data: chartData.data,
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: mode === 'stacked',
+                position: 'top',
+                labels: {
+                  color: '#ccc',
+                  font: { size: 12 }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const value = context.raw;
+                    if (context.dataset.label) {
+                      return `${context.dataset.label}: ${value.toFixed(1)}%`;
+                    }
+                    return `${value.toFixed(1)}% of GDP`;
                   }
-                  return `${value.toFixed(1)}% of GDP`;
                 }
               }
-            }
-          },
-          scales: {
-            x: {
-              stacked: mode === 'stacked',
-              title: {
-                display: true,
-                text: '% of GDP',
-                color: '#888'
-              },
-              ticks: { color: '#888' },
-              grid: { color: '#404040' }
             },
-            y: {
-              stacked: mode === 'stacked',
-              ticks: {
-                color: '#ccc',
-                font: { size: 11 }
+            scales: {
+              x: {
+                stacked: mode === 'stacked',
+                title: {
+                  display: true,
+                  text: '% of GDP',
+                  color: '#888'
+                },
+                ticks: { color: '#888' },
+                grid: { color: '#404040' }
               },
-              grid: { display: false }
+              y: {
+                stacked: mode === 'stacked',
+                ticks: {
+                  color: '#ccc',
+                  font: { size: 11 }
+                },
+                grid: { display: false }
+              }
             }
           }
-        }
         });
-        console.log('Chart created successfully, chart object:', chart ? 'exists' : 'null');
+        console.log('Chart created successfully');
       } catch (e) {
         console.error('Chart build error:', e);
         showError('Failed to render chart. Please try again.');
