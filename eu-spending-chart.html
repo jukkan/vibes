@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EU Government Spending Chart - vibes</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #008272;
+      --bg: #1d1d1d;
+      --text: #ffffff;
+      --surface: #2d2d2d;
+      --border: #404040;
+      --success: #107c10;
+      --error: #e81123;
+      --finland-pension: #ff8c00;
+      --finland-rest: #0078d4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    header a:hover {
+      text-decoration: underline;
+    }
+
+    header h1 {
+      font-size: 24px;
+      font-weight: 300;
+      margin: 10px 0 5px;
+    }
+
+    header p {
+      color: #888;
+      font-size: 14px;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-group label {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    select {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    select:hover {
+      border-color: var(--primary);
+    }
+
+    .toggle-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .toggle-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .chart-container {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      min-height: 600px;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      color: #888;
+    }
+
+    .loading::after {
+      content: '';
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      margin-left: 10px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: rgba(232, 17, 35, 0.1);
+      border: 1px solid var(--error);
+      color: var(--error);
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .error-message.active {
+      display: block;
+    }
+
+    .warning-message {
+      background: rgba(255, 140, 0, 0.1);
+      border: 1px solid var(--finland-pension);
+      color: var(--finland-pension);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .warning-message.active {
+      display: block;
+    }
+
+    .legend-custom {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+    }
+
+    .info-panel {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .info-panel h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .info-panel p {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.5;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    .stat-card .value {
+      font-size: 24px;
+      font-weight: 300;
+    }
+
+    .stat-card .sublabel {
+      font-size: 11px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    footer {
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .sources {
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 20px;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .chart-wrapper {
+        min-height: 500px;
+      }
+
+      .stat-card .value {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/">← vibes</a>
+    <h1>EU Government Spending Chart</h1>
+    <p>General government expenditure as % of GDP across EU countries</p>
+  </header>
+
+  <main>
+    <div class="error-message" id="errorMessage"></div>
+    <div class="warning-message" id="warningMessage"></div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="yearSelect">Year:</label>
+        <select id="yearSelect">
+          <option value="">Loading...</option>
+        </select>
+      </div>
+
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="btnOfficial" title="Show Eurostat official totals for all countries">
+          Official
+        </button>
+        <button class="toggle-btn" id="btnAdjusted" title="Adjust Finland by excluding employment pension schemes (S13141)">
+          Adjusted Finland
+        </button>
+        <button class="toggle-btn" id="btnStacked" title="Show Finland as stacked bar (pensions + rest)">
+          Stacked Finland
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card">
+        <div class="label">EU27 Average</div>
+        <div class="value" id="statEu27">--</div>
+        <div class="sublabel">% of GDP</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Finland (Official)</div>
+        <div class="value" id="statFinland">--</div>
+        <div class="sublabel">% of GDP</div>
+      </div>
+      <div class="stat-card" id="pensionCard" style="display: none;">
+        <div class="label">Finland Employment Pensions</div>
+        <div class="value" id="statPension">--</div>
+        <div class="sublabel">% of GDP (S13141)</div>
+      </div>
+      <div class="stat-card" id="adjustedCard" style="display: none;">
+        <div class="label">Finland (Adjusted)</div>
+        <div class="value" id="statAdjusted">--</div>
+        <div class="sublabel">Excl. employment pensions</div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="legend-custom" id="legendCustom" style="display: none;">
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--finland-rest);"></div>
+          <span>Finland (excl. pensions)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: var(--finland-pension);"></div>
+          <span>Finland employment pensions (S13141)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: rgba(0, 130, 114, 0.7);"></div>
+          <span>Other EU countries</span>
+        </div>
+      </div>
+      <div class="chart-wrapper">
+        <div class="loading" id="loadingIndicator">Loading data</div>
+        <canvas id="mainChart" style="display: none;"></canvas>
+      </div>
+    </div>
+
+    <div class="info-panel">
+      <h3>About This Chart</h3>
+      <p>
+        This chart shows general government total expenditure as a percentage of GDP for EU member states.
+        The "Adjusted Finland" view subtracts employment pension schemes (sector S13141) from Finland's total,
+        as these are managed differently in Finland compared to most other EU countries.
+        Employment pension schemes in Finland are classified under general government but operate more like
+        mandatory funded pension systems.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <a href="/">← Back to launcher</a> |
+    <a href="https://github.com/jukkan/vibes">View source</a>
+    <div class="sources">
+      Sources:
+      <a href="https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main" target="_blank">Eurostat gov_10a_main</a> |
+      <a href="https://pxdata.stat.fi/PXWeb/pxweb/en/StatFin/StatFin__jmete/statfin_jmete_pxt_12a6.px" target="_blank">Statistics Finland PxWeb 12a6</a>
+    </div>
+  </footer>
+
+  <script>
+    // EU member state geo codes
+    const EU_COUNTRIES = [
+      'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'EL', 'ES',
+      'FI', 'FR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT',
+      'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'EU27_2020'
+    ];
+
+    const GEO_LABELS = {
+      'AT': 'Austria', 'BE': 'Belgium', 'BG': 'Bulgaria', 'CY': 'Cyprus',
+      'CZ': 'Czechia', 'DE': 'Germany', 'DK': 'Denmark', 'EE': 'Estonia',
+      'EL': 'Greece', 'ES': 'Spain', 'FI': 'Finland', 'FR': 'France',
+      'HR': 'Croatia', 'HU': 'Hungary', 'IE': 'Ireland', 'IT': 'Italy',
+      'LT': 'Lithuania', 'LU': 'Luxembourg', 'LV': 'Latvia', 'MT': 'Malta',
+      'NL': 'Netherlands', 'PL': 'Poland', 'PT': 'Portugal', 'RO': 'Romania',
+      'SE': 'Sweden', 'SI': 'Slovenia', 'SK': 'Slovakia', 'EU27_2020': 'EU27'
+    };
+
+    // Cache settings
+    const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+    const CACHE_KEY_EUROSTAT = 'eu_spending_eurostat_';
+    const CACHE_KEY_STATFIN = 'eu_spending_statfin_';
+
+    // State
+    let chart = null;
+    let eurostatData = [];
+    let finlandPensionData = {};
+    let currentYear = null;
+    let currentMode = 'official'; // official, adjusted, stacked
+    let availableYears = [];
+
+    // DOM elements
+    const yearSelect = document.getElementById('yearSelect');
+    const btnOfficial = document.getElementById('btnOfficial');
+    const btnAdjusted = document.getElementById('btnAdjusted');
+    const btnStacked = document.getElementById('btnStacked');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const mainChart = document.getElementById('mainChart');
+    const errorMessage = document.getElementById('errorMessage');
+    const warningMessage = document.getElementById('warningMessage');
+    const legendCustom = document.getElementById('legendCustom');
+
+    // Utility functions
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorMessage.classList.add('active');
+    }
+
+    function hideError() {
+      errorMessage.classList.remove('active');
+    }
+
+    function showWarning(msg) {
+      warningMessage.textContent = msg;
+      warningMessage.classList.add('active');
+    }
+
+    function hideWarning() {
+      warningMessage.classList.remove('active');
+    }
+
+    function showLoading() {
+      loadingIndicator.style.display = 'flex';
+      mainChart.style.display = 'none';
+    }
+
+    function hideLoading() {
+      loadingIndicator.style.display = 'none';
+      mainChart.style.display = 'block';
+    }
+
+    // Cache functions
+    function getCached(key) {
+      try {
+        const item = localStorage.getItem(key);
+        if (!item) return null;
+        const { data, timestamp } = JSON.parse(item);
+        if (Date.now() - timestamp > CACHE_TTL) {
+          localStorage.removeItem(key);
+          return null;
+        }
+        return data;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function setCache(key, data) {
+      try {
+        localStorage.setItem(key, JSON.stringify({
+          data,
+          timestamp: Date.now()
+        }));
+      } catch (e) {
+        console.warn('Cache write failed:', e);
+      }
+    }
+
+    // Fetch Eurostat data
+    async function fetchEurostat(year) {
+      const cacheKey = CACHE_KEY_EUROSTAT + year;
+      const cached = getCached(cacheKey);
+      if (cached) {
+        console.log('Using cached Eurostat data for', year);
+        return cached;
+      }
+
+      const url = `https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?lang=en&na_item=TE&unit=PC_GDP&sector=S13&time=${year}`;
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Eurostat API error: ${response.status}`);
+      }
+
+      const jsonStat = await response.json();
+
+      // Parse JSON-stat format
+      const geoIndex = jsonStat.dimension.geo.category.index;
+      const geoLabels = jsonStat.dimension.geo.category.label;
+      const values = jsonStat.value;
+      const size = jsonStat.size;
+
+      // Build index mapping
+      const result = [];
+      const geoKeys = Object.keys(geoIndex);
+
+      for (const geo of geoKeys) {
+        if (!EU_COUNTRIES.includes(geo)) continue;
+
+        const idx = geoIndex[geo];
+        const value = values[idx];
+
+        if (value !== null && value !== undefined) {
+          result.push({
+            geo,
+            label: GEO_LABELS[geo] || geoLabels[geo] || geo,
+            value: parseFloat(value.toFixed(1))
+          });
+        }
+      }
+
+      // Sort descending by value
+      result.sort((a, b) => b.value - a.value);
+
+      setCache(cacheKey, result);
+      return result;
+    }
+
+    // Fetch available years from Eurostat
+    async function fetchAvailableYears() {
+      const url = 'https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?lang=en&na_item=TE&unit=PC_GDP&sector=S13&geo=FI';
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Eurostat API error: ${response.status}`);
+      }
+
+      const jsonStat = await response.json();
+      const timeIndex = jsonStat.dimension.time.category.index;
+      const years = Object.keys(timeIndex).sort().reverse();
+
+      return years;
+    }
+
+    // Fetch Finland pension data from Statistics Finland
+    async function fetchFinlandPensionShare(year) {
+      const cacheKey = CACHE_KEY_STATFIN + year;
+      const cached = getCached(cacheKey);
+      if (cached !== null) {
+        console.log('Using cached StatFin data for', year);
+        return cached;
+      }
+
+      // StatFin PxWeb API query
+      const url = 'https://pxdata.stat.fi/PXWeb/api/v1/en/StatFin/StatFin__jmete/statfin_jmete_pxt_12a6.px';
+
+      const query = {
+        "query": [
+          {
+            "code": "Tiedot",
+            "selection": {
+              "filter": "item",
+              "values": ["suhde_bkt"]  // Ratio to GDP, %
+            }
+          },
+          {
+            "code": "Sektori",
+            "selection": {
+              "filter": "item",
+              "values": ["S13141"]  // Employment pension schemes
+            }
+          },
+          {
+            "code": "Taloustoimi",
+            "selection": {
+              "filter": "item",
+              "values": ["OTES"]  // Expenditure, total, consolidated
+            }
+          },
+          {
+            "code": "Tehtävä",
+            "selection": {
+              "filter": "item",
+              "values": ["TOTAL"]  // Total
+            }
+          },
+          {
+            "code": "Vuosi",
+            "selection": {
+              "filter": "item",
+              "values": [year.toString()]
+            }
+          }
+        ],
+        "response": {
+          "format": "json"
+        }
+      };
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(query)
+        });
+
+        if (!response.ok) {
+          throw new Error(`StatFin API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.data && data.data.length > 0 && data.data[0].values && data.data[0].values.length > 0) {
+          const value = parseFloat(data.data[0].values[0]);
+          setCache(cacheKey, value);
+          return value;
+        }
+
+        return null;
+      } catch (e) {
+        console.warn('StatFin fetch failed:', e);
+        return null;
+      }
+    }
+
+    // Load snapshot fallback data
+    async function loadSnapshotFallback() {
+      try {
+        const response = await fetch('./data/finland_pensions_snapshot.json');
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch (e) {
+        console.warn('Snapshot fallback not available');
+      }
+      return null;
+    }
+
+    // Get Finland pension value (with fallback)
+    async function getFinlandPension(year) {
+      // Try API first
+      let value = await fetchFinlandPensionShare(year);
+
+      if (value !== null) {
+        return { value, source: 'api', year: parseInt(year) };
+      }
+
+      // Try fallback snapshot
+      if (!finlandPensionData.snapshot) {
+        finlandPensionData.snapshot = await loadSnapshotFallback();
+      }
+
+      if (finlandPensionData.snapshot) {
+        // Find exact year or closest available
+        if (finlandPensionData.snapshot[year]) {
+          return { value: finlandPensionData.snapshot[year], source: 'snapshot', year: parseInt(year) };
+        }
+
+        // Find closest available year
+        const availableYears = Object.keys(finlandPensionData.snapshot).map(Number).sort((a, b) => b - a);
+        const requestedYear = parseInt(year);
+
+        for (const y of availableYears) {
+          if (y <= requestedYear) {
+            return { value: finlandPensionData.snapshot[y.toString()], source: 'snapshot', year: y };
+          }
+        }
+
+        // Use latest available
+        if (availableYears.length > 0) {
+          const latestYear = availableYears[0];
+          return { value: finlandPensionData.snapshot[latestYear.toString()], source: 'snapshot', year: latestYear };
+        }
+      }
+
+      return null;
+    }
+
+    // Update stats display
+    function updateStats(data, pensionInfo) {
+      const eu27 = data.find(d => d.geo === 'EU27_2020');
+      const finland = data.find(d => d.geo === 'FI');
+
+      document.getElementById('statEu27').textContent = eu27 ? eu27.value.toFixed(1) : '--';
+      document.getElementById('statFinland').textContent = finland ? finland.value.toFixed(1) : '--';
+
+      if (pensionInfo && finland) {
+        document.getElementById('pensionCard').style.display = 'block';
+        document.getElementById('adjustedCard').style.display = 'block';
+        document.getElementById('statPension').textContent = pensionInfo.value.toFixed(1);
+        document.getElementById('statAdjusted').textContent = (finland.value - pensionInfo.value).toFixed(1);
+      } else {
+        document.getElementById('pensionCard').style.display = 'none';
+        document.getElementById('adjustedCard').style.display = 'none';
+      }
+    }
+
+    // Build chart
+    function buildChart(data, pensionInfo, mode) {
+      const ctx = mainChart.getContext('2d');
+
+      if (chart) {
+        chart.destroy();
+      }
+
+      // Prepare data based on mode
+      let chartData;
+
+      if (mode === 'official') {
+        chartData = prepareOfficialData(data);
+        legendCustom.style.display = 'none';
+      } else if (mode === 'adjusted') {
+        chartData = prepareAdjustedData(data, pensionInfo);
+        legendCustom.style.display = 'none';
+      } else if (mode === 'stacked') {
+        chartData = prepareStackedData(data, pensionInfo);
+        legendCustom.style.display = 'flex';
+      }
+
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData.data,
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: mode === 'stacked',
+              position: 'top',
+              labels: {
+                color: '#ccc',
+                font: { size: 12 }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const value = context.raw;
+                  if (mode === 'stacked' && context.dataset.label) {
+                    return `${context.dataset.label}: ${value.toFixed(1)}%`;
+                  }
+                  return `${value.toFixed(1)}% of GDP`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              stacked: mode === 'stacked',
+              title: {
+                display: true,
+                text: '% of GDP',
+                color: '#888'
+              },
+              ticks: { color: '#888' },
+              grid: { color: '#404040' }
+            },
+            y: {
+              stacked: mode === 'stacked',
+              ticks: {
+                color: '#ccc',
+                font: { size: 11 }
+              },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function prepareOfficialData(data) {
+      const labels = data.map(d => d.label);
+      const values = data.map(d => d.value);
+      const colors = data.map(d => d.geo === 'EU27_2020' ? 'rgba(0, 120, 212, 0.7)' : 'rgba(0, 130, 114, 0.7)');
+
+      return {
+        data: {
+          labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors,
+            borderColor: colors.map(c => c.replace('0.7', '1')),
+            borderWidth: 1
+          }]
+        }
+      };
+    }
+
+    function prepareAdjustedData(data, pensionInfo) {
+      // Create adjusted data
+      const adjustedData = data.map(d => {
+        if (d.geo === 'FI' && pensionInfo) {
+          return {
+            ...d,
+            label: 'Finland (excl. pensions)',
+            value: d.value - pensionInfo.value
+          };
+        }
+        return d;
+      });
+
+      // Re-sort
+      adjustedData.sort((a, b) => b.value - a.value);
+
+      const labels = adjustedData.map(d => d.label);
+      const values = adjustedData.map(d => d.value);
+      const colors = adjustedData.map(d => {
+        if (d.geo === 'EU27_2020') return 'rgba(0, 120, 212, 0.7)';
+        if (d.geo === 'FI') return 'rgba(0, 120, 212, 0.9)';
+        return 'rgba(0, 130, 114, 0.7)';
+      });
+
+      return {
+        data: {
+          labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors,
+            borderColor: colors.map(c => c.replace('0.7', '1').replace('0.9', '1')),
+            borderWidth: 1
+          }]
+        }
+      };
+    }
+
+    function prepareStackedData(data, pensionInfo) {
+      // For stacked, we need two datasets
+      const labels = data.map(d => d.label);
+
+      // Main expenditure (for Finland, this is total - pensions; for others, full value)
+      const mainValues = data.map(d => {
+        if (d.geo === 'FI' && pensionInfo) {
+          return d.value - pensionInfo.value;
+        }
+        return d.value;
+      });
+
+      // Pension segment (only for Finland)
+      const pensionValues = data.map(d => {
+        if (d.geo === 'FI' && pensionInfo) {
+          return pensionInfo.value;
+        }
+        return 0;
+      });
+
+      return {
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'General expenditure',
+              data: mainValues,
+              backgroundColor: data.map(d => {
+                if (d.geo === 'EU27_2020') return 'rgba(0, 120, 212, 0.7)';
+                if (d.geo === 'FI') return 'rgba(0, 120, 212, 0.9)';
+                return 'rgba(0, 130, 114, 0.7)';
+              }),
+              borderWidth: 1
+            },
+            {
+              label: 'Employment pensions (S13141)',
+              data: pensionValues,
+              backgroundColor: 'rgba(255, 140, 0, 0.8)',
+              borderWidth: 1
+            }
+          ]
+        }
+      };
+    }
+
+    // Main load function
+    async function loadData(year) {
+      showLoading();
+      hideError();
+      hideWarning();
+
+      try {
+        // Fetch Eurostat data
+        eurostatData = await fetchEurostat(year);
+
+        if (eurostatData.length === 0) {
+          throw new Error('No data available for the selected year');
+        }
+
+        // Fetch Finland pension data
+        const pensionInfo = await getFinlandPension(year);
+
+        if (pensionInfo) {
+          if (pensionInfo.source === 'snapshot' && pensionInfo.year !== parseInt(year)) {
+            showWarning(`Finland pension data from ${pensionInfo.year} (${year} not available)`);
+          }
+          finlandPensionData.current = pensionInfo;
+        } else {
+          finlandPensionData.current = null;
+          if (currentMode !== 'official') {
+            showWarning('Finland pension data unavailable. Showing official data only.');
+            setMode('official');
+          }
+        }
+
+        // Update stats and chart
+        updateStats(eurostatData, finlandPensionData.current);
+        buildChart(eurostatData, finlandPensionData.current, currentMode);
+
+        hideLoading();
+
+        // Update URL
+        updateURL();
+
+      } catch (e) {
+        console.error('Data load error:', e);
+        showError(`Failed to load data: ${e.message}`);
+        hideLoading();
+      }
+    }
+
+    // Mode switching
+    function setMode(mode) {
+      currentMode = mode;
+
+      btnOfficial.classList.toggle('active', mode === 'official');
+      btnAdjusted.classList.toggle('active', mode === 'adjusted');
+      btnStacked.classList.toggle('active', mode === 'stacked');
+
+      if (eurostatData.length > 0) {
+        buildChart(eurostatData, finlandPensionData.current, mode);
+      }
+
+      updateURL();
+    }
+
+    // URL state management
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (currentYear) params.set('year', currentYear);
+      if (currentMode !== 'official') params.set('mode', currentMode);
+
+      const newURL = params.toString() ? `?${params.toString()}` : window.location.pathname;
+      history.replaceState(null, '', newURL);
+    }
+
+    function loadFromURL() {
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has('year')) {
+        currentYear = params.get('year');
+      }
+
+      if (params.has('mode')) {
+        const mode = params.get('mode');
+        if (['official', 'adjusted', 'stacked'].includes(mode)) {
+          currentMode = mode;
+          setMode(mode);
+        }
+      }
+    }
+
+    // Initialize
+    async function init() {
+      try {
+        // Load URL params first
+        loadFromURL();
+
+        // Fetch available years
+        availableYears = await fetchAvailableYears();
+
+        // Populate year selector
+        yearSelect.innerHTML = '';
+        for (const year of availableYears) {
+          const option = document.createElement('option');
+          option.value = year;
+          option.textContent = year;
+          yearSelect.appendChild(option);
+        }
+
+        // Set default year (from URL or latest)
+        if (!currentYear || !availableYears.includes(currentYear)) {
+          currentYear = availableYears[0];
+        }
+        yearSelect.value = currentYear;
+
+        // Set up event listeners
+        yearSelect.addEventListener('change', (e) => {
+          currentYear = e.target.value;
+          loadData(currentYear);
+        });
+
+        btnOfficial.addEventListener('click', () => setMode('official'));
+        btnAdjusted.addEventListener('click', () => setMode('adjusted'));
+        btnStacked.addEventListener('click', () => setMode('stacked'));
+
+        // Initial load
+        await loadData(currentYear);
+
+      } catch (e) {
+        console.error('Initialization error:', e);
+        showError(`Failed to initialize: ${e.message}`);
+        hideLoading();
+      }
+    }
+
+    // Start the app
+    init();
+  </script>
+</body>
+</html>
