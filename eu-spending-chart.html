@@ -608,6 +608,35 @@
     }
 
     // Fetch Finland pension data from Statistics Finland
+    // First get available years from the table metadata
+    let statFinAvailableYears = null;
+
+    async function fetchStatFinMetadata() {
+      if (statFinAvailableYears) return statFinAvailableYears;
+
+      try {
+        const url = 'https://pxdata.stat.fi/PXWeb/api/v1/en/StatFin/StatFin__jmete/statfin_jmete_pxt_12a6.px';
+        const response = await fetch(url);
+        if (!response.ok) return null;
+
+        const metadata = await response.json();
+
+        // Find the year variable and extract available values
+        const yearVar = metadata.variables.find(v =>
+          v.code === 'Vuosi' || v.code === 'Year' || v.text.toLowerCase().includes('year')
+        );
+
+        if (yearVar && yearVar.values) {
+          statFinAvailableYears = yearVar.values;
+          console.log('StatFin available years:', statFinAvailableYears);
+          return statFinAvailableYears;
+        }
+      } catch (e) {
+        console.warn('Failed to fetch StatFin metadata:', e);
+      }
+      return null;
+    }
+
     async function fetchFinlandPensionShare(year) {
       const cacheKey = CACHE_KEY_STATFIN + year;
       const cached = getCached(cacheKey);
@@ -616,37 +645,45 @@
         return cached;
       }
 
+      // Check if year is available in StatFin data
+      const availableYears = await fetchStatFinMetadata();
+      if (availableYears && !availableYears.includes(year.toString())) {
+        console.log(`Year ${year} not available in StatFin (available: ${availableYears.slice(-5).join(', ')}...)`);
+        return null;
+      }
+
       // StatFin PxWeb API query
       const url = 'https://pxdata.stat.fi/PXWeb/api/v1/en/StatFin/StatFin__jmete/statfin_jmete_pxt_12a6.px';
 
+      // Query using variable codes from the table
       const query = {
         "query": [
           {
             "code": "Tiedot",
             "selection": {
               "filter": "item",
-              "values": ["suhde_bkt"]  // Ratio to GDP, %
+              "values": ["suhde_bkt"]
             }
           },
           {
             "code": "Sektori",
             "selection": {
               "filter": "item",
-              "values": ["S13141"]  // Employment pension schemes
+              "values": ["S13141"]
             }
           },
           {
             "code": "Taloustoimi",
             "selection": {
               "filter": "item",
-              "values": ["OTES"]  // Expenditure, total, consolidated
+              "values": ["OTES"]
             }
           },
           {
             "code": "Tehtävä",
             "selection": {
               "filter": "item",
-              "values": ["TOTAL"]  // Total
+              "values": ["TOTAL"]
             }
           },
           {
@@ -672,6 +709,8 @@
         });
 
         if (!response.ok) {
+          const errorText = await response.text();
+          console.warn(`StatFin API error ${response.status}:`, errorText.substring(0, 200));
           throw new Error(`StatFin API error: ${response.status}`);
         }
 
@@ -679,8 +718,10 @@
 
         if (data.data && data.data.length > 0 && data.data[0].values && data.data[0].values.length > 0) {
           const value = parseFloat(data.data[0].values[0]);
-          setCache(cacheKey, value);
-          return value;
+          if (!isNaN(value)) {
+            setCache(cacheKey, value);
+            return value;
+          }
         }
 
         return null;
@@ -695,10 +736,13 @@
       try {
         const response = await fetch('./data/finland_pensions_snapshot.json');
         if (response.ok) {
-          return await response.json();
+          const data = await response.json();
+          console.log('Loaded pension snapshot fallback:', Object.keys(data));
+          return data;
         }
+        console.warn('Snapshot fallback response not ok:', response.status);
       } catch (e) {
-        console.warn('Snapshot fallback not available');
+        console.warn('Snapshot fallback not available:', e.message);
       }
       return null;
     }
@@ -709,8 +753,11 @@
       let value = await fetchFinlandPensionShare(year);
 
       if (value !== null) {
+        console.log(`Got Finland pension data from API for ${year}: ${value}%`);
         return { value, source: 'api', year: parseInt(year) };
       }
+
+      console.log(`API failed for ${year}, trying snapshot fallback...`);
 
       // Try fallback snapshot
       if (!finlandPensionData.snapshot) {
@@ -720,6 +767,7 @@
       if (finlandPensionData.snapshot) {
         // Find exact year or closest available
         if (finlandPensionData.snapshot[year]) {
+          console.log(`Using snapshot data for ${year}: ${finlandPensionData.snapshot[year]}%`);
           return { value: finlandPensionData.snapshot[year], source: 'snapshot', year: parseInt(year) };
         }
 
@@ -729,6 +777,7 @@
 
         for (const y of availableYears) {
           if (y <= requestedYear) {
+            console.log(`Using snapshot data from ${y} for requested year ${year}: ${finlandPensionData.snapshot[y.toString()]}%`);
             return { value: finlandPensionData.snapshot[y.toString()], source: 'snapshot', year: y };
           }
         }
@@ -736,10 +785,12 @@
         // Use latest available
         if (availableYears.length > 0) {
           const latestYear = availableYears[0];
+          console.log(`Using latest snapshot data from ${latestYear}: ${finlandPensionData.snapshot[latestYear.toString()]}%`);
           return { value: finlandPensionData.snapshot[latestYear.toString()], source: 'snapshot', year: latestYear };
         }
       }
 
+      console.warn('No Finland pension data available from API or snapshot');
       return null;
     }
 
