@@ -815,15 +815,18 @@
 
     // Build chart
     function buildChart(data, pensionInfo, mode) {
+      console.log(`buildChart called - data: ${data.length} items, mode: ${mode}`);
       try {
         // Destroy existing chart first
         if (chart) {
+          console.log('Destroying existing chart');
           chart.destroy();
           chart = null;
         }
 
         // Get fresh canvas context after destroy
         const ctx = mainChart.getContext('2d');
+        console.log('Got canvas context:', ctx ? 'yes' : 'no');
 
         // Prepare data based on mode
         let chartData;
@@ -844,11 +847,13 @@
           legendCustom.style.display = 'none';
         }
 
+        console.log('Chart data prepared:', chartData ? 'yes' : 'no');
         if (!chartData || !chartData.data) {
           console.error('Failed to prepare chart data');
           return;
         }
 
+        console.log('Creating new Chart.js instance...');
         chart = new Chart(ctx, {
         type: 'bar',
         data: chartData.data,
@@ -898,7 +903,8 @@
             }
           }
         }
-      });
+        });
+        console.log('Chart created successfully, chart object:', chart ? 'exists' : 'null');
       } catch (e) {
         console.error('Chart build error:', e);
         showError('Failed to render chart. Please try again.');
@@ -1044,6 +1050,10 @@
 
     // Mode switching
     function setMode(mode) {
+      console.log(`setMode called with mode: ${mode}`);
+      console.log(`eurostatData length: ${eurostatData.length}`);
+      console.log(`finlandPensionData.current:`, finlandPensionData.current);
+
       currentMode = mode;
 
       btnOfficial.classList.toggle('active', mode === 'official');
@@ -1058,7 +1068,9 @@
       loadingIndicator.style.display = 'none';
 
       if (eurostatData.length > 0) {
+        console.log('Calling buildChart...');
         buildChart(eurostatData, finlandPensionData.current, mode);
+        console.log('buildChart completed');
       } else {
         console.warn('No data available for chart - eurostatData is empty');
       }
