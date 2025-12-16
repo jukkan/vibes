@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal vs Windows App Shortcuts</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .warning strong {
+            color: #856404;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        th {
+            background: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .action {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .danger {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .safe {
+            color: #28a745;
+            font-weight: bold;
+        }
+        kbd {
+            background: #e9ecef;
+            border: 1px solid #adb5bd;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 12px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🖥️ Windows Apps vs Terminal Shortcuts</h1>
+    
+    <div class="warning">
+        <strong>⚠️ The Big Gotchas:</strong>
+        <ul>
+            <li><kbd>Ctrl+C</kbd> in terminals = <strong>KILL the running command</strong> (not copy!)</li>
+            <li><kbd>Ctrl+A</kbd> in terminals = <strong>Jump to start of line</strong> (not select all)</li>
+            <li><kbd>Ctrl+Z</kbd> in terminals = <strong>Suspend process</strong> (not undo)</li>
+        </ul>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Windows Apps<br>(Notepad, Word, etc.)</th>
+                <th>Terminal Windows<br>(PowerShell, VS Code, CMD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="action">Copy</td>
+                <td><kbd>Ctrl+C</kbd></td>
+                <td>
+                    <span class="safe">Select with mouse + <kbd>Ctrl+Shift+C</kbd></span><br>
+                    or <span class="safe">Select + Right-click</span><br>
+                    or <span class="safe"><kbd>Ctrl+Insert</kbd></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="action">Paste</td>
+                <td><kbd>Ctrl+V</kbd></td>
+                <td>
+                    <span class="safe"><kbd>Ctrl+Shift+V</kbd></span><br>
+                    or <span class="safe">Right-click</span><br>
+                    or <span class="safe"><kbd>Shift+Insert</kbd></span><br>
+                    or <kbd>Ctrl+V</kbd> (works in newer terminals)
+                </td>
+            </tr>
+            <tr>
+                <td class="action">Select All</td>
+                <td><kbd>Ctrl+A</kbd></td>
+                <td>
+                    <span class="danger">No keyboard shortcut!</span><br>
+                    Use mouse or <kbd>Ctrl+A</kbd> moves to line start
+                </td>
+            </tr>
+            <tr>
+                <td class="action">Cut</td>
+                <td><kbd>Ctrl+X</kbd></td>
+                <td>
+                    <span class="danger">Not applicable in most terminals</span><br>
+                    (terminals are read-only output)
+                </td>
+            </tr>
+            <tr>
+                <td class="action">Undo</td>
+                <td><kbd>Ctrl+Z</kbd></td>
+                <td>
+                    <span class="danger">Suspends the running process!</span><br>
+                    Limited undo with <kbd>Ctrl+H</kbd> (backspace) while typing
+                </td>
+            </tr>
+            <tr>
+                <td class="action">Find/Search</td>
+                <td><kbd>Ctrl+F</kbd></td>
+                <td>
+                    VS Code terminal: <kbd>Ctrl+F</kbd><br>
+                    PowerShell: Use pipe to <code>Select-String</code><br>
+                    Windows Terminal: <kbd>Ctrl+Shift+F</kbd>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section">
+        <h2>🎯 Safe Universal Shortcuts</h2>
+        <p>These work in BOTH regular apps and terminals:</p>
+        <ul>
+            <li><kbd>Ctrl+Insert</kbd> = Copy (Old-school but reliable)</li>
+            <li><kbd>Shift+Insert</kbd> = Paste (Works everywhere)</li>
+            <li><kbd>Shift+Arrow keys</kbd> = Select text in command prompt</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🔧 Modern Terminal Shortcuts (VS Code, Windows Terminal)</h2>
+        <table>
+            <tr>
+                <td class="action">Copy</td>
+                <td><kbd>Ctrl+Shift+C</kbd> or <kbd>Ctrl+C</kbd> (when text selected)</td>
+            </tr>
+            <tr>
+                <td class="action">Paste</td>
+                <td><kbd>Ctrl+Shift+V</kbd> or <kbd>Ctrl+V</kbd></td>
+            </tr>
+            <tr>
+                <td class="action">New Tab</td>
+                <td><kbd>Ctrl+Shift+T</kbd></td>
+            </tr>
+            <tr>
+                <td class="action">Close Tab</td>
+                <td><kbd>Ctrl+Shift+W</kbd></td>
+            </tr>
+            <tr>
+                <td class="action">Split Pane</td>
+                <td><kbd>Alt+Shift+D</kbd> (Windows Terminal)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="tip">
+        <strong>💡 Pro Tips:</strong>
+        <ul>
+            <li><strong>Mouse selection:</strong> In most modern terminals, selecting text with mouse automatically copies it</li>
+            <li><strong>Right-click paste:</strong> Works in nearly all terminal windows (safest option)</li>
+            <li><strong>Cancel a command:</strong> <kbd>Ctrl+C</kbd> (this is its actual job in terminals!)</li>
+            <li><strong>Clear screen:</strong> Type <code>cls</code> (CMD/PowerShell) or <code>clear</code> (bash)</li>
+            <li><strong>Autocomplete:</strong> Press <kbd>Tab</kbd> to complete commands/paths</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📋 Quick Reference Card</h2>
+        <p><strong>When in doubt in a terminal:</strong></p>
+        <ol>
+            <li><strong>Copy:</strong> Select with mouse → Right-click (or <kbd>Ctrl+Shift+C</kbd>)</li>
+            <li><strong>Paste:</strong> Right-click (or <kbd>Ctrl+Shift+V</kbd>)</li>
+            <li><strong>Cancel command:</strong> <kbd>Ctrl+C</kbd></li>
+            <li><strong>Never:</strong> Use <kbd>Ctrl+A</kbd> expecting "select all" or <kbd>Ctrl+Z</kbd> expecting "undo"</li>
+        </ol>
+    </div>
+
+</body>
+</html>
