@@ -525,6 +525,10 @@
         // Request tracking
         let requestCount = 0;
 
+        // Store current analysis results for image generation
+        let currentAnalysis1 = null;
+        let currentAnalysis2 = null;
+
         const LOADING_MESSAGES = [
             'Calculating vibe frequency...',
             'Analyzing cope levels...',
@@ -1128,6 +1132,10 @@
         }
 
         function displayResults(analysis1, analysis2) {
+            // Store analysis results for image generation
+            currentAnalysis1 = analysis1;
+            currentAnalysis2 = analysis2;
+
             const resultsContainer = document.getElementById('resultsContainer');
             resultsContainer.innerHTML = createProfileCard(analysis1) + createProfileCard(analysis2);
 
@@ -1147,8 +1155,8 @@
                         <button onclick="copyShareLink('${analysis1.user.login}', '${analysis2.user.login}')">
                             📋 Copy Share Link
                         </button>
-                        <button onclick="shareToTwitter('${winner.user.login}', '${loser.user.login}', ${winner.score}, ${loser.score})">
-                            🐦 Share on Twitter
+                        <button onclick="downloadResultImage('${analysis1.user.login}', '${analysis2.user.login}')">
+                            📥 Download Image
                         </button>
                     </div>
                 `;
@@ -1224,10 +1232,218 @@
             });
         }
 
-        function shareToTwitter(winner, loser, winnerScore, loserScore) {
-            const text = `⚔️ GitVibes Battle: @${winner} (${winnerScore}) defeated @${loser} (${loserScore})! Check your AI coding vibes at`;
-            const url = `${window.location.origin}${window.location.pathname}`;
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        async function downloadResultImage(username1, username2) {
+            if (!currentAnalysis1 || !currentAnalysis2) {
+                alert('No results to download');
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            const size = 1200;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Draw gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // Helper function to draw rounded rectangle
+            function roundRect(ctx, x, y, width, height, radius) {
+                ctx.beginPath();
+                ctx.moveTo(x + radius, y);
+                ctx.arcTo(x + width, y, x + width, y + height, radius);
+                ctx.arcTo(x + width, y + height, x, y + height, radius);
+                ctx.arcTo(x, y + height, x, y, radius);
+                ctx.arcTo(x, y, x + width, y, radius);
+                ctx.closePath();
+            }
+
+            // Helper function to wrap text
+            function wrapText(ctx, text, maxWidth) {
+                const words = text.split(' ');
+                const lines = [];
+                let currentLine = words[0];
+
+                for (let i = 1; i < words.length; i++) {
+                    const word = words[i];
+                    const width = ctx.measureText(currentLine + ' ' + word).width;
+                    if (width < maxWidth) {
+                        currentLine += ' ' + word;
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            }
+
+            // Draw title
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 60px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('⚔️ GitVibes Battle', size / 2, 80);
+
+            // Draw user profiles side by side
+            const profileWidth = 500;
+            const profileX1 = 60;
+            const profileX2 = size - profileWidth - 60;
+            const profileY = 150;
+            const profileHeight = 900;
+
+            // Function to draw a profile card
+            async function drawProfile(analysis, x, y, isWinner) {
+                // Draw semi-transparent white background
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+                roundRect(ctx, x, y, profileWidth, profileHeight, 20);
+                ctx.fill();
+
+                // Draw border for winner
+                if (isWinner) {
+                    ctx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
+                    ctx.lineWidth = 4;
+                    roundRect(ctx, x, y, profileWidth, profileHeight, 20);
+                    ctx.stroke();
+
+                    // Winner crown
+                    ctx.fillStyle = 'rgba(255, 215, 0, 1)';
+                    ctx.font = 'bold 50px -apple-system, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('👑', x + profileWidth / 2, y + 40);
+                }
+
+                // Draw avatar (circular)
+                try {
+                    const avatarSize = 120;
+                    const avatarX = x + profileWidth / 2;
+                    const avatarY = isWinner ? y + 90 : y + 60;
+
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    await new Promise((resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = reject;
+                        img.src = analysis.user.avatar_url;
+                    });
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(avatarX, avatarY, avatarSize / 2, 0, Math.PI * 2);
+                    ctx.clip();
+                    ctx.drawImage(img, avatarX - avatarSize / 2, avatarY - avatarSize / 2, avatarSize, avatarSize);
+                    ctx.restore();
+
+                    // Avatar border
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.arc(avatarX, avatarY, avatarSize / 2, 0, Math.PI * 2);
+                    ctx.stroke();
+                } catch (e) {
+                    console.error('Could not load avatar:', e);
+                }
+
+                // Username
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 32px -apple-system, sans-serif';
+                ctx.textAlign = 'center';
+                const usernameY = isWinner ? y + 170 : y + 140;
+                ctx.fillText(`@${analysis.user.login}`, x + profileWidth / 2, usernameY);
+
+                // Score
+                ctx.font = 'bold 100px -apple-system, sans-serif';
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.fillText(analysis.score.toString(), x + profileWidth / 2, usernameY + 100);
+
+                // Vibe level
+                ctx.font = 'bold 20px -apple-system, sans-serif';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                const vibeLevelY = usernameY + 140;
+                const lines = wrapText(ctx, analysis.vibeLevel.label, profileWidth - 40);
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, x + profileWidth / 2, vibeLevelY + i * 25);
+                });
+
+                // Score breakdown
+                const breakdownY = vibeLevelY + lines.length * 25 + 40;
+                const breakdownItems = [
+                    { label: '🤖 AI', value: analysis.breakdown.aiEngagement },
+                    { label: '✨ Style', value: analysis.breakdown.aesthetics },
+                    { label: '📈 Clout', value: analysis.breakdown.socialClout },
+                    { label: '🚀 Tech', value: analysis.breakdown.trendyTech }
+                ];
+
+                ctx.textAlign = 'left';
+                ctx.font = '18px -apple-system, sans-serif';
+
+                breakdownItems.forEach((item, i) => {
+                    const itemY = breakdownY + i * 70;
+
+                    // Label and value
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                    ctx.fillText(item.label, x + 30, itemY);
+                    ctx.textAlign = 'right';
+                    ctx.fillText(`${item.value}/100`, x + profileWidth - 30, itemY);
+                    ctx.textAlign = 'left';
+
+                    // Progress bar background
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                    roundRect(ctx, x + 30, itemY + 10, profileWidth - 60, 15, 8);
+                    ctx.fill();
+
+                    // Progress bar fill
+                    const fillWidth = ((profileWidth - 60) * item.value) / 100;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    roundRect(ctx, x + 30, itemY + 10, fillWidth, 15, 8);
+                    ctx.fill();
+                });
+
+                // Top languages
+                if (analysis.topLanguages && analysis.topLanguages.length > 0) {
+                    const langY = breakdownY + breakdownItems.length * 70 + 30;
+                    ctx.font = 'bold 16px -apple-system, sans-serif';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Top Languages', x + profileWidth / 2, langY);
+
+                    ctx.font = '14px -apple-system, sans-serif';
+                    const langText = analysis.topLanguages.join(' • ');
+                    ctx.fillText(langText, x + profileWidth / 2, langY + 25);
+                }
+            }
+
+            // Determine winner
+            const isWinner1 = currentAnalysis1.score > currentAnalysis2.score;
+            const isWinner2 = currentAnalysis2.score > currentAnalysis1.score;
+
+            // Draw both profiles
+            await drawProfile(currentAnalysis1, profileX1, profileY, isWinner1);
+            await drawProfile(currentAnalysis2, profileX2, profileY, isWinner2);
+
+            // Draw VS divider
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fillRect(size / 2 - 2, 200, 4, 800);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 40px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('VS', size / 2, 620);
+
+            // Convert canvas to blob and download
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `gitvibes-${username1}-vs-${username2}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
         }
 
         // Event Listeners
