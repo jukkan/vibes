@@ -324,6 +324,65 @@
             display: none;
         }
 
+        .token-section {
+            margin: 20px 0;
+        }
+
+        .token-section details {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .token-section summary {
+            font-weight: 600;
+            font-size: 0.95rem;
+            user-select: none;
+        }
+
+        .token-section input[type="password"] {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .token-section input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .rate-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .rate-low {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .rate-reset {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        #request-count {
+            font-weight: 600;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -410,7 +469,29 @@
                 <button id="compareBtn">⚔️ Compare Vibes</button>
                 <button id="randomBtn" style="margin-left: 10px;">🎲 Random Battle</button>
             </div>
+
+            <div class="token-section">
+                <details>
+                    <summary>⚙️ Settings (Optional GitHub Token for 5000/hr)</summary>
+                    <div style="margin-top: 10px;">
+                        <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" style="width: 300px; margin-right: 10px;">
+                        <button onclick="saveToken()">Save Token</button>
+                        <button onclick="clearCache()" style="margin-left: 10px;">Clear Cache</button>
+                        <div style="margin-top: 10px; font-size: 0.9rem;">
+                            <a href="https://github.com/settings/tokens/new?scopes=public_repo" target="_blank" style="color: rgba(255, 255, 255, 0.8);">
+                                Get Token (public_repo scope)
+                            </a>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
             <div class="rate-limit-info" id="rateLimitInfo"></div>
+            <div id="request-count" style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: #4ade80;"></div>
+        </div>
+
+        <div id="rate-status" class="rate-status">
+            Checking rate limits...
         </div>
 
         <div id="loadingSection" class="hidden">
@@ -440,6 +521,9 @@
         const MAX_REPOS = 30;
         const MAX_STARRED = 50;
         const MAX_COMMITS = 30;
+
+        // Request tracking
+        let requestCount = 0;
 
         const LOADING_MESSAGES = [
             'Calculating vibe frequency...',
@@ -512,6 +596,39 @@
         };
 
         // Utility Functions
+        function getHeaders() {
+            const token = localStorage.getItem('gh_token');
+            const headers = { 'Accept': 'application/vnd.github.v3+json' };
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            return headers;
+        }
+
+        function saveToken() {
+            const token = document.getElementById('gh-token').value.trim();
+            if (token) {
+                localStorage.setItem('gh_token', token);
+                alert('✅ Token saved! You now have 5000 requests/hour.');
+                document.getElementById('gh-token').value = '';
+                checkRateLimit();
+            }
+        }
+
+        function clearCache() {
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('gh_') || key.startsWith('gitvibes_')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            alert('Cache cleared!');
+            checkRateLimit();
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
         function getCache(key) {
             try {
                 const cached = localStorage.getItem(key);
@@ -539,18 +656,34 @@
             }
         }
 
-        async function fetchGitHub(endpoint) {
+        async function fetchGitHub(endpoint, skipCache = false) {
             const cacheKey = `gh_${endpoint}`;
-            const cached = getCache(cacheKey);
-            if (cached) return cached;
+
+            if (!skipCache) {
+                const cached = getCache(cacheKey);
+                if (cached) {
+                    console.log(`Cache hit: ${endpoint}`);
+                    return cached;
+                }
+            }
+
+            requestCount++;
+            console.log(`Request #${requestCount}: ${endpoint}`);
 
             const response = await fetch(`${GITHUB_API}${endpoint}`, {
-                headers: { 'Accept': 'application/vnd.github.v3+json' }
+                headers: getHeaders()
             });
 
             if (!response.ok) {
                 if (response.status === 404) throw new Error('User not found');
-                if (response.status === 403) throw new Error('Rate limit exceeded. Try again later.');
+                if (response.status === 403) {
+                    const remaining = response.headers.get('X-RateLimit-Remaining');
+                    if (remaining === '0') {
+                        const reset = response.headers.get('X-RateLimit-Reset');
+                        const resetTime = new Date(reset * 1000).toLocaleTimeString();
+                        throw new Error(`Rate limit exceeded. Resets at ${resetTime}. Add a GitHub token for 5000/hr!`);
+                    }
+                }
                 throw new Error('GitHub API error');
             }
 
@@ -558,6 +691,36 @@
             const data = await response.json();
             setCache(cacheKey, data);
             return data;
+        }
+
+        async function checkRateLimit() {
+            try {
+                const response = await fetch(`${GITHUB_API}/rate_limit`, {
+                    headers: getHeaders()
+                });
+                const data = await response.json();
+
+                const core = data.resources.core;
+                const search = data.resources.search;
+                const resetTime = new Date(core.reset * 1000).toLocaleTimeString();
+
+                const statusHTML = `
+                    <span class="${core.remaining < 10 ? 'rate-low' : ''}">
+                        Core: ${core.remaining}/${core.limit}
+                    </span>
+                    <span class="rate-reset">Resets: ${resetTime}</span>
+                    ${search ? `<span>Search: ${search.remaining}/${search.limit}</span>` : ''}
+                `;
+
+                document.getElementById('rate-status').innerHTML = statusHTML;
+
+                if (core.remaining < 5) {
+                    alert(`⚠️ Only ${core.remaining} requests left! Add a GitHub token or wait until ${resetTime}`);
+                }
+            } catch (e) {
+                document.getElementById('rate-status').innerHTML =
+                    '⚠️ Could not check rate limit';
+            }
         }
 
         function updateRateLimit(headers) {
@@ -577,81 +740,120 @@
             return LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
         }
 
-        // Scoring Functions
-        async function calculateAIEngagement(username, repos) {
+        // Scoring Functions - Optimized for minimal API calls
+        async function searchAIConfigs(username) {
+            // Code search has separate rate limit (10/min unauth, 30/min auth)
+            const searches = [
+                `user:${username} filename:.cursorrules`,
+                `user:${username} filename:lovable.yaml path:/`,
+                `user:${username} filename:.aidigestignore`,
+                `user:${username} path:.cursor`
+            ];
+
+            let score = 0;
+            const foundConfigs = [];
+
+            for (const query of searches) {
+                try {
+                    requestCount++;
+                    console.log(`Search request #${requestCount}: ${query}`);
+
+                    const result = await fetch(
+                        `${GITHUB_API}/search/code?q=${encodeURIComponent(query)}`,
+                        { headers: getHeaders() }
+                    ).then(r => r.json());
+
+                    if (result.total_count > 0) {
+                        score += 15;
+                        foundConfigs.push(query.split('filename:')[1] || query.split('path:')[1]);
+                    }
+
+                    // Respect search API rate limit (10/min)
+                    await sleep(200);
+                } catch (e) {
+                    console.log('Search API limit hit or error, continuing...');
+                    break; // Stop if rate limited
+                }
+            }
+
+            return { score, configs: foundConfigs };
+        }
+
+        async function calculateAIEngagement(username, repos, starred) {
             let score = 0;
             const detectedTools = new Set();
 
-            // Check for AI config files
-            for (const repo of repos.slice(0, MAX_REPOS)) {
-                for (const file of AI_CONFIG_FILES) {
-                    try {
-                        await fetchGitHub(`/repos/${username}/${repo.name}/contents/${file}`);
-                        score += 15;
-                        detectedTools.add(file);
-                    } catch (e) {
-                        // File doesn't exist, continue
-                    }
+            // 1. Metadata scanning (0 extra requests - already fetched)
+            repos.forEach(r => {
+                // Topics
+                const aiTopics = r.topics?.filter(t =>
+                    t.match(/ai|llm|gpt|copilot|claude|cursor|ai-assisted|machine-learning|openai/)
+                );
+                if (aiTopics && aiTopics.length > 0) {
+                    score += aiTopics.length * 8;
+                    aiTopics.forEach(t => detectedTools.add(t));
                 }
+
+                // Description keywords
+                const desc = (r.description || '').toLowerCase();
+                if (desc.match(/ai-assisted|copilot|cursor|claude|lovable|gpt|llm/i)) {
+                    score += 5;
+                    const match = desc.match(/ai-assisted|copilot|cursor|claude|lovable|gpt|llm/i);
+                    if (match) detectedTools.add(match[0]);
+                }
+
+                // Repo name patterns
+                if (r.name.match(/copilot|ai-tool|cursor|gpt|claude/i)) {
+                    score += 10;
+                    detectedTools.add(`${r.name.split('-')[0]}-repo`);
+                }
+            });
+
+            // 2. Starred repos analysis (already fetched)
+            if (starred && starred.length > 0) {
+                const aiToolStars = starred.filter(s =>
+                    s.full_name.match(/github\/copilot|cursor|aider|lovable|anthropic|openai|langchain|vercel\/ai/i) ||
+                    s.topics?.some(t => t.match(/ai-tools|llm|copilot|claude/))
+                );
+                score += Math.min(aiToolStars.length * 5, 30);
+                aiToolStars.slice(0, 5).forEach(s => {
+                    const repoName = s.full_name.split('/')[1];
+                    detectedTools.add(repoName);
+                });
             }
 
-            // Check starred repos for AI tools
+            // 3. Code Search API for config files (1-4 requests total)
             try {
-                const starred = await fetchGitHub(`/users/${username}/starred?per_page=${MAX_STARRED}`);
-                for (const repo of starred) {
-                    const repoName = repo.full_name.toLowerCase();
-                    const repoDesc = (repo.description || '').toLowerCase();
-
-                    for (const tool of AI_TOOLS) {
-                        if (repoName.includes(tool) || repoDesc.includes(tool)) {
-                            score += 5;
-                            detectedTools.add(tool);
-                        }
-                    }
-                }
+                const configResult = await searchAIConfigs(username);
+                score += configResult.score;
+                configResult.configs.forEach(c => detectedTools.add(c));
             } catch (e) {
-                console.warn('Could not fetch starred repos:', e);
+                console.log('Search API unavailable, using metadata only');
             }
 
-            // Check repo topics and descriptions for AI keywords
-            for (const repo of repos.slice(0, MAX_REPOS)) {
-                const topics = repo.topics || [];
-                const description = (repo.description || '').toLowerCase();
-
-                for (const keyword of AI_KEYWORDS) {
-                    if (topics.includes(keyword) || description.includes(keyword)) {
-                        score += 8;
-                        detectedTools.add(`${keyword}-tagged`);
-                        break;
-                    }
-                }
-            }
-
-            // Sample commit messages for AI tool mentions
-            let commitsChecked = 0;
-            for (const repo of repos.slice(0, 10)) {
-                if (commitsChecked >= MAX_COMMITS) break;
-
+            // 4. Optional: Sample ONE top repo for commits (1 request)
+            // Only if we have repos and want extra accuracy
+            if (repos.length > 0) {
                 try {
-                    const commits = await fetchGitHub(`/repos/${username}/${repo.name}/commits?per_page=5`);
-                    for (const commit of commits) {
-                        const message = commit.commit.message.toLowerCase();
-                        for (const tool of AI_TOOLS) {
-                            if (message.includes(tool)) {
-                                score += 3;
-                                detectedTools.add(`${tool}-commits`);
-                            }
-                        }
-                        commitsChecked++;
+                    const topRepo = repos.find(r => r.stargazers_count > 0) || repos[0];
+                    const commits = await fetchGitHub(`/repos/${username}/${topRepo.name}/commits?per_page=10`);
+
+                    const aiCommits = commits.filter(c =>
+                        c.commit.message.match(/copilot|cursor|claude|ai-generated|gpt|llm/i)
+                    );
+
+                    if (aiCommits.length > 0) {
+                        score += 10;
+                        detectedTools.add('ai-commits');
                     }
                 } catch (e) {
-                    // Skip if can't access commits
+                    console.log('Could not fetch commits, skipping');
                 }
             }
 
             return {
                 score: Math.min(score, 100),
-                tools: Array.from(detectedTools)
+                tools: Array.from(detectedTools).slice(0, 10)
             };
         }
 
@@ -791,7 +993,15 @@
 
             document.getElementById('loadingMessage').textContent = randomLoadingMessage();
 
-            const aiEngagement = await calculateAIEngagement(username, repos);
+            // Fetch starred repos once (1 request)
+            let starred = [];
+            try {
+                starred = await fetchGitHub(`/users/${username}/starred?per_page=${MAX_STARRED}`);
+            } catch (e) {
+                console.warn('Could not fetch starred repos:', e);
+            }
+
+            const aiEngagement = await calculateAIEngagement(username, repos, starred);
 
             document.getElementById('loadingMessage').textContent = randomLoadingMessage();
 
@@ -973,6 +1183,10 @@
                 return;
             }
 
+            // Reset request counter
+            requestCount = 0;
+            document.getElementById('request-count').textContent = '';
+
             hideAllSections();
             document.getElementById('loadingSection').classList.remove('hidden');
 
@@ -984,6 +1198,11 @@
 
                 hideAllSections();
                 displayResults(analysis1, analysis2);
+
+                // Display request count
+                const msg = `✅ Comparison used ${requestCount} API requests (optimized from ~50-80!)`;
+                document.getElementById('request-count').textContent = msg;
+                console.log(`Total requests: ${requestCount}`);
 
                 // Update URL
                 const url = new URL(window.location);
@@ -1041,6 +1260,9 @@
 
         // Load from URL parameters on page load
         window.addEventListener('DOMContentLoaded', () => {
+            // Check rate limit on page load
+            checkRateLimit();
+
             const params = new URLSearchParams(window.location.search);
             const u1 = params.get('u1');
             const u2 = params.get('u2');
