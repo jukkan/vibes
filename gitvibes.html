@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitVibes ⚔️ AI Coding Vibe Checker</title>
+    <style>
+        :root {
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+        }
+
+        .input-section {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease 0.2s backwards;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 2px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        button {
+            padding: 15px 35px;
+            border-radius: 15px;
+            border: none;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .profile-card {
+            animation: slideInUp 0.6s ease;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .username {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .username a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .username a:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .vibe-score {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.6));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+            line-height: 1;
+        }
+
+        .vibe-level {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .score-breakdown {
+            margin: 20px 0;
+        }
+
+        .score-item {
+            margin-bottom: 15px;
+        }
+
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+
+        .score-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .language-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .chip {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .winner-banner {
+            text-align: center;
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: victoryPulse 0.8s ease;
+        }
+
+        .winner-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .share-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid rgba(255, 100, 100, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .rate-limit-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .easter-egg {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            font-style: italic;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes victoryPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .results-container {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            input[type="text"] {
+                width: 100%;
+            }
+
+            .vibe-score {
+                font-size: 56px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ GitVibes</h1>
+            <p class="subtitle">Compare AI Coding Vibes • Satirical GitHub Profile Analysis</p>
+        </header>
+
+        <div class="input-section glass-card">
+            <div class="input-group">
+                <input type="text" id="username1" placeholder="GitHub Username 1">
+                <input type="text" id="username2" placeholder="GitHub Username 2">
+            </div>
+            <div style="text-align: center;">
+                <button id="compareBtn">⚔️ Compare Vibes</button>
+                <button id="randomBtn" style="margin-left: 10px;">🎲 Random Battle</button>
+            </div>
+            <div class="rate-limit-info" id="rateLimitInfo"></div>
+        </div>
+
+        <div id="loadingSection" class="hidden">
+            <div class="glass-card loading">
+                <div class="loading-spinner"></div>
+                <p id="loadingMessage">Calculating vibe frequency...</p>
+            </div>
+        </div>
+
+        <div id="errorSection" class="hidden">
+            <div class="glass-card error-message" id="errorMessage"></div>
+        </div>
+
+        <div id="winnerSection" class="hidden">
+            <div class="glass-card winner-banner" id="winnerBanner"></div>
+        </div>
+
+        <div id="resultsSection" class="hidden">
+            <div class="results-container" id="resultsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const GITHUB_API = 'https://api.github.com';
+        const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+        const MAX_REPOS = 30;
+        const MAX_STARRED = 50;
+        const MAX_COMMITS = 30;
+
+        const LOADING_MESSAGES = [
+            'Calculating vibe frequency...',
+            'Analyzing cope levels...',
+            'Measuring AI dependency...',
+            'Counting GitHub stats cards...',
+            'Detecting profile README simps...',
+            'Evaluating buzzword density...',
+            'Scanning for corporate energy...',
+            'Checking AI tool addiction...'
+        ];
+
+        const VIBE_LEVELS = [
+            { min: 80, label: '🌟 Peak Vibes - AI Native', desc: 'Living in the future' },
+            { min: 60, label: '✨ High Vibes - AI Curious', desc: 'You get it' },
+            { min: 40, label: '🔥 Mid Vibes - Getting There', desc: 'Room for improvement' },
+            { min: 20, label: '💼 Corporate Vibes - Touch Grass', desc: 'Needs help' },
+            { min: 0, label: '😴 No Vibes - Still Writing Java', desc: 'Oh no' }
+        ];
+
+        const AI_CONFIG_FILES = [
+            '.cursorrules',
+            '.cursor/rules',
+            'lovable.yaml',
+            '.github/copilot-instructions.md',
+            '.aider.conf.yml',
+            '.cursorignore'
+        ];
+
+        const AI_TOOLS = ['copilot', 'cursor', 'aider', 'lovable', 'anthropic', 'openai', 'claude', 'gpt', 'codeium', 'tabnine'];
+        const AI_KEYWORDS = ['ai', 'llm', 'gpt', 'claude', 'copilot', 'ai-assisted', 'machine-learning', 'openai'];
+
+        const TRENDY_LANGUAGES = {
+            'TypeScript': 10,
+            'Rust': 8,
+            'Go': 7,
+            'Python': 5,
+            'MDX': 8,
+            'Svelte': 7,
+            'Zig': 9,
+            'Elixir': 6
+        };
+
+        const BORING_LANGUAGES = {
+            'Java': -5,
+            'C++': -3,
+            'PHP': -7,
+            'Perl': -8
+        };
+
+        const BUZZWORDS = {
+            'ai': 8, 'llm': 8, 'gpt': 6, 'rag': 7, 'vector': 5,
+            'next.js': 8, 'astro': 7, 'shadcn': 10, 'turborepo': 6,
+            'vercel': 7, 'edge': 6, 'serverless': 5
+        };
+
+        const PENALTY_WORDS = {
+            'enterprise': -5,
+            'microservices': -3,
+            'blockchain': -2,
+            'web3': -4
+        };
+
+        const EASTER_EGGS = {
+            'torvalds': '👑 Legendary status detected. Vibe score calculation skipped - already peak.',
+            'gaearon': '⚛️ React royalty identified. Automatic high vibes.',
+            'tj': '🎨 The OG. Vibes immeasurable.',
+            'sindresorhus': '📦 NPM package overlord. Infinite vibes.',
+            'yyx990803': '💚 Vue.js creator. Auto-maximum vibes.'
+        };
+
+        // Utility Functions
+        function getCache(key) {
+            try {
+                const cached = localStorage.getItem(key);
+                if (!cached) return null;
+
+                const { data, timestamp } = JSON.parse(cached);
+                if (Date.now() - timestamp > CACHE_DURATION) {
+                    localStorage.removeItem(key);
+                    return null;
+                }
+                return data;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function setCache(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify({
+                    data,
+                    timestamp: Date.now()
+                }));
+            } catch (e) {
+                console.warn('Cache storage failed:', e);
+            }
+        }
+
+        async function fetchGitHub(endpoint) {
+            const cacheKey = `gh_${endpoint}`;
+            const cached = getCache(cacheKey);
+            if (cached) return cached;
+
+            const response = await fetch(`${GITHUB_API}${endpoint}`, {
+                headers: { 'Accept': 'application/vnd.github.v3+json' }
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) throw new Error('User not found');
+                if (response.status === 403) throw new Error('Rate limit exceeded. Try again later.');
+                throw new Error('GitHub API error');
+            }
+
+            updateRateLimit(response.headers);
+            const data = await response.json();
+            setCache(cacheKey, data);
+            return data;
+        }
+
+        function updateRateLimit(headers) {
+            const remaining = headers.get('X-RateLimit-Remaining');
+            const limit = headers.get('X-RateLimit-Limit');
+            if (remaining && limit) {
+                document.getElementById('rateLimitInfo').textContent =
+                    `GitHub API: ${remaining}/${limit} requests remaining`;
+            }
+        }
+
+        function getVibeLevel(score) {
+            return VIBE_LEVELS.find(level => score >= level.min) || VIBE_LEVELS[VIBE_LEVELS.length - 1];
+        }
+
+        function randomLoadingMessage() {
+            return LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
+        }
+
+        // Scoring Functions
+        async function calculateAIEngagement(username, repos) {
+            let score = 0;
+            const detectedTools = new Set();
+
+            // Check for AI config files
+            for (const repo of repos.slice(0, MAX_REPOS)) {
+                for (const file of AI_CONFIG_FILES) {
+                    try {
+                        await fetchGitHub(`/repos/${username}/${repo.name}/contents/${file}`);
+                        score += 15;
+                        detectedTools.add(file);
+                    } catch (e) {
+                        // File doesn't exist, continue
+                    }
+                }
+            }
+
+            // Check starred repos for AI tools
+            try {
+                const starred = await fetchGitHub(`/users/${username}/starred?per_page=${MAX_STARRED}`);
+                for (const repo of starred) {
+                    const repoName = repo.full_name.toLowerCase();
+                    const repoDesc = (repo.description || '').toLowerCase();
+
+                    for (const tool of AI_TOOLS) {
+                        if (repoName.includes(tool) || repoDesc.includes(tool)) {
+                            score += 5;
+                            detectedTools.add(tool);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not fetch starred repos:', e);
+            }
+
+            // Check repo topics and descriptions for AI keywords
+            for (const repo of repos.slice(0, MAX_REPOS)) {
+                const topics = repo.topics || [];
+                const description = (repo.description || '').toLowerCase();
+
+                for (const keyword of AI_KEYWORDS) {
+                    if (topics.includes(keyword) || description.includes(keyword)) {
+                        score += 8;
+                        detectedTools.add(`${keyword}-tagged`);
+                        break;
+                    }
+                }
+            }
+
+            // Sample commit messages for AI tool mentions
+            let commitsChecked = 0;
+            for (const repo of repos.slice(0, 10)) {
+                if (commitsChecked >= MAX_COMMITS) break;
+
+                try {
+                    const commits = await fetchGitHub(`/repos/${username}/${repo.name}/commits?per_page=5`);
+                    for (const commit of commits) {
+                        const message = commit.commit.message.toLowerCase();
+                        for (const tool of AI_TOOLS) {
+                            if (message.includes(tool)) {
+                                score += 3;
+                                detectedTools.add(`${tool}-commits`);
+                            }
+                        }
+                        commitsChecked++;
+                    }
+                } catch (e) {
+                    // Skip if can't access commits
+                }
+            }
+
+            return {
+                score: Math.min(score, 100),
+                tools: Array.from(detectedTools)
+            };
+        }
+
+        async function calculateAesthetics(username, user) {
+            let score = 0;
+            let hasReadme = false;
+
+            // Check for profile README
+            try {
+                const readme = await fetchGitHub(`/repos/${username}/${username}/readme`);
+                hasReadme = true;
+                score += 30;
+
+                // Decode and analyze README content
+                const content = atob(readme.content).toLowerCase();
+
+                // Count images/GIFs
+                const imageMatches = content.match(/!\[.*?\]\(.*?\)/g) || [];
+                score += Math.min(imageMatches.length * 3, 30);
+
+                // Count badges
+                const badgeMatches = content.match(/\[!\[.*?\]\(.*?\)\]\(.*?\)/g) || [];
+                score += Math.min(badgeMatches.length * 2, 20);
+
+                // Check for GitHub stats cards
+                if (content.includes('github-readme-stats') || content.includes('github-stats')) {
+                    score += 15;
+                }
+
+                // Check for custom SVGs
+                if (content.includes('.svg')) {
+                    score += 10;
+                }
+            } catch (e) {
+                // No profile README
+            }
+
+            // Profile completeness
+            if (user.bio) score += 10;
+            if (user.blog) score += 10;
+            if (user.twitter_username) score += 5;
+            if (user.bio && /[\p{Emoji}]/u.test(user.bio)) score += 5;
+
+            return {
+                score: Math.min(score, 100),
+                hasReadme
+            };
+        }
+
+        function calculateSocialClout(user, repos) {
+            let score = 20; // Base popularity
+
+            // Followers
+            score += Math.min(user.followers / 10, 40);
+
+            // Stars-per-repo ratio
+            const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+            const starsPerRepo = repos.length > 0 ? totalStars / repos.length : 0;
+            score += Math.min(starsPerRepo * 5, 40);
+
+            return Math.min(score, 100);
+        }
+
+        function calculateTrendyTech(repos) {
+            let score = 0;
+            const languages = {};
+
+            // Collect language stats
+            for (const repo of repos) {
+                if (repo.language) {
+                    languages[repo.language] = (languages[repo.language] || 0) + 1;
+                }
+
+                // Check description for buzzwords
+                const desc = (repo.description || '').toLowerCase();
+                for (const [word, points] of Object.entries(BUZZWORDS)) {
+                    if (desc.includes(word)) {
+                        score += points;
+                    }
+                }
+
+                // Check for penalty words
+                for (const [word, points] of Object.entries(PENALTY_WORDS)) {
+                    if (desc.includes(word)) {
+                        score += points;
+                    }
+                }
+            }
+
+            // Language bonuses/penalties
+            for (const [lang, count] of Object.entries(languages)) {
+                if (TRENDY_LANGUAGES[lang]) {
+                    score += TRENDY_LANGUAGES[lang] * Math.min(count, 3);
+                }
+                if (BORING_LANGUAGES[lang]) {
+                    score += BORING_LANGUAGES[lang] * Math.min(count, 2);
+                }
+            }
+
+            return {
+                score: Math.max(0, Math.min(score, 100)),
+                languages: Object.entries(languages)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3)
+                    .map(([lang]) => lang)
+            };
+        }
+
+        function calculateBoringPenalty(repos) {
+            let penalty = 0;
+            const twoYearsAgo = new Date();
+            twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+
+            for (const repo of repos) {
+                // Repos with 0 stars
+                if (repo.stargazers_count === 0) {
+                    penalty += 2;
+                }
+
+                // Old repos
+                const repoDate = new Date(repo.created_at);
+                if (repoDate < twoYearsAgo) {
+                    penalty += 3;
+                }
+
+                // High commits, low stars (we'd need to fetch commits, skip for performance)
+            }
+
+            return Math.min(penalty, 40);
+        }
+
+        async function analyzeProfile(username) {
+            document.getElementById('loadingMessage').textContent = randomLoadingMessage();
+
+            const user = await fetchGitHub(`/users/${username}`);
+            const repos = await fetchGitHub(`/users/${username}/repos?sort=updated&per_page=${MAX_REPOS}`);
+
+            document.getElementById('loadingMessage').textContent = randomLoadingMessage();
+
+            const aiEngagement = await calculateAIEngagement(username, repos);
+
+            document.getElementById('loadingMessage').textContent = randomLoadingMessage();
+
+            const aesthetics = await calculateAesthetics(username, user);
+            const socialClout = calculateSocialClout(user, repos);
+            const trendyTech = calculateTrendyTech(repos);
+            const boringPenalty = calculateBoringPenalty(repos);
+
+            // Calculate weighted total
+            const total = Math.max(0, Math.min(100,
+                (aiEngagement.score * 0.4) +
+                (aesthetics.score * 0.3) +
+                (socialClout * 0.2) +
+                (trendyTech.score * 0.1) -
+                boringPenalty +
+                (aesthetics.hasReadme ? 0 : -20)
+            ));
+
+            return {
+                user,
+                score: Math.round(total),
+                breakdown: {
+                    aiEngagement: Math.round(aiEngagement.score),
+                    aesthetics: Math.round(aesthetics.score),
+                    socialClout: Math.round(socialClout),
+                    trendyTech: Math.round(trendyTech.score),
+                    boringPenalty: Math.round(boringPenalty)
+                },
+                aiTools: aiEngagement.tools,
+                topLanguages: trendyTech.languages,
+                vibeLevel: getVibeLevel(Math.round(total))
+            };
+        }
+
+        // UI Functions
+        function createProfileCard(analysis) {
+            const { user, score, breakdown, aiTools, topLanguages, vibeLevel } = analysis;
+            const easterEgg = EASTER_EGGS[user.login.toLowerCase()];
+
+            return `
+                <div class="glass-card profile-card">
+                    <div class="profile-header">
+                        <img src="${user.avatar_url}" alt="${user.login}" class="avatar">
+                        <div class="username">
+                            <a href="${user.html_url}" target="_blank">@${user.login}</a>
+                        </div>
+                    </div>
+
+                    ${easterEgg ? `<div class="easter-egg">${easterEgg}</div>` : ''}
+
+                    <div style="text-align: center;">
+                        <div class="vibe-score">${score}</div>
+                        <div class="vibe-level">${vibeLevel.label}</div>
+                    </div>
+
+                    <div class="score-breakdown">
+                        <div class="score-item">
+                            <div class="score-label">
+                                <span>🤖 AI Engagement</span>
+                                <span>${breakdown.aiEngagement}/100</span>
+                            </div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${breakdown.aiEngagement}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-item">
+                            <div class="score-label">
+                                <span>✨ Aesthetics</span>
+                                <span>${breakdown.aesthetics}/100</span>
+                            </div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${breakdown.aesthetics}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-item">
+                            <div class="score-label">
+                                <span>📈 Social Clout</span>
+                                <span>${breakdown.socialClout}/100</span>
+                            </div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${breakdown.socialClout}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-item">
+                            <div class="score-label">
+                                <span>🚀 Trendy Tech</span>
+                                <span>${breakdown.trendyTech}/100</span>
+                            </div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${breakdown.trendyTech}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-item">
+                            <div class="score-label">
+                                <span>😴 Boring Penalty</span>
+                                <span>-${breakdown.boringPenalty}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${aiTools.length > 0 ? `
+                        <div>
+                            <strong>🤖 Detected AI Tools:</strong>
+                            <div class="badges">
+                                ${aiTools.slice(0, 8).map(tool => `<span class="badge">${tool}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${topLanguages.length > 0 ? `
+                        <div>
+                            <strong>💻 Top Languages:</strong>
+                            <div class="language-chips">
+                                ${topLanguages.map(lang => `<span class="chip">${lang}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function displayResults(analysis1, analysis2) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = createProfileCard(analysis1) + createProfileCard(analysis2);
+
+            // Determine winner
+            const winner = analysis1.score > analysis2.score ? analysis1 :
+                          analysis2.score > analysis1.score ? analysis2 : null;
+
+            if (winner) {
+                const loser = winner === analysis1 ? analysis2 : analysis1;
+                const winnerBanner = document.getElementById('winnerBanner');
+                winnerBanner.innerHTML = `
+                    <h2>🏆 ${winner.user.login} wins!</h2>
+                    <p style="font-size: 1.2rem; margin: 10px 0;">
+                        ${winner.score} vs ${loser.score} • ${winner.vibeLevel.desc}
+                    </p>
+                    <div class="share-section">
+                        <button onclick="copyShareLink('${analysis1.user.login}', '${analysis2.user.login}')">
+                            📋 Copy Share Link
+                        </button>
+                        <button onclick="shareToTwitter('${winner.user.login}', '${loser.user.login}', ${winner.score}, ${loser.score})">
+                            🐦 Share on Twitter
+                        </button>
+                    </div>
+                `;
+                document.getElementById('winnerSection').classList.remove('hidden');
+            } else {
+                const winnerBanner = document.getElementById('winnerBanner');
+                winnerBanner.innerHTML = `
+                    <h2>🤝 It's a tie!</h2>
+                    <p style="font-size: 1.2rem;">Both at ${analysis1.score} • Perfectly balanced vibes</p>
+                `;
+                document.getElementById('winnerSection').classList.remove('hidden');
+            }
+
+            document.getElementById('resultsSection').classList.remove('hidden');
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorSection').classList.remove('hidden');
+        }
+
+        function hideAllSections() {
+            document.getElementById('loadingSection').classList.add('hidden');
+            document.getElementById('errorSection').classList.add('hidden');
+            document.getElementById('winnerSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+        }
+
+        async function compareProfiles(username1, username2) {
+            if (!username1 || !username2) {
+                showError('Please enter both usernames');
+                return;
+            }
+
+            hideAllSections();
+            document.getElementById('loadingSection').classList.remove('hidden');
+
+            try {
+                const [analysis1, analysis2] = await Promise.all([
+                    analyzeProfile(username1),
+                    analyzeProfile(username2)
+                ]);
+
+                hideAllSections();
+                displayResults(analysis1, analysis2);
+
+                // Update URL
+                const url = new URL(window.location);
+                url.searchParams.set('u1', username1);
+                url.searchParams.set('u2', username2);
+                window.history.pushState({}, '', url);
+
+            } catch (error) {
+                hideAllSections();
+                showError(error.message || 'An error occurred. Please try again.');
+            }
+        }
+
+        // Share Functions
+        function copyShareLink(u1, u2) {
+            const url = `${window.location.origin}${window.location.pathname}?u1=${u1}&u2=${u2}`;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Share link copied to clipboard!');
+            });
+        }
+
+        function shareToTwitter(winner, loser, winnerScore, loserScore) {
+            const text = `⚔️ GitVibes Battle: @${winner} (${winnerScore}) defeated @${loser} (${loserScore})! Check your AI coding vibes at`;
+            const url = `${window.location.origin}${window.location.pathname}`;
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+        }
+
+        // Event Listeners
+        document.getElementById('compareBtn').addEventListener('click', () => {
+            const username1 = document.getElementById('username1').value.trim();
+            const username2 = document.getElementById('username2').value.trim();
+            compareProfiles(username1, username2);
+        });
+
+        document.getElementById('randomBtn').addEventListener('click', () => {
+            const popularDevs = ['tj', 'sindresorhus', 'gaearon', 'addyosmani', 'paulirish', 'kentcdodds', 'wesbos', 'levelsio'];
+            const random1 = popularDevs[Math.floor(Math.random() * popularDevs.length)];
+            let random2 = popularDevs[Math.floor(Math.random() * popularDevs.length)];
+            while (random2 === random1) {
+                random2 = popularDevs[Math.floor(Math.random() * popularDevs.length)];
+            }
+
+            document.getElementById('username1').value = random1;
+            document.getElementById('username2').value = random2;
+            compareProfiles(random1, random2);
+        });
+
+        // Support Enter key
+        document.getElementById('username1').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('compareBtn').click();
+        });
+        document.getElementById('username2').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('compareBtn').click();
+        });
+
+        // Load from URL parameters on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const u1 = params.get('u1');
+            const u2 = params.get('u2');
+
+            if (u1 && u2) {
+                document.getElementById('username1').value = u1;
+                document.getElementById('username2').value = u2;
+                compareProfiles(u1, u2);
+            }
+        });
+    </script>
+</body>
+</html>
