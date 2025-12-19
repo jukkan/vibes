@@ -502,56 +502,93 @@
             await ensureValidToken();
             loadingMessage.textContent = 'Searching for Finnish hip-hop...';
 
-            // Primary search query
-            const query = encodeURIComponent('genre:finnish hip hop');
-            const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=50`;
+            let allTracks = [];
+            const seenIds = new Set();
 
-            console.log('Searching:', url);
+            // Multiple search queries to maximize results
+            const searchQueries = [
+                'suomirap',
+                'finnish rap',
+                'suomi hip hop',
+                'finnish hip hop'
+            ];
 
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
+            // Try each search query
+            for (const searchTerm of searchQueries) {
+                try {
+                    const query = encodeURIComponent(searchTerm);
+                    const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=50`;
+                    console.log('Searching:', searchTerm);
+
+                    const response = await fetch(url, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const tracksWithPreviews = data.tracks.items.filter(track => track.preview_url !== null);
+
+                        for (const track of tracksWithPreviews) {
+                            if (!seenIds.has(track.id)) {
+                                seenIds.add(track.id);
+                                allTracks.push(track);
+                            }
+                        }
+                        console.log(`Found ${tracksWithPreviews.length} tracks for "${searchTerm}"`);
                     }
-                });
-
-                if (!response.ok) {
-                    console.error('Search failed:', response.status);
-                    throw new Error('Search failed');
+                } catch (e) {
+                    console.warn(`Search failed for ${searchTerm}:`, e);
                 }
-
-                const data = await response.json();
-                console.log('Search results:', data);
-
-                // Filter tracks that have preview URLs
-                let tracksWithPreviews = data.tracks.items.filter(track => track.preview_url !== null);
-                console.log(`Found ${tracksWithPreviews.length} tracks with previews`);
-
-                // If we have less than 10 tracks, try fallback search
-                if (tracksWithPreviews.length < 10) {
-                    console.log('Not enough tracks, trying fallback search...');
-                    tracksWithPreviews = await fallbackSearch();
-                }
-
-                return tracksWithPreviews;
-            } catch (error) {
-                console.error('Search error:', error);
-                throw error;
             }
+
+            console.log(`Total tracks from keyword search: ${allTracks.length}`);
+
+            // Always do artist search to ensure we have enough tracks
+            loadingMessage.textContent = 'Loading more Finnish artists...';
+            const artistTracks = await searchByArtists();
+
+            for (const track of artistTracks) {
+                if (!seenIds.has(track.id)) {
+                    seenIds.add(track.id);
+                    allTracks.push(track);
+                }
+            }
+
+            console.log(`Total unique tracks: ${allTracks.length}`);
+
+            if (allTracks.length < 2) {
+                throw new Error('Could not find enough tracks with previews');
+            }
+
+            return allTracks;
         }
 
         /**
-         * Fallback search using specific Finnish hip-hop artists
-         * Used when genre search returns too few results
+         * Search by specific Finnish hip-hop artists
+         * Extended list of popular Finnish rap artists
          */
-        async function fallbackSearch() {
-            const artists = ['Fintelligens', 'Pyhimys', 'Cheek', 'Paleface', 'JVG', 'Elastinen', 'Ruger Hauer', 'Asa'];
+        async function searchByArtists() {
+            // Comprehensive list of Finnish hip-hop artists
+            const artists = [
+                // Classic Finnish rap
+                'Fintelligens', 'Paleface', 'Elastinen', 'Cheek',
+                // Modern Finnish rap
+                'JVG', 'Pyhimys', 'Cledos', 'Ibe', 'Gettomasa',
+                'Costee', 'BESS', 'Kingfish', 'Teflon Brothers',
+                'Heikki Kuula', 'Stepa', 'Ruger Hauer', 'Pikku G',
+                'Sini Sabotage', 'Karri Koira', 'Portion Boys',
+                'Uniikki', 'Petri Nygård', 'Robin', 'Mikael Gabriel',
+                'Evelina', 'SANNI', 'Antti Tuisku', 'Lauri Tähkä'
+            ];
+
             let allTracks = [];
 
             for (const artist of artists) {
                 try {
-                    const query = encodeURIComponent(artist);
-                    const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=20`;
+                    const query = encodeURIComponent(`artist:${artist}`);
+                    const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=10`;
 
                     const response = await fetch(url, {
                         headers: {
@@ -563,25 +600,21 @@
                         const data = await response.json();
                         const tracksWithPreviews = data.tracks.items.filter(track => track.preview_url !== null);
                         allTracks = allTracks.concat(tracksWithPreviews);
-                        console.log(`Found ${tracksWithPreviews.length} tracks for ${artist}`);
+
+                        if (tracksWithPreviews.length > 0) {
+                            console.log(`Found ${tracksWithPreviews.length} tracks for ${artist}`);
+                        }
                     }
                 } catch (e) {
                     console.warn(`Failed to search for ${artist}:`, e);
                 }
+
+                // Small delay to avoid rate limiting
+                await new Promise(resolve => setTimeout(resolve, 50));
             }
 
-            // Remove duplicates by track ID
-            const uniqueTracks = [];
-            const seenIds = new Set();
-            for (const track of allTracks) {
-                if (!seenIds.has(track.id)) {
-                    seenIds.add(track.id);
-                    uniqueTracks.push(track);
-                }
-            }
-
-            console.log(`Fallback search found ${uniqueTracks.length} unique tracks`);
-            return uniqueTracks;
+            console.log(`Artist search found ${allTracks.length} tracks`);
+            return allTracks;
         }
 
         /**
