@@ -6,6 +6,9 @@
     <title>SUOMIRÄP BATTLE - Finnish Rap Battle Game</title>
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- noUiSlider for year range filter -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nouislider/15.7.1/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nouislider/15.7.1/nouislider.min.js"></script>
     <style>
         :root {
             --finland-blue: #003580;
@@ -357,6 +360,82 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        /* Year slider styling */
+        .year-filter-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .year-filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .year-filter-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9ca3af;
+        }
+
+        .year-range-display {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .track-count {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .track-count.warning {
+            color: #f87171;
+        }
+
+        /* noUiSlider customization */
+        .noUi-target {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 4px;
+            height: 8px;
+        }
+
+        .noUi-connect {
+            background: var(--finland-blue);
+        }
+
+        .noUi-handle {
+            width: 20px !important;
+            height: 20px !important;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--finland-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            cursor: grab;
+            top: -7px !important;
+            right: -10px !important;
+        }
+
+        .noUi-handle:before,
+        .noUi-handle:after {
+            display: none;
+        }
+
+        .noUi-handle:active {
+            cursor: grabbing;
+        }
+
+        .noUi-tooltip {
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-gray-900">
@@ -391,6 +470,16 @@
 
         <!-- Battle arena -->
         <div id="battleSection" class="hidden">
+            <!-- Year filter slider -->
+            <div class="year-filter-container max-w-2xl mx-auto">
+                <div class="year-filter-header">
+                    <span class="year-filter-title">Release Year</span>
+                    <span id="yearRangeDisplay" class="year-range-display">1990 - 2024</span>
+                </div>
+                <div id="yearSlider"></div>
+                <p id="trackCount" class="track-count">Loading tracks...</p>
+            </div>
+
             <!-- Battle grid -->
             <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 items-center mb-8">
                 <!-- Track 1 -->
@@ -544,11 +633,15 @@
         // App state
         let accessToken = null;
         let tokenExpiresAt = null;
-        let tracks = [];
+        let allTracks = [];       // All tracks from API (with year parsed)
+        let filteredTracks = [];  // Tracks filtered by year range
         let currentTrack1 = null;
         let currentTrack2 = null;
         let battleEnded = false;
         let currentlyPlaying = null;
+        let yearSlider = null;
+        let currentYearMin = 1990;
+        let currentYearMax = 2024;
 
         // Stats tracking (stored in localStorage)
         let userStats = {
@@ -609,84 +702,106 @@
         }
 
         /**
-         * Search for Finnish hip-hop tracks
-         * Primary search: genre:finnish hip hop
-         * Fallback: Search specific Finnish artists if primary returns too few results
+         * Parse release year from album.release_date
+         * Formats: "2023-05-15", "2023-05", "2023"
+         */
+        function parseReleaseYear(releaseDate) {
+            if (!releaseDate) return null;
+            const year = parseInt(releaseDate.substring(0, 4), 10);
+            return isNaN(year) ? null : year;
+        }
+
+        /**
+         * Search for Finnish hip-hop tracks from a specific year range
+         */
+        async function searchByYearRange(yearStart, yearEnd) {
+            await ensureValidToken();
+
+            const query = encodeURIComponent(`genre:finnish hip hop year:${yearStart}-${yearEnd}`);
+            const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=20`;
+
+            console.log(`Searching: finnish hip hop ${yearStart}-${yearEnd}`);
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    console.error(`Search failed for ${yearStart}-${yearEnd}:`, response.status);
+                    return [];
+                }
+
+                const data = await response.json();
+                console.log(`Found ${data.tracks?.items?.length || 0} tracks for ${yearStart}-${yearEnd}`);
+
+                return data.tracks?.items || [];
+            } catch (e) {
+                console.error(`Search error for ${yearStart}-${yearEnd}:`, e);
+                return [];
+            }
+        }
+
+        /**
+         * Search for Finnish hip-hop tracks across 4 year ranges
+         * Fetches 20 tracks from each decade/period for a total of ~80 tracks
          */
         async function searchFinnishHipHop() {
             await ensureValidToken();
             loadingMessage.textContent = 'Searching for Finnish hip-hop...';
 
-            let allTracks = [];
             const seenIds = new Set();
+            let fetchedTracks = [];
 
-            // Multiple search queries to maximize results
-            // Note: We no longer filter by preview_url since Spotify has restricted them
-            const searchQueries = [
-                'suomirap',
-                'finnish rap',
-                'suomi hip hop',
-                'räp suomi',
-                'hip hop finland'
+            // Fetch from 4 year ranges in parallel
+            const yearRanges = [
+                { start: 1990, end: 1999 },
+                { start: 2000, end: 2009 },
+                { start: 2010, end: 2019 },
+                { start: 2020, end: 2024 }
             ];
 
-            // Try each search query
-            for (const searchTerm of searchQueries) {
-                try {
-                    const query = encodeURIComponent(searchTerm);
-                    const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=50`;
-                    console.log('Searching:', searchTerm);
+            const results = await Promise.all(
+                yearRanges.map(range => searchByYearRange(range.start, range.end))
+            );
 
-                    const response = await fetch(url, {
-                        headers: {
-                            'Authorization': `Bearer ${accessToken}`
-                        }
-                    });
-
-                    if (!response.ok) {
-                        console.error(`Search failed for "${searchTerm}":`, response.status, response.statusText);
-                        continue;
+            // Merge results and deduplicate
+            for (const trackList of results) {
+                for (const track of trackList) {
+                    if (!seenIds.has(track.id)) {
+                        seenIds.add(track.id);
+                        // Parse and attach the year to each track
+                        track.releaseYear = parseReleaseYear(track.album?.release_date);
+                        fetchedTracks.push(track);
                     }
-
-                    const data = await response.json();
-                    console.log(`API response for "${searchTerm}":`, data);
-
-                    if (data.tracks && data.tracks.items) {
-                        for (const track of data.tracks.items) {
-                            if (!seenIds.has(track.id)) {
-                                seenIds.add(track.id);
-                                allTracks.push(track);
-                            }
-                        }
-                        console.log(`Found ${data.tracks.items.length} tracks for "${searchTerm}"`);
-                    }
-                } catch (e) {
-                    console.error(`Search error for ${searchTerm}:`, e);
                 }
             }
 
-            console.log(`Total tracks from keyword search: ${allTracks.length}`);
+            console.log(`Total tracks from year range search: ${fetchedTracks.length}`);
 
-            // If keyword search didn't find enough, search by artists
-            if (allTracks.length < 30) {
+            // If year-based search didn't find enough, fall back to artist search
+            if (fetchedTracks.length < 30) {
                 loadingMessage.textContent = 'Loading more Finnish artists...';
                 const artistTracks = await searchByArtists();
 
                 for (const track of artistTracks) {
                     if (!seenIds.has(track.id)) {
                         seenIds.add(track.id);
-                        allTracks.push(track);
+                        track.releaseYear = parseReleaseYear(track.album?.release_date);
+                        fetchedTracks.push(track);
                     }
                 }
             }
 
-            console.log(`Total unique tracks: ${allTracks.length}`);
+            console.log(`Total unique tracks: ${fetchedTracks.length}`);
 
-            if (allTracks.length < 2) {
-                throw new Error(`Only found ${allTracks.length} tracks. Check console for API errors.`);
+            if (fetchedTracks.length < 2) {
+                throw new Error(`Only found ${fetchedTracks.length} tracks. Check console for API errors.`);
             }
 
-            return allTracks;
+            return fetchedTracks;
         }
 
         /**
@@ -736,15 +851,105 @@
         }
 
         /**
+         * Filter tracks by year range
+         */
+        function filterTracksByYear(minYear, maxYear) {
+            filteredTracks = allTracks.filter(track => {
+                const year = track.releaseYear;
+                return year !== null && year >= minYear && year <= maxYear;
+            });
+
+            updateTrackCountDisplay();
+            return filteredTracks;
+        }
+
+        /**
+         * Update the track count display
+         */
+        function updateTrackCountDisplay() {
+            const trackCountEl = document.getElementById('trackCount');
+            const count = filteredTracks.length;
+
+            if (count < 2) {
+                trackCountEl.textContent = `${count} tracks available - Laajenna aikaväliä`;
+                trackCountEl.classList.add('warning');
+                disableBattle(true);
+            } else {
+                trackCountEl.textContent = `${count} tracks available (${currentYearMin}-${currentYearMax})`;
+                trackCountEl.classList.remove('warning');
+                disableBattle(false);
+            }
+        }
+
+        /**
+         * Enable or disable battle functionality
+         */
+        function disableBattle(disabled) {
+            const voteBtn1 = document.getElementById('voteBtn1');
+            const voteBtn2 = document.getElementById('voteBtn2');
+            const battleAgainBtn = document.getElementById('battleAgainBtn');
+
+            if (disabled) {
+                voteBtn1.disabled = true;
+                voteBtn2.disabled = true;
+                if (battleAgainBtn) battleAgainBtn.disabled = true;
+            } else if (!battleEnded) {
+                voteBtn1.disabled = false;
+                voteBtn2.disabled = false;
+                if (battleAgainBtn) battleAgainBtn.disabled = false;
+            }
+        }
+
+        /**
+         * Initialize the year range slider
+         */
+        function initYearSlider() {
+            const sliderEl = document.getElementById('yearSlider');
+            const yearRangeDisplay = document.getElementById('yearRangeDisplay');
+
+            yearSlider = noUiSlider.create(sliderEl, {
+                start: [1990, 2024],
+                connect: true,
+                step: 1,
+                range: {
+                    'min': 1990,
+                    'max': 2024
+                },
+                format: {
+                    to: value => Math.round(value),
+                    from: value => Number(value)
+                }
+            });
+
+            yearSlider.on('update', (values) => {
+                currentYearMin = values[0];
+                currentYearMax = values[1];
+                yearRangeDisplay.textContent = `${currentYearMin} - ${currentYearMax}`;
+            });
+
+            yearSlider.on('change', (values) => {
+                currentYearMin = values[0];
+                currentYearMax = values[1];
+                filterTracksByYear(currentYearMin, currentYearMax);
+
+                // Start a new battle with the filtered tracks if we have enough
+                if (filteredTracks.length >= 2) {
+                    startNewBattle();
+                }
+            });
+        }
+
+        /**
          * Get two random tracks for battle
          * Ensures we don't pick the same track twice
+         * Uses filteredTracks based on year range
          */
         function getRandomBattleTracks() {
-            if (tracks.length < 2) {
+            if (filteredTracks.length < 2) {
                 throw new Error('Not enough tracks for battle');
             }
 
-            const shuffled = [...tracks].sort(() => Math.random() - 0.5);
+            const shuffled = [...filteredTracks].sort(() => Math.random() - 0.5);
             return [shuffled[0], shuffled[1]];
         }
 
@@ -1040,15 +1245,21 @@
                 loadingMessage.textContent = 'Connecting to Spotify...';
                 await getAccessToken();
 
-                // Search for tracks
+                // Search for tracks from 4 year ranges
                 loadingMessage.textContent = 'Loading Finnish hip-hop tracks...';
-                tracks = await searchFinnishHipHop();
+                allTracks = await searchFinnishHipHop();
 
-                if (tracks.length < 2) {
-                    throw new Error('Could not find enough tracks with previews');
+                if (allTracks.length < 2) {
+                    throw new Error('Could not find enough tracks');
                 }
 
-                console.log(`Loaded ${tracks.length} tracks for battles`);
+                console.log(`Loaded ${allTracks.length} tracks for battles`);
+
+                // Initialize year slider
+                initYearSlider();
+
+                // Initial filter with full range
+                filterTracksByYear(currentYearMin, currentYearMax);
 
                 // Start first battle
                 startNewBattle();
