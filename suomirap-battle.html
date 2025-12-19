@@ -266,6 +266,97 @@
             color: #1ed760;
             text-decoration: underline;
         }
+
+        /* Info tooltip */
+        .info-bubble {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 6px;
+            vertical-align: middle;
+            transition: background 0.2s;
+        }
+
+        .info-bubble:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Info modal */
+        .info-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 20px;
+            animation: fade-in 0.2s ease;
+        }
+
+        .info-modal.hidden {
+            display: none;
+        }
+
+        .info-content {
+            background: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .info-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .info-content p {
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .info-content ul {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .info-content li {
+            margin-bottom: 6px;
+        }
+
+        .info-close {
+            background: var(--finland-blue);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .info-close:hover {
+            background: #004db3;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-gray-900">
@@ -320,7 +411,10 @@
                         🎧 Listen on Spotify
                     </a>
                     <div id="score1Container" class="hidden text-center my-4">
-                        <p class="text-sm text-gray-400 mb-1">Popularity Score</p>
+                        <p class="text-sm text-gray-400 mb-1">
+                            Popularity Score
+                            <span class="info-bubble" onclick="showInfoModal()" title="How is this calculated?">?</span>
+                        </p>
                         <div id="score1" class="popularity-score"></div>
                     </div>
                     <button id="voteBtn1" class="vote-btn mt-4" onclick="vote(1)">
@@ -354,7 +448,10 @@
                         🎧 Listen on Spotify
                     </a>
                     <div id="score2Container" class="hidden text-center my-4">
-                        <p class="text-sm text-gray-400 mb-1">Popularity Score</p>
+                        <p class="text-sm text-gray-400 mb-1">
+                            Popularity Score
+                            <span class="info-bubble" onclick="showInfoModal()" title="How is this calculated?">?</span>
+                        </p>
                         <div id="score2" class="popularity-score"></div>
                     </div>
                     <button id="voteBtn2" class="vote-btn mt-4" onclick="vote(2)">
@@ -393,6 +490,26 @@
         <a href="https://github.com/jukkan/vibes" class="text-blue-400 hover:underline">View source</a>
         <p class="mt-2">Powered by Spotify Web API</p>
     </footer>
+
+    <!-- Info modal -->
+    <div id="infoModal" class="info-modal hidden" onclick="hideInfoModal(event)">
+        <div class="info-content" onclick="event.stopPropagation()">
+            <h3>📊 How Popularity Score Works</h3>
+            <p>
+                The popularity score (0-100) comes directly from Spotify's API and reflects how popular a track is on their platform.
+            </p>
+            <p><strong>Spotify calculates it based on:</strong></p>
+            <ul>
+                <li>Total number of plays the track has</li>
+                <li>How recent those plays are</li>
+                <li>Tracks with more recent streams score higher</li>
+            </ul>
+            <p>
+                A track's popularity can change daily as new streaming data comes in. Scores above 70 are considered popular, while under 30 is more niche.
+            </p>
+            <button class="info-close" onclick="hideInfoModal()">Got it!</button>
+        </div>
+    </div>
 
     <!-- Confetti container -->
     <div id="confettiContainer" class="confetti-container"></div>
@@ -806,6 +923,19 @@
 
         function stopAllAudio() {
             // No longer needed since we open Spotify links instead
+        }
+
+        /**
+         * Info modal controls
+         */
+        function showInfoModal() {
+            document.getElementById('infoModal').classList.remove('hidden');
+        }
+
+        function hideInfoModal(event) {
+            // If called from backdrop click, event exists
+            // If called from button, no event check needed
+            document.getElementById('infoModal').classList.add('hidden');
         }
 
         /**
