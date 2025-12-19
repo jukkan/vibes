@@ -1275,8 +1275,8 @@
             }
         }
 
-        // Start the app when DOM is ready
-        document.addEventListener('DOMContentLoaded', init);
+        // Start the app when all resources (including external scripts) are loaded
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
