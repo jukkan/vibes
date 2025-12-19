@@ -279,7 +279,7 @@
             SUOMIRÄP BATTLE <span class="text-3xl">🔥</span>
         </h1>
         <p class="text-gray-400 text-lg">Vote for your favorite Finnish hip-hop track!</p>
-        <p class="text-gray-500 text-sm mt-2">Press <span class="key-hint">1</span> or <span class="key-hint">2</span> to vote</p>
+        <p class="text-gray-500 text-sm mt-2">Press <span class="key-hint">1</span> or <span class="key-hint">2</span> to vote • Click album art to listen on Spotify</p>
     </header>
 
     <!-- Main content -->
@@ -307,9 +307,9 @@
                     <div class="album-container mb-4" id="album1Container">
                         <img id="album1" src="" alt="Album art" class="album-art">
                         <div class="play-overlay" id="playOverlay1">
-                            <div class="play-btn">
-                                <svg id="playIcon1" width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                    <path d="M8 5v14l11-7z"/>
+                            <div class="play-btn" title="Play on Spotify">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
                                 </svg>
                             </div>
                         </div>
@@ -326,7 +326,6 @@
                     <button id="voteBtn1" class="vote-btn mt-4" onclick="vote(1)">
                         <span class="key-hint">1</span> Vote for this track
                     </button>
-                    <audio id="audio1" preload="none"></audio>
                 </div>
 
                 <!-- VS divider -->
@@ -342,9 +341,9 @@
                     <div class="album-container mb-4" id="album2Container">
                         <img id="album2" src="" alt="Album art" class="album-art">
                         <div class="play-overlay" id="playOverlay2">
-                            <div class="play-btn">
-                                <svg id="playIcon2" width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                    <path d="M8 5v14l11-7z"/>
+                            <div class="play-btn" title="Play on Spotify">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
                                 </svg>
                             </div>
                         </div>
@@ -361,7 +360,6 @@
                     <button id="voteBtn2" class="vote-btn mt-4" onclick="vote(2)">
                         <span class="key-hint">2</span> Vote for this track
                     </button>
-                    <audio id="audio2" preload="none"></audio>
                 </div>
             </div>
 
@@ -506,11 +504,13 @@
             const seenIds = new Set();
 
             // Multiple search queries to maximize results
+            // Note: We no longer filter by preview_url since Spotify has restricted them
             const searchQueries = [
                 'suomirap',
                 'finnish rap',
                 'suomi hip hop',
-                'finnish hip hop'
+                'räp suomi',
+                'hip hop finland'
             ];
 
             // Try each search query
@@ -526,40 +526,47 @@
                         }
                     });
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        const tracksWithPreviews = data.tracks.items.filter(track => track.preview_url !== null);
+                    if (!response.ok) {
+                        console.error(`Search failed for "${searchTerm}":`, response.status, response.statusText);
+                        continue;
+                    }
 
-                        for (const track of tracksWithPreviews) {
+                    const data = await response.json();
+                    console.log(`API response for "${searchTerm}":`, data);
+
+                    if (data.tracks && data.tracks.items) {
+                        for (const track of data.tracks.items) {
                             if (!seenIds.has(track.id)) {
                                 seenIds.add(track.id);
                                 allTracks.push(track);
                             }
                         }
-                        console.log(`Found ${tracksWithPreviews.length} tracks for "${searchTerm}"`);
+                        console.log(`Found ${data.tracks.items.length} tracks for "${searchTerm}"`);
                     }
                 } catch (e) {
-                    console.warn(`Search failed for ${searchTerm}:`, e);
+                    console.error(`Search error for ${searchTerm}:`, e);
                 }
             }
 
             console.log(`Total tracks from keyword search: ${allTracks.length}`);
 
-            // Always do artist search to ensure we have enough tracks
-            loadingMessage.textContent = 'Loading more Finnish artists...';
-            const artistTracks = await searchByArtists();
+            // If keyword search didn't find enough, search by artists
+            if (allTracks.length < 30) {
+                loadingMessage.textContent = 'Loading more Finnish artists...';
+                const artistTracks = await searchByArtists();
 
-            for (const track of artistTracks) {
-                if (!seenIds.has(track.id)) {
-                    seenIds.add(track.id);
-                    allTracks.push(track);
+                for (const track of artistTracks) {
+                    if (!seenIds.has(track.id)) {
+                        seenIds.add(track.id);
+                        allTracks.push(track);
+                    }
                 }
             }
 
             console.log(`Total unique tracks: ${allTracks.length}`);
 
             if (allTracks.length < 2) {
-                throw new Error('Could not find enough tracks with previews');
+                throw new Error(`Only found ${allTracks.length} tracks. Check console for API errors.`);
             }
 
             return allTracks;
@@ -572,23 +579,19 @@
         async function searchByArtists() {
             // Comprehensive list of Finnish hip-hop artists
             const artists = [
-                // Classic Finnish rap
-                'Fintelligens', 'Paleface', 'Elastinen', 'Cheek',
-                // Modern Finnish rap
-                'JVG', 'Pyhimys', 'Cledos', 'Ibe', 'Gettomasa',
-                'Costee', 'BESS', 'Kingfish', 'Teflon Brothers',
-                'Heikki Kuula', 'Stepa', 'Ruger Hauer', 'Pikku G',
-                'Sini Sabotage', 'Karri Koira', 'Portion Boys',
-                'Uniikki', 'Petri Nygård', 'Robin', 'Mikael Gabriel',
-                'Evelina', 'SANNI', 'Antti Tuisku', 'Lauri Tähkä'
+                'Cheek', 'JVG', 'Elastinen', 'Pyhimys', 'Paleface',
+                'Fintelligens', 'Cledos', 'Ibe', 'Gettomasa', 'Costee',
+                'Teflon Brothers', 'Heikki Kuula', 'Pikku G', 'Sini Sabotage',
+                'Mikael Gabriel', 'SANNI', 'Antti Tuisku', 'Portion Boys'
             ];
 
             let allTracks = [];
 
             for (const artist of artists) {
                 try {
-                    const query = encodeURIComponent(`artist:${artist}`);
-                    const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=10`;
+                    // Search without artist: prefix for better results
+                    const query = encodeURIComponent(artist);
+                    const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=15`;
 
                     const response = await fetch(url, {
                         headers: {
@@ -598,11 +601,9 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        const tracksWithPreviews = data.tracks.items.filter(track => track.preview_url !== null);
-                        allTracks = allTracks.concat(tracksWithPreviews);
-
-                        if (tracksWithPreviews.length > 0) {
-                            console.log(`Found ${tracksWithPreviews.length} tracks for ${artist}`);
+                        if (data.tracks && data.tracks.items) {
+                            allTracks = allTracks.concat(data.tracks.items);
+                            console.log(`Found ${data.tracks.items.length} tracks for ${artist}`);
                         }
                     }
                 } catch (e) {
@@ -610,7 +611,7 @@
                 }
 
                 // Small delay to avoid rate limiting
-                await new Promise(resolve => setTimeout(resolve, 50));
+                await new Promise(resolve => setTimeout(resolve, 100));
             }
 
             console.log(`Artist search found ${allTracks.length} tracks`);
@@ -638,7 +639,6 @@
             const title = document.getElementById(`title${position}`);
             const artist = document.getElementById(`artist${position}`);
             const spotifyLink = document.getElementById(`spotifyLink${position}`);
-            const audio = document.getElementById(`audio${position}`);
 
             // Get largest album image
             const albumImage = track.album.images[0]?.url || '';
@@ -648,7 +648,6 @@
             title.textContent = track.name;
             artist.textContent = track.artists.map(a => a.name).join(', ');
             spotifyLink.href = track.external_urls.spotify;
-            audio.src = track.preview_url;
         }
 
         /**
@@ -785,74 +784,28 @@
         }
 
         /**
-         * Audio playback control
+         * Setup click handlers to open Spotify links
+         * Note: preview_url is no longer available for most tracks
          */
         function setupAudioControls() {
             const album1Container = document.getElementById('album1Container');
             const album2Container = document.getElementById('album2Container');
-            const audio1 = document.getElementById('audio1');
-            const audio2 = document.getElementById('audio2');
-            const playIcon1 = document.getElementById('playIcon1');
-            const playIcon2 = document.getElementById('playIcon2');
-
-            // Play icon SVGs
-            const playPath = 'M8 5v14l11-7z';
-            const pausePath = 'M6 4h4v16H6V4zm8 0h4v16h-4V4z';
 
             album1Container.addEventListener('click', () => {
-                if (battleEnded) return;
-                toggleAudio(audio1, audio2, playIcon1, playIcon2, playPath, pausePath);
+                if (currentTrack1 && currentTrack1.external_urls) {
+                    window.open(currentTrack1.external_urls.spotify, '_blank');
+                }
             });
 
             album2Container.addEventListener('click', () => {
-                if (battleEnded) return;
-                toggleAudio(audio2, audio1, playIcon2, playIcon1, playPath, pausePath);
+                if (currentTrack2 && currentTrack2.external_urls) {
+                    window.open(currentTrack2.external_urls.spotify, '_blank');
+                }
             });
-
-            // Update icons when audio ends
-            audio1.addEventListener('ended', () => {
-                playIcon1.innerHTML = `<path d="${playPath}"/>`;
-                currentlyPlaying = null;
-            });
-
-            audio2.addEventListener('ended', () => {
-                playIcon2.innerHTML = `<path d="${playPath}"/>`;
-                currentlyPlaying = null;
-            });
-        }
-
-        function toggleAudio(audioToPlay, audioToStop, iconToPlay, iconToStop, playPath, pausePath) {
-            // Stop the other audio
-            audioToStop.pause();
-            audioToStop.currentTime = 0;
-            iconToStop.innerHTML = `<path d="${playPath}"/>`;
-
-            // Toggle current audio
-            if (audioToPlay.paused) {
-                audioToPlay.play();
-                iconToPlay.innerHTML = `<path d="${pausePath}"/>`;
-                currentlyPlaying = audioToPlay;
-            } else {
-                audioToPlay.pause();
-                iconToPlay.innerHTML = `<path d="${playPath}"/>`;
-                currentlyPlaying = null;
-            }
         }
 
         function stopAllAudio() {
-            const audio1 = document.getElementById('audio1');
-            const audio2 = document.getElementById('audio2');
-            const playIcon1 = document.getElementById('playIcon1');
-            const playIcon2 = document.getElementById('playIcon2');
-            const playPath = 'M8 5v14l11-7z';
-
-            audio1.pause();
-            audio1.currentTime = 0;
-            audio2.pause();
-            audio2.currentTime = 0;
-            playIcon1.innerHTML = `<path d="${playPath}"/>`;
-            playIcon2.innerHTML = `<path d="${playPath}"/>`;
-            currentlyPlaying = null;
+            // No longer needed since we open Spotify links instead
         }
 
         /**
