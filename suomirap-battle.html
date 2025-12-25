@@ -602,9 +602,6 @@
     <!-- Confetti container -->
     <div id="confettiContainer" class="confetti-container"></div>
 
-    <!-- noUiSlider JS - must load before main script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nouislider/15.7.1/nouislider.min.js"></script>
-
     <script>
         /**
          * SUOMIRÄP BATTLE - Finnish Rap Battle Game
@@ -1251,17 +1248,59 @@
         }
 
         /**
-         * Wait for noUiSlider to be loaded
+         * Dynamically load noUiSlider from CDN with fallback options
          */
-        async function waitForNoUiSlider(maxAttempts = 20, interval = 100) {
-            for (let i = 0; i < maxAttempts; i++) {
-                if (typeof noUiSlider !== 'undefined') {
-                    console.log('noUiSlider loaded successfully');
-                    return true;
-                }
-                console.log(`Waiting for noUiSlider... attempt ${i + 1}/${maxAttempts}`);
-                await new Promise(resolve => setTimeout(resolve, interval));
+        async function loadNoUiSlider() {
+            // If already loaded, return success
+            if (typeof noUiSlider !== 'undefined') {
+                console.log('noUiSlider already loaded');
+                return true;
             }
+
+            // Try multiple CDN sources in order
+            const cdnSources = [
+                'https://cdnjs.cloudflare.com/ajax/libs/nouislider/15.7.1/nouislider.min.js',
+                'https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js',
+                'https://unpkg.com/nouislider@15.7.1/dist/nouislider.min.js'
+            ];
+
+            for (const src of cdnSources) {
+                console.log(`Attempting to load noUiSlider from: ${src}`);
+
+                try {
+                    await new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = src;
+                        script.async = false;
+
+                        script.onload = () => {
+                            console.log(`Successfully loaded noUiSlider from: ${src}`);
+                            resolve();
+                        };
+
+                        script.onerror = () => {
+                            console.warn(`Failed to load from: ${src}`);
+                            reject(new Error(`Failed to load from ${src}`));
+                        };
+
+                        document.head.appendChild(script);
+
+                        // Timeout after 10 seconds
+                        setTimeout(() => reject(new Error('Timeout loading script')), 10000);
+                    });
+
+                    // Double-check that noUiSlider is actually defined
+                    if (typeof noUiSlider !== 'undefined') {
+                        console.log('noUiSlider loaded and verified');
+                        return true;
+                    }
+                } catch (error) {
+                    console.warn(`Error loading from ${src}:`, error.message);
+                    // Continue to next CDN
+                }
+            }
+
+            console.error('All CDN sources failed to load noUiSlider');
             return false;
         }
 
@@ -1280,11 +1319,11 @@
             setupKeyboardShortcuts();
 
             try {
-                // Wait for noUiSlider to load
+                // Load noUiSlider dynamically
                 loadingMessage.textContent = 'Loading dependencies...';
-                const sliderLoaded = await waitForNoUiSlider();
+                const sliderLoaded = await loadNoUiSlider();
                 if (!sliderLoaded) {
-                    throw new Error('Failed to load noUiSlider library. Please refresh the page.');
+                    throw new Error('Failed to load noUiSlider library from all CDN sources. Please check your internet connection and try again.');
                 }
 
                 // Get access token
