@@ -675,11 +675,24 @@
 
                 if (!response.ok) {
                     console.error('Token fetch failed:', response.status, response.statusText);
-                    throw new Error('Failed to get access token');
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('Error details:', errorData);
+
+                    if (response.status === 401) {
+                        throw new Error('Invalid Spotify API credentials. Please check CLIENT_ID and CLIENT_SECRET.');
+                    } else if (response.status === 429) {
+                        throw new Error('Too many requests to Spotify. Please try again in a few minutes.');
+                    } else {
+                        throw new Error(`Spotify authentication failed: ${response.status} ${response.statusText}`);
+                    }
                 }
 
                 const data = await response.json();
-                console.log('Token response:', data);
+                console.log('Token received successfully');
+
+                if (!data.access_token) {
+                    throw new Error('No access token in response');
+                }
 
                 accessToken = data.access_token;
                 // Set expiry time (subtract 60s buffer for safety)
@@ -688,6 +701,9 @@
                 return accessToken;
             } catch (error) {
                 console.error('Token error:', error);
+                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    throw new Error('Network error: Unable to reach Spotify. Please check your internet connection.');
+                }
                 throw error;
             }
         }
@@ -908,6 +924,12 @@
         function initYearSlider() {
             const sliderEl = document.getElementById('yearSlider');
             const yearRangeDisplay = document.getElementById('yearRangeDisplay');
+
+            // Check if noUiSlider is defined
+            if (typeof noUiSlider === 'undefined') {
+                console.error('noUiSlider is not defined!');
+                throw new Error('noUiSlider library failed to load');
+            }
 
             yearSlider = noUiSlider.create(sliderEl, {
                 start: [1990, 2024],
@@ -1229,6 +1251,21 @@
         }
 
         /**
+         * Wait for noUiSlider to be loaded
+         */
+        async function waitForNoUiSlider(maxAttempts = 20, interval = 100) {
+            for (let i = 0; i < maxAttempts; i++) {
+                if (typeof noUiSlider !== 'undefined') {
+                    console.log('noUiSlider loaded successfully');
+                    return true;
+                }
+                console.log(`Waiting for noUiSlider... attempt ${i + 1}/${maxAttempts}`);
+                await new Promise(resolve => setTimeout(resolve, interval));
+            }
+            return false;
+        }
+
+        /**
          * Initialize the app
          */
         async function init() {
@@ -1243,6 +1280,13 @@
             setupKeyboardShortcuts();
 
             try {
+                // Wait for noUiSlider to load
+                loadingMessage.textContent = 'Loading dependencies...';
+                const sliderLoaded = await waitForNoUiSlider();
+                if (!sliderLoaded) {
+                    throw new Error('Failed to load noUiSlider library. Please refresh the page.');
+                }
+
                 // Get access token
                 loadingMessage.textContent = 'Connecting to Spotify...';
                 await getAccessToken();
@@ -1269,7 +1313,7 @@
             } catch (error) {
                 console.error('Initialization error:', error);
                 showError(
-                    'Could not connect to Spotify',
+                    error.message.includes('noUiSlider') ? 'Failed to load dependencies' : 'Could not connect to Spotify',
                     error.message || 'Please check your connection and try again.'
                 );
             }
