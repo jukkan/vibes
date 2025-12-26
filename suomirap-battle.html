@@ -405,10 +405,29 @@
             border: none;
             border-radius: 4px;
             height: 8px;
+            box-shadow: none;
+        }
+
+        .noUi-base {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .noUi-connects {
+            border-radius: 4px;
         }
 
         .noUi-connect {
             background: var(--finland-blue);
+        }
+
+        .noUi-origin {
+            position: absolute;
+            right: 0;
+            top: 0;
+            left: 0;
+            bottom: 0;
         }
 
         .noUi-handle {
@@ -419,8 +438,8 @@
             border: 2px solid var(--finland-blue);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             cursor: grab;
-            top: -7px !important;
-            right: -10px !important;
+            top: -6px !important;
+            outline: none;
         }
 
         .noUi-handle:before,
@@ -434,6 +453,21 @@
 
         .noUi-tooltip {
             display: none;
+        }
+
+        .noUi-horizontal .noUi-handle {
+            width: 20px !important;
+            height: 20px !important;
+            right: -10px;
+            top: -6px;
+        }
+
+        .noUi-horizontal {
+            height: 8px;
+        }
+
+        #yearSlider {
+            margin: 8px 0;
         }
     </style>
 </head>
@@ -732,10 +766,11 @@
         async function searchByYearRange(yearStart, yearEnd) {
             await ensureValidToken();
 
-            const query = encodeURIComponent(`genre:finnish hip hop year:${yearStart}-${yearEnd}`);
+            // Use "suomirap" keyword instead of genre search for better results
+            const query = encodeURIComponent(`suomirap year:${yearStart}-${yearEnd}`);
             const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=20`;
 
-            console.log(`Searching: finnish hip hop ${yearStart}-${yearEnd}`);
+            console.log(`Searching: suomirap ${yearStart}-${yearEnd}`);
 
             try {
                 const response = await fetch(url, {
@@ -829,15 +864,16 @@
                 'Cheek', 'JVG', 'Elastinen', 'Pyhimys', 'Paleface',
                 'Fintelligens', 'Cledos', 'Ibe', 'Gettomasa', 'Costee',
                 'Teflon Brothers', 'Heikki Kuula', 'Pikku G', 'Sini Sabotage',
-                'Mikael Gabriel', 'SANNI', 'Antti Tuisku', 'Portion Boys'
+                'Mikael Gabriel', 'Portion Boys', 'Kube', 'Paperi T',
+                'Gasellit', 'Asa', 'Tungevaag', 'Sexmane', 'Keko Salata'
             ];
 
             let allTracks = [];
 
             for (const artist of artists) {
                 try {
-                    // Search without artist: prefix for better results
-                    const query = encodeURIComponent(artist);
+                    // Use artist: prefix for more accurate results
+                    const query = encodeURIComponent(`artist:${artist}`);
                     const url = `${SEARCH_ENDPOINT}?q=${query}&type=track&market=FI&limit=15`;
 
                     const response = await fetch(url, {
