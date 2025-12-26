@@ -6,8 +6,6 @@
     <title>SUOMIRÄP BATTLE - Finnish Rap Battle Game</title>
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- noUiSlider for year range filter -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nouislider/15.7.1/nouislider.min.css">
     <style>
         :root {
             --finland-blue: #003580;
@@ -399,32 +397,46 @@
             color: #f87171;
         }
 
-        /* noUiSlider customization */
-        #yearSlider {
+        /* Year range slider (native HTML5 range inputs) */
+        .year-slider-wrapper {
+            position: relative;
+            height: 40px;
             margin: 8px 0;
-            height: 8px;
         }
 
-        .noUi-target {
+        .year-slider-track {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            right: 0;
+            height: 8px;
             background: rgba(255, 255, 255, 0.1);
-            border: none;
             border-radius: 4px;
-            box-shadow: none;
         }
 
-        .noUi-horizontal {
+        .year-slider-range {
+            position: absolute;
+            top: 16px;
             height: 8px;
-        }
-
-        .noUi-connects {
-            border-radius: 4px;
-        }
-
-        .noUi-connect {
             background: var(--finland-blue);
+            border-radius: 4px;
+            pointer-events: none;
         }
 
-        .noUi-horizontal .noUi-handle {
+        .year-range-input {
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            top: 16px;
+            background: transparent;
+            pointer-events: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .year-range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -432,26 +444,51 @@
             border: 2px solid var(--finland-blue);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             cursor: grab;
-            outline: none;
-            right: -10px;
-            top: -6px;
+            pointer-events: auto;
+            position: relative;
+            z-index: 10;
         }
 
-        .noUi-handle:before,
-        .noUi-handle:after {
-            display: none;
+        .year-range-input::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--finland-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            cursor: grab;
+            pointer-events: auto;
         }
 
-        .noUi-handle:active {
+        .year-range-input::-webkit-slider-thumb:active {
             cursor: grabbing;
         }
 
-        .noUi-handle:focus {
+        .year-range-input::-moz-range-thumb:active {
+            cursor: grabbing;
+        }
+
+        .year-range-input:focus {
             outline: none;
         }
 
-        .noUi-tooltip {
-            display: none;
+        .year-range-input::-webkit-slider-runnable-track {
+            background: transparent;
+            height: 8px;
+        }
+
+        .year-range-input::-moz-range-track {
+            background: transparent;
+            height: 8px;
+            border: none;
+        }
+
+        .year-range-input#yearMin {
+            z-index: 1;
+        }
+
+        .year-range-input#yearMax {
+            z-index: 2;
         }
     </style>
 </head>
@@ -493,7 +530,12 @@
                     <span class="year-filter-title">Release Year</span>
                     <span id="yearRangeDisplay" class="year-range-display">1990 - 2024</span>
                 </div>
-                <div id="yearSlider"></div>
+                <div class="year-slider-wrapper">
+                    <div class="year-slider-track"></div>
+                    <div class="year-slider-range" id="yearSliderRange"></div>
+                    <input type="range" id="yearMin" class="year-range-input" min="1990" max="2024" value="1990" step="1">
+                    <input type="range" id="yearMax" class="year-range-input" min="1990" max="2024" value="2024" step="1">
+                </div>
                 <p id="trackCount" class="track-count">Loading tracks...</p>
             </div>
 
@@ -656,7 +698,6 @@
         let currentTrack2 = null;
         let battleEnded = false;
         let currentlyPlaying = null;
-        let yearSlider = null;
         let currentYearMin = 1990;
         let currentYearMax = 2024;
 
@@ -936,48 +977,69 @@
         }
 
         /**
-         * Initialize the year range slider
+         * Initialize the year range slider using native HTML5 range inputs
          */
         function initYearSlider() {
-            const sliderEl = document.getElementById('yearSlider');
+            const yearMinInput = document.getElementById('yearMin');
+            const yearMaxInput = document.getElementById('yearMax');
             const yearRangeDisplay = document.getElementById('yearRangeDisplay');
+            const yearSliderRange = document.getElementById('yearSliderRange');
 
-            // Check if noUiSlider is defined
-            if (typeof noUiSlider === 'undefined') {
-                console.error('noUiSlider is not defined!');
-                throw new Error('noUiSlider library failed to load');
+            // Update the visual range highlight
+            function updateRangeVisual() {
+                const min = parseInt(yearMinInput.value);
+                const max = parseInt(yearMaxInput.value);
+                const rangeMin = parseInt(yearMinInput.min);
+                const rangeMax = parseInt(yearMinInput.max);
+
+                const percentMin = ((min - rangeMin) / (rangeMax - rangeMin)) * 100;
+                const percentMax = ((max - rangeMin) / (rangeMax - rangeMin)) * 100;
+
+                yearSliderRange.style.left = percentMin + '%';
+                yearSliderRange.style.width = (percentMax - percentMin) + '%';
             }
 
-            yearSlider = noUiSlider.create(sliderEl, {
-                start: [1990, 2024],
-                connect: true,
-                step: 1,
-                range: {
-                    'min': 1990,
-                    'max': 2024
-                },
-                format: {
-                    to: value => Math.round(value),
-                    from: value => Number(value)
+            // Update display and filter
+            function updateYearRange() {
+                let minVal = parseInt(yearMinInput.value);
+                let maxVal = parseInt(yearMaxInput.value);
+
+                // Prevent min from exceeding max
+                if (minVal > maxVal) {
+                    const temp = minVal;
+                    minVal = maxVal;
+                    maxVal = temp;
+                    yearMinInput.value = minVal;
+                    yearMaxInput.value = maxVal;
                 }
-            });
 
-            yearSlider.on('update', (values) => {
-                currentYearMin = values[0];
-                currentYearMax = values[1];
+                currentYearMin = minVal;
+                currentYearMax = maxVal;
                 yearRangeDisplay.textContent = `${currentYearMin} - ${currentYearMax}`;
-            });
+                updateRangeVisual();
+            }
 
-            yearSlider.on('change', (values) => {
-                currentYearMin = values[0];
-                currentYearMax = values[1];
+            // Handle input events (while dragging)
+            yearMinInput.addEventListener('input', updateYearRange);
+            yearMaxInput.addEventListener('input', updateYearRange);
+
+            // Handle change events (when dragging stops)
+            yearMinInput.addEventListener('change', () => {
                 filterTracksByYear(currentYearMin, currentYearMax);
-
-                // Start a new battle with the filtered tracks if we have enough
                 if (filteredTracks.length >= 2) {
                     startNewBattle();
                 }
             });
+
+            yearMaxInput.addEventListener('change', () => {
+                filterTracksByYear(currentYearMin, currentYearMax);
+                if (filteredTracks.length >= 2) {
+                    startNewBattle();
+                }
+            });
+
+            // Initial visual update
+            updateRangeVisual();
         }
 
         /**
@@ -1268,63 +1330,6 @@
         }
 
         /**
-         * Dynamically load noUiSlider from CDN with fallback options
-         */
-        async function loadNoUiSlider() {
-            // If already loaded, return success
-            if (typeof noUiSlider !== 'undefined') {
-                console.log('noUiSlider already loaded');
-                return true;
-            }
-
-            // Try multiple CDN sources in order
-            const cdnSources = [
-                'https://cdnjs.cloudflare.com/ajax/libs/nouislider/15.7.1/nouislider.min.js',
-                'https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js',
-                'https://unpkg.com/nouislider@15.7.1/dist/nouislider.min.js'
-            ];
-
-            for (const src of cdnSources) {
-                console.log(`Attempting to load noUiSlider from: ${src}`);
-
-                try {
-                    await new Promise((resolve, reject) => {
-                        const script = document.createElement('script');
-                        script.src = src;
-                        script.async = false;
-
-                        script.onload = () => {
-                            console.log(`Successfully loaded noUiSlider from: ${src}`);
-                            resolve();
-                        };
-
-                        script.onerror = () => {
-                            console.warn(`Failed to load from: ${src}`);
-                            reject(new Error(`Failed to load from ${src}`));
-                        };
-
-                        document.head.appendChild(script);
-
-                        // Timeout after 10 seconds
-                        setTimeout(() => reject(new Error('Timeout loading script')), 10000);
-                    });
-
-                    // Double-check that noUiSlider is actually defined
-                    if (typeof noUiSlider !== 'undefined') {
-                        console.log('noUiSlider loaded and verified');
-                        return true;
-                    }
-                } catch (error) {
-                    console.warn(`Error loading from ${src}:`, error.message);
-                    // Continue to next CDN
-                }
-            }
-
-            console.error('All CDN sources failed to load noUiSlider');
-            return false;
-        }
-
-        /**
          * Initialize the app
          */
         async function init() {
@@ -1339,13 +1344,6 @@
             setupKeyboardShortcuts();
 
             try {
-                // Load noUiSlider dynamically
-                loadingMessage.textContent = 'Loading dependencies...';
-                const sliderLoaded = await loadNoUiSlider();
-                if (!sliderLoaded) {
-                    throw new Error('Failed to load noUiSlider library from all CDN sources. Please check your internet connection and try again.');
-                }
-
                 // Get access token
                 loadingMessage.textContent = 'Connecting to Spotify...';
                 await getAccessToken();
@@ -1372,7 +1370,7 @@
             } catch (error) {
                 console.error('Initialization error:', error);
                 showError(
-                    error.message.includes('noUiSlider') ? 'Failed to load dependencies' : 'Could not connect to Spotify',
+                    'Could not connect to Spotify',
                     error.message || 'Please check your connection and try again.'
                 );
             }
