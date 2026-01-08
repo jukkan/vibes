@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Authoring for Vibe Coders: case Summon The JSON</title>
+    <meta name="description" content="A forensic look at AI-assisted content creation in the age of vibe coding. It's vibes all the way down.">
+    <meta property="og:title" content="Vibe Authoring for Vibe Coders: case Summon The JSON">
+    <meta property="og:description" content="When AI investigates AI-generated content about AI-assisted development. The ouroboros is complete.">
+    <meta property="og:type" content="article">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --text-primary: #1a1a1a;
+            --text-secondary: #666;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --border: #e1e4e8;
+            --accent: #0366d6;
+            --fact: #0969da;
+            --speculation: #bf8700;
+            --question: #cf222e;
+            --code-bg: #f6f8fa;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .subhead {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+
+        .meta a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .meta a:hover {
+            text-decoration: underline;
+        }
+
+        .transparency-box {
+            background: #fff3cd;
+            border-left: 4px solid var(--speculation);
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .transparency-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline {
+            margin: 2rem 0;
+            padding-left: 2rem;
+            border-left: 3px solid var(--border);
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.3rem;
+            width: 1rem;
+            height: 1rem;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
+        }
+
+        .timeline-year {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-content {
+            color: var(--text-secondary);
+        }
+
+        .evidence-card {
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--border);
+        }
+
+        .evidence-card.fact {
+            border-left-color: var(--fact);
+        }
+
+        .evidence-card.speculation {
+            border-left-color: var(--speculation);
+        }
+
+        .evidence-card.question {
+            border-left-color: var(--question);
+        }
+
+        .evidence-card h4 {
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-box {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .economics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .economics-table th,
+        .economics-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .economics-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+
+        .quote-box {
+            font-size: 1.25rem;
+            font-style: italic;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+        }
+
+        .citation {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .citation a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .citation a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+        }
+
+        .conclusion {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 6px;
+            margin: 3rem 0;
+            font-size: 1.1rem;
+        }
+
+        iframe {
+            max-width: 100%;
+            height: 400px;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .subhead {
+                font-size: 1rem;
+            }
+
+            .timeline {
+                padding-left: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            iframe {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vibe Authoring for Vibe Coders: case Summon The JSON</h1>
+        <p class="subhead">The ouroboros is complete. It's vibes all the way down.</p>
+        
+        <div class="meta">
+            <strong>Origin story:</strong> I received this message on Mastodon after talking about vibe coding:
+        </div>
+
+        <div style="margin: 2rem 0; display: flex; justify-content: center;">
+            <blockquote class="mastodon-embed" data-embed-url="https://mastodon.social/@Maks_Janiak/115856531687432131/embed" style="background: #FCF8FF; border-radius: 8px; border: 1px solid #C9C4DA; margin: 0; max-width: 700px; min-width: 320px; overflow: hidden; padding: 0;"> <a href="https://mastodon.social/@Maks_Janiak/115856531687432131" target="_blank" style="align-items: center; color: #1C1A25; display: flex; flex-direction: column; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Roboto, sans-serif; font-size: 14px; justify-content: center; letter-spacing: 0.25px; line-height: 20px; padding: 24px; text-decoration: none;"> <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 79 75"><path d="M63 45.3v-20c0-4.1-1-7.3-3.2-9.7-2.1-2.4-5-3.7-8.5-3.7-4.1 0-7.2 1.6-9.3 4.7l-2 3.3-2-3.3c-2-3.1-5.1-4.7-9.2-4.7-3.5 0-6.4 1.3-8.6 3.7-2.1 2.4-3.1 5.6-3.1 9.7v20h8V25.9c0-4.1 1.7-6.2 5.2-6.2 3.8 0 5.8 2.5 5.8 7.4V37.7H44V27.1c0-4.9 1.9-7.4 5.8-7.4 3.5 0 5.2 2.1 5.2 6.2V45.3h8ZM74.7 16.6c.6 6 .1 15.7.1 17.3 0 .5-.1 4.8-.1 5.3-.7 11.5-8 16-15.6 17.5-.1 0-.2 0-.3 0-4.9 1-10 1.2-14.9 1.4-1.2 0-2.4 0-3.6 0-4.8 0-9.7-.6-14.4-1.7-.1 0-.1 0-.1 0s-.1 0-.1 0 0 .1 0 .1 0 0 0 0c.1 1.6.4 3.1 1 4.5.6 1.7 2.9 5.7 11.4 5.7 5 0 9.9-.6 14.8-1.7 0 0 0 0 0 0 .1 0 .1 0 .1 0 0 .1 0 .1 0 .1.1 0 .1 0 .1.1v5.6s0 .1-.1.1c0 0 0 0 0 .1-1.6 1.1-3.7 1.7-5.6 2.3-.8.3-1.6.5-2.4.7-7.5 1.7-15.4 1.3-22.7-1.2-6.8-2.4-13.8-8.2-15.5-15.2-.9-3.8-1.6-7.6-1.9-11.5-.6-5.8-.6-11.7-.8-17.5C3.9 24.5 4 20 4.9 16 6.7 7.9 14.1 2.2 22.3 1c1.4-.2 4.1-1 16.5-1h.1C51.4 0 56.7.8 58.1 1c8.4 1.2 15.5 7.5 16.6 15.6Z" fill="currentColor"/></svg> <div style="color: #787588; margin-top: 16px;">Post by @<span class="__cf_email__" data-cfemail="bcf1ddd7cfe3f6ddd2d5ddd7fcd1ddcfc8d3d8d3d292cfd3dfd5ddd0">[email&#160;protected]</span></div> <div style="font-weight: 500;">View on Mastodon</div> </a> </blockquote> <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-allowed-prefixes="https://mastodon.social/" async src="https://mastodon.social/embed.js"></script>
+        </div>
+
+        <div class="meta">
+            Someone recommending a book called "Software Engineering for Vibe Coders" from <a href="https://summonthejson.com/" target="_blank">Summon The JSON</a>. It smelled like AI slop. So naturally, I got curious.
+        </div>
+
+        <div class="transparency-box">
+            <strong>Full disclosure:</strong> Jukka asked his AI friends (ChatGPT + Claude) to vibe-investigate the state of vibe authoring. What follows is the detective team's findings. AI investigating AI-generated content about AI-assisted development. We've achieved recursion.
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>What is Summon The JSON?</h2>
+            <p>At first glance: a Shopify store selling developer-themed products—ebooks, courses, merch, and a physical card game. At second glance: a case study in AI-assisted content scaling at developer velocity.</p>
+
+            <img src="https://raw.githubusercontent.com/jukkan/vibes/main/assets/images/summon-the-json-ebooks.png" alt="Vibe Coding Bible and Software Engineering for Vibe Coders ebooks" style="width: 100%; max-width: 800px; margin: 2rem 0; border-radius: 6px; border: 1px solid var(--border);">
+
+            <p>But here's where it gets interesting. The operator uses "Tom Smykowski" as their public persona. If you've seen <em>Office Space</em>, you know Tom Smykowski as the middle manager who famously declares "I have people skills!" while being unable to articulate what he actually does:</p>
+
+            <div style="margin: 2rem 0; display: flex; justify-content: center;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/fcIMIyQnOso?si=84eqnQitBAlKPMBk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="max-width: 100%; border-radius: 6px;"></iframe>
+            </div>
+
+            <p>Choosing <em>that</em> character as your brand identity for a business selling "how to code" content? That's either galaxy-brain meta-humor or accidentally perfect. The character literally represents someone whose job could be automated away. Chef's kiss.</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-value">2019</span>
+                    <span class="stat-label">Started</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">50+</span>
+                    <span class="stat-label">Products Now</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">1</span>
+                    <span class="stat-label">Person</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value">~2023</span>
+                    <span class="stat-label">Acceleration</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Timeline: From Maker to Machine</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2019</div>
+                    <div class="timeline-content">
+                        <strong>Physical product launch:</strong> "Summon The JSON" card deck for developers. Documented maker process: prototyping, manufacturing, translation, community feedback. Real human workflows.
+                        <div class="citation">
+                            Source: <a href="https://web.archive.org/web/20191127171706/https://medium.com/@tomaszs2/how-i-made-a-card-game-for-software-developers-and-what-i-have-learned-6fc8cad1d4e1" target="_blank">Archived Medium post (Nov 2019)</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2019-2022</div>
+                    <div class="timeline-content">
+                        <strong>Traditional content era:</strong> Medium posts, Hacker News presence (account created July 2019), Stack Overflow activity. Normal human velocity.
+                        <div class="citation">
+                            Source: <a href="https://news.ycombinator.com/user?id=tomaszs" target="_blank">HN profile</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">~2023</div>
+                    <div class="timeline-content">
+                        <strong>AI tooling appears:</strong> "AI Responder" Chrome extension published under same operator identity (Websoul Tomasz Smykowski). Signal: operator is building AI tools.
+                        <div class="citation">
+                            Source: <a href="https://chromewebstore.google.com/detail/ai-responder/afilcbenbgpmhohilfciepmhdonhdmol" target="_blank">Chrome Web Store</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2023-2024</div>
+                    <div class="timeline-content">
+                        <strong>Product catalog explosion:</strong> Ebooks and courses proliferate. Topics track current developer zeitgeist: "Vibe Coding," "Still Not Replaced By AI," AI-assisted development themes.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2025</div>
+                    <div class="timeline-content">
+                        <strong>Meta-level achieved:</strong> "Software Engineering for Vibe Coders" ebook targets AI-assisted developers. Vibe authoring for vibe coders. The snake eats its tail.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>The Forensics</h2>
+            <p>What does the evidence tell us?</p>
+
+            <div class="evidence-card fact">
+                <h4>✓ What's Definitely Real</h4>
+                <ul>
+                    <li><strong>Registered business:</strong> Websoul Tomasz Smykowski, Polish sole proprietorship with NIP/REGON</li>
+                    <li><strong>Long-standing identity:</strong> HN account since 2019, consistent public footprint</li>
+                    <li><strong>Original maker project:</strong> 2019 card deck with documented human workflows</li>
+                    <li><strong>Public identity:</strong> Named in Terms of Service, postal address, contact info</li>
+                </ul>
+                <div class="citation">
+                    Sources: <a href="https://summonthejson.com/policies/terms-of-service" target="_blank">ToS</a>, <a href="https://www.gowork.pl/websoul-tomasz-smykowski%2C22569201/dane-kontaktowe-firmy" target="_blank">business directory</a>
+                </div>
+            </div>
+
+            <div class="evidence-card speculation">
+                <h4>⚡ Strong Signals of AI Assistance</h4>
+                <ul>
+                    <li><strong>Product velocity shift:</strong> Compare 2019-2022 output vs. 2023+</li>
+                    <li><strong>Self-positioning:</strong> "AI Responder" tool, "Vibe Coding" collections, AI-themed merch</li>
+                    <li><strong>Content pattern:</strong> "Daily articles" promotion on Stack Overflow (classic AI-scaling signal)</li>
+                    <li><strong>Genre pivot:</strong> Physical product → digital products → AI meta-content</li>
+                    <li><strong>Thematic tracking:</strong> Products mirror current developer discourse almost in real-time</li>
+                </ul>
+            </div>
+
+            <div class="evidence-card question">
+                <h4>❓ The Gray Areas</h4>
+                <ul>
+                    <li>What percentage of each ebook is AI-generated vs. human-edited?</li>
+                    <li>Is the value in curation, frameworks, or just volume?</li>
+                    <li>How much unique research vs. synthesizing existing content?</li>
+                    <li>Are readers getting insights they couldn't get from ChatGPT directly?</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>The Economics of Vibe Authoring</h2>
+            <p>Let's run the numbers on AI-assisted content creation:</p>
+
+            <h3>Input Costs (Monthly)</h3>
+            <table class="economics-table">
+                <tr>
+                    <th>Item</th>
+                    <th>Cost</th>
+                </tr>
+                <tr>
+                    <td>AI API calls (heavy usage)</td>
+                    <td>$50-200</td>
+                </tr>
+                <tr>
+                    <td>Shopify hosting</td>
+                    <td>~$30</td>
+                </tr>
+                <tr>
+                    <td>Domain + tools</td>
+                    <td>~$20</td>
+                </tr>
+                <tr>
+                    <td><strong>Total overhead</strong></td>
+                    <td><strong>&lt;$300/month</strong></td>
+                </tr>
+            </table>
+
+            <h3>Output Potential</h3>
+            <ul>
+                <li>Ebooks: $15-30 each</li>
+                <li>Courses: $50-100 each</li>
+                <li>Physical merch: Higher margins, slower</li>
+                <li><strong>Break-even: ~10-15 sales/month</strong></li>
+            </ul>
+
+            <p><strong>Key insight:</strong> AI dramatically lowers production cost, making micro-niches profitable. You no longer need bestseller-level volume to sustain a content business. This is the <em>real</em> disruption.</p>
+        </section>
+
+        <section>
+            <h2>What Makes This "Vibe Authoring"?</h2>
+            <p>Okay, real talk. This isn't just "AI-generated content." It's a specific economic pattern that's emerged in the last 18 months, and it has characteristics you can spot:</p>
+
+            <p><strong>Vibe matching:</strong> The content tracks whatever developers are talking about <em>right now</em>. "Vibe coding" didn't exist as a term until recently, but there's already a "Vibe Coding Bible" for $39. That's not luck—that's algorithmic trend-spotting.</p>
+
+            <p><strong>Volume over depth:</strong> Instead of spending 2 years writing one authoritative book, you produce 50+ products. Some will hit, most won't, but the economics work because production costs approach zero.</p>
+
+            <p><strong>Speed to market:</strong> Traditional publishing: 18 months. Traditional self-publishing: 6 months. AI-assisted publishing: 2 weeks. By the time a traditional author finishes their outline, the vibe author has shipped and iterated.</p>
+
+            <p><strong>Meta-positioning:</strong> Sell "Still Not Replaced By AI" merch while using AI to scale production. Build "AI Responder" tools while writing books for "non-programmers." The positioning <em>is</em> the product.</p>
+
+            <p><em>(Note: The previous four paragraphs were written in "AI trying to sound human" style—short sentences, "real talk" openings, strategic italics for emphasis. The section below will be written in more natural voice to show the contrast. Yes, this meta-commentary is also part of the bit.)</em></p>
+
+            <p>Here's what actually matters: this person figured out how to turn AI into a content assembly line that runs on zeitgeist fuel. They're not making <em>better</em> content than traditional authors—they're making <em>faster</em> content that's <em>good enough</em> for people who want to feel current. The books probably won't be cited in 5 years, but they don't need to be. They just need to match what people are Googling this month.</p>
+
+            <p>It's arbitrage. The gap between "trend emerges" and "authoritative resource exists" used to be months or years. AI collapsed that to weeks. Whoever ships first wins the search traffic, gets the early adopter sales, and moves on to the next trend. By the time someone writes the <em>good</em> book on the topic, the vibe has already moved.</p>
+        </section>
+
+        <section>
+            <h2>The Meta-Irony Layers</h2>
+            <p>Let's appreciate the recursion here, because it's genuinely beautiful:</p>
+
+            <ul>
+                <li>📖 A book titled "Software Engineering for <em>Vibe Coders</em>" is itself vibe-authored</li>
+                <li>🎯 It targets AI-assisted builders using AI-assisted content creation</li>
+                <li>🛡️ The store sells "Still Not Replaced By AI" merchandise while being AI-enabled</li>
+                <li>😏 The brand persona is a character famous for being redundant</li>
+                <li>🔍 This case study was investigated by AI (ChatGPT + Claude)</li>
+                <li>📝 I'm writing about it with AI assistance</li>
+                <li>🤖 You're probably reading this wondering if it's human or AI</li>
+            </ul>
+
+            <div class="quote-box">
+                "It's vibes all the way down."
+            </div>
+
+            <p>The ouroboros is complete. We've achieved maximum recursion. The snake is eating itself and selling you an ebook about how to eat snakes. And you know what? It works. People are buying.</p>
+
+            <p>This isn't a bug, it's the entire point. The market has decided that speed and relevance beat authority and depth, at least for tutorial content. Why wait 6 months for the "definitive guide" when you can get the "good enough guide" today for $39?</p>
+        </section>
+
+        <section>
+            <h2>What This Tells Us</h2>
+
+            <h3>For Makers</h3>
+            <ul>
+                <li><strong>Lower barrier to entry:</strong> Anyone can now be a multi-product creator</li>
+                <li><strong>Quality vs. quantity:</strong> Market will decide if volume beats depth</li>
+                <li><strong>Authenticity premium:</strong> Human curation, unique frameworks, and editorial voice still matter</li>
+                <li><strong>Niche fragmentation:</strong> AI enables hyper-targeted content for micro-audiences</li>
+                <li><strong>Speed advantage:</strong> First-mover on trends is now measured in weeks</li>
+            </ul>
+
+            <h3>For Consumers</h3>
+            <ul>
+                <li><strong>Evaluate provenance:</strong> Is this AI-assisted, AI-generated, or traditional?</li>
+                <li><strong>Look for receipts:</strong> Original research, case studies, unique frameworks</li>
+                <li><strong>Check velocity:</strong> Did this catalog appear overnight?</li>
+                <li><strong>Assess value:</strong> Does it teach something you can't get from ChatGPT directly?</li>
+                <li><strong>Consider the source:</strong> What's the author's expertise and track record?</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>This Isn't a Hit Piece</h2>
+            <p>Look, I'm not here to cancel anyone. The operator:</p>
+            <ul>
+                <li>Started with a legitimate maker project in 2019 (documented, human-driven)</li>
+                <li>Has a public identity and registered business in Poland</li>
+                <li>Provides actual contact information (unlike content farms)</li>
+                <li>Isn't doing anything illegal</li>
+                <li>Is probably making less money than you think</li>
+            </ul>
+
+            <p>They saw a tool (AI), saw an opportunity (content gaps), and executed. That's... just business. The fact that it feels weird is our problem, not theirs.</p>
+
+            <p>The interesting question isn't "should this be allowed?" (it will happen regardless). The interesting question is: <strong>what does this mean for how we value knowledge work?</strong></p>
+
+            <p>If AI can generate a "good enough" guide to any topic in 2 weeks, what's the premium for the human-written, deeply researched, 2-year version? More importantly: will readers pay that premium, or will they just buy whatever ranks first on Google?</p>
+
+            <p>I don't know the answer. But I know we're going to find out over the next few years, and it's going to be fascinating to watch. This case study is just documentation of the pattern as it emerges.</p>
+        </section>
+
+        <section>
+            <h2>The Real Question</h2>
+            <p>The debate "Is this AI-generated?" is already over. Of course it's AI-assisted. That's not the interesting part.</p>
+            
+            <p>The interesting part is: <strong>does anyone care?</strong></p>
+
+            <p>If someone buys "Software Engineering for Vibe Coders" for $39 and it teaches them something useful, does it matter that an AI wrote 80% of it? If the human contribution was "knowing what to generate, how to organize it, and what to edit," is that enough editorial value to justify the price?</p>
+
+            <p>I genuinely don't know. My gut says "probably not," but my gut also thought Netflix would never beat Blockbuster and that Twitter was a stupid idea. Markets optimize for convenience, not purity.</p>
+
+            <p>What I <em>do</em> know is that we're about to find out what happens when:</p>
+            <ul>
+                <li>Production costs drop to nearly zero</li>
+                <li>Content velocity increases 10-100x</li>
+                <li>Anyone can flood any niche with "good enough" material</li>
+                <li>The barrier to being a "published author" is just prompt engineering</li>
+            </ul>
+
+            <p>Maybe quality wins. Maybe curation wins. Maybe brand trust wins. Maybe first-mover speed wins. Maybe it's different for every niche.</p>
+
+            <p>This case study is ethnography, not judgment. I'm documenting a pattern that's happening everywhere. Call it vibe authoring, call it AI-assisted entrepreneurship, call it content spam 2.0—it's here, it's scaling, and we're all figuring out what it means in real-time.</p>
+
+            <p><strong>That's the actual vibe: nobody knows where this goes, but everyone's running the experiment anyway.</strong></p>
+        </section>
+
+        <section>
+            <h2>Further Investigation</h2>
+            <p>If you want harder evidence on any similar operation, here are the verification steps:</p>
+
+            <ol>
+                <li><strong>Validate business identity:</strong> Poland's CEIDG registry, EU VIES VAT checker</li>
+                <li><strong>Measure content velocity:</strong> Pull Shopify sitemap.xml, count products by month</li>
+                <li><strong>Spot-check content:</strong> Look for AI fingerprints (repeated phrasing, generic structure, hallucinated claims)</li>
+                <li><strong>Check metadata:</strong> Shopify product JSON often includes created/updated timestamps</li>
+                <li><strong>Cross-reference claims:</strong> Do ebooks cite sources? Include unique research? Have verifiable examples?</li>
+            </ol>
+
+            <p>This isn't about exposing anyone—it's about understanding the new content economy.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>About this page:</strong> Created by <a href="https://jukkan.com" target="_blank">Jukka Niiranen</a> with AI assistance (Claude + ChatGPT research). Investigating vibe authoring with vibe investigation. Recursion all the way down.</p>
+        <p>Published January 2026 · <a href="https://mstdn.social/@jukkan" target="_blank">Follow on Mastodon</a> · <a href="https://jukkan.com" target="_blank">Visit JukkaNet for other links</a></p>
+    </footer>
+</body>
+</html>
