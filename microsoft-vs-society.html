@@ -1,0 +1,1600 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="A single-page, source-linked scorecard illustrating Microsoft’s scale and the digital sovereignty / national security lens (with EU + Finland notes)." />
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:title" content="Microsoft in Global Society — Scorecard" />
+  <meta property="og:description" content="Striking, sourced numbers + a sober sovereignty lens (EU/Finland) in one shareable HTML page." />
+  <meta property="og:type" content="website" />
+
+  <title>Microsoft in Global Society — Scorecard</title>
+
+  <style>
+    :root{
+      --bg: #050c1a;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.04);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --faint: rgba(255,255,255,0.52);
+      --border: rgba(255,255,255,0.10);
+      --shadow: 0 18px 50px rgba(0,0,0,0.35);
+      --ring: rgba(255,255,255,0.20);
+      --good: rgba(62, 255, 190, 0.90);
+      --warn: rgba(255, 205, 86, 0.95);
+      --bad:  rgba(255, 107, 107, 0.95);
+      --link: rgba(155, 197, 255, 0.95);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --radius: 18px;
+      --radius2: 24px;
+      --pad: 18px;
+      --maxw: 1120px;
+      --ms-blue: #0067b8;
+      --ms-green: #107c10;
+      --ms-yellow: #ffb900;
+      --ms-red: #d83b01;
+    }
+
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f7f8fb;
+        --card: rgba(0,0,0,0.05);
+        --card2: rgba(0,0,0,0.035);
+        --text: rgba(0,0,0,0.90);
+        --muted: rgba(0,0,0,0.70);
+        --faint: rgba(0,0,0,0.54);
+        --border: rgba(0,0,0,0.10);
+        --shadow: 0 18px 50px rgba(0,0,0,0.12);
+        --ring: rgba(0,0,0,0.18);
+        --link: rgba(0, 92, 230, 0.95);
+      }
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: linear-gradient(145deg, #020813 0%, #041630 42%, #052448 78%, #031026 100%);
+      background-attachment: fixed;
+      line-height:1.45;
+      min-height:100%;
+      position:relative;
+    }
+
+    body::before,
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    body::before{
+      background:
+        radial-gradient(circle at 8% 12%, rgba(0,103,184,0.38), transparent 55%),
+        radial-gradient(circle at 82% 18%, rgba(255,185,0,0.28), transparent 60%),
+        radial-gradient(circle at 50% 110%, rgba(16,124,16,0.32), transparent 65%),
+        radial-gradient(circle at 10% 120%, rgba(216,59,1,0.22), transparent 70%);
+      opacity:0.95;
+    }
+
+    body::after{
+      background-image:
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 220px 220px;
+      opacity:0.25;
+    }
+
+    @media (prefers-color-scheme: light){
+      body{
+        background: linear-gradient(160deg, #fefefe 0%, #eef3fb 45%, #ddebf9 100%);
+      }
+      body::before{
+        background:
+          radial-gradient(circle at 8% 12%, rgba(0,103,184,0.15), transparent 55%),
+          radial-gradient(circle at 82% 18%, rgba(255,185,0,0.18), transparent 60%),
+          radial-gradient(circle at 50% 120%, rgba(16,124,16,0.18), transparent 60%),
+          radial-gradient(circle at 15% 130%, rgba(216,59,1,0.16), transparent 70%);
+        opacity:0.6;
+      }
+      body::after{
+        opacity:0.12;
+      }
+    }
+
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width: var(--maxw); margin:0 auto; padding: 22px 16px 60px;}
+    .topbar{
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.30), rgba(0,0,0,0.06));
+      border-bottom: 1px solid var(--border);
+    }
+    @media (prefers-color-scheme: light){
+      .topbar{ background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.55));}
+    }
+    .nav{
+      max-width: var(--maxw); margin: 0 auto; padding: 10px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap: 14px;
+      position:relative;
+    }
+    .nav-toggle{
+      display:none;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: var(--card2);
+      color:var(--text);
+      font-size:12px;
+      font-weight:650;
+      letter-spacing:0.2px;
+      cursor:pointer;
+    }
+    .nav-toggle:focus-visible{outline:2px solid var(--ring); outline-offset:2px;}
+    .nav-toggle .bars{width:16px; height:10px; display:grid; gap:3px;}
+    .nav-toggle .bars span{
+      display:block;
+      height:2px;
+      border-radius:2px;
+      background: currentColor;
+    }
+    .brand{
+      display:flex; align-items:center; gap: 10px; min-width: 220px;
+    }
+    .ms-mark{
+      width: 28px; height: 28px;
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3px;
+      flex: 0 0 auto;
+      border-radius: 6px;
+      padding: 2px;
+      background: rgba(0,0,0,0.25);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.35);
+    }
+    .ms-mark span{
+      border-radius: 4px;
+      display:block;
+    }
+    .ms-mark .sq-blue{background: var(--ms-blue);}
+    .ms-mark .sq-green{background: var(--ms-green);}
+    .ms-mark .sq-yellow{background: var(--ms-yellow);}
+    .ms-mark .sq-red{background: var(--ms-red);}
+    .brand h1{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      font-weight: 650;
+    }
+    .brand .sub{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 1px;
+      font-weight: 500;
+    }
+
+    .navlinks{
+      display:flex; flex-wrap:wrap; gap: 10px;
+      justify-content:flex-end;
+    }
+    .navlinks a{
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    .navlinks a:hover{
+      color: var(--text);
+      border-color: var(--border);
+      background: rgba(255,255,255,0.04);
+      text-decoration:none;
+    }
+    @media (max-width: 720px){
+      .nav{flex-wrap:wrap;}
+      .navlinks{
+        display:none;
+        position:absolute;
+        top:calc(100% + 8px);
+        right:16px;
+        left:16px;
+        flex-direction:column;
+        gap:8px;
+        padding:14px;
+        border-radius: var(--radius);
+        background: rgba(5,12,26,0.92);
+        border:1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+      .navlinks a{
+        border:1px solid transparent;
+        padding:10px 12px;
+        border-radius: var(--radius);
+        font-size:13px;
+        background: rgba(255,255,255,0.02);
+      }
+      .navlinks.open{display:flex;}
+      .nav-toggle{display:inline-flex;}
+    }
+    @media (max-width: 720px) and (prefers-color-scheme: light){
+      .navlinks{background: rgba(255,255,255,0.96);}
+    }
+
+    header.hero{
+      padding: 26px 0 10px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    @media (max-width: 920px){
+      .hero-grid{grid-template-columns: 1fr;}
+    }
+
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .panel h2{
+      margin:0 0 8px;
+      font-size: 26px;
+      line-height: 1.12;
+      letter-spacing: -0.3px;
+    }
+    .panel p{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 70ch;
+    }
+
+    .meta{
+      display:flex; flex-wrap:wrap; gap: 8px;
+      margin-top: 12px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap: 8px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .pill b{color: var(--text); font-weight: 650}
+    .pill code{font-family: var(--mono); font-size: 11px; color: var(--text);}
+
+    .factbox{
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 16px;
+      height: 100%;
+      display:flex; flex-direction:column; justify-content:space-between;
+    }
+    .factbox h3{
+      margin:0;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 650;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+    }
+    .factbox .big{
+      font-size: 34px;
+      margin: 10px 0 6px;
+      font-weight: 760;
+      letter-spacing: -0.8px;
+    }
+    .factbox .small{
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .fact-bars{
+      margin-top: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .fact-bar{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .fact-label{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.2px;
+    }
+    .fact-value{ font-family: var(--mono); color: var(--text); }
+    .fact-track{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      overflow:hidden;
+    }
+    .fact-fill{
+      height:100%;
+      width:0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(0,103,184,0.9), rgba(255,185,0,0.9));
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    }
+    .fact-bar-highlight .fact-fill{
+      box-shadow: 0 0 18px rgba(255,185,0,0.65);
+    }
+
+    section{margin-top: 16px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--pad);
+      box-shadow: var(--shadow);
+    }
+
+    .kpi{grid-column: span 3;}
+    @media (max-width: 1000px){ .kpi{grid-column: span 4;} }
+    @media (max-width: 720px){ .kpi{grid-column: span 6;} }
+    @media (max-width: 480px){ .kpi{grid-column: span 12;} }
+
+    .kpi-head{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .kpi .icon{
+      font-size: 22px;
+      line-height: 1;
+    }
+    .kpi .label{
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.28px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .kpi .value{
+      font-size: 26px;
+      font-weight: 780;
+      letter-spacing: -0.4px;
+      line-height: 1.05;
+    }
+    .kpi .note{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .span-7{grid-column: span 7;}
+    .span-5{grid-column: span 5;}
+    .span-6{grid-column: span 6;}
+    .span-12{grid-column: span 12;}
+    @media (max-width: 920px){
+      .span-7,.span-5,.span-6{grid-column: span 12;}
+    }
+
+    .h{
+      display:flex; align-items:baseline; justify-content:space-between; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .h h3{margin:0; font-size: 16px; font-weight: 750;}
+    .h .hint{color: var(--muted); font-size: 12px;}
+
+    .chart{
+      border: 1px solid var(--border);
+      background: var(--card2);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .bars{display:flex; flex-direction:column; gap: 10px; margin-top: 8px;}
+    .bar{
+      display:grid;
+      grid-template-columns: 170px 1fr 120px;
+      gap: 10px;
+      align-items:center;
+    }
+    @media (max-width: 640px){
+      .bar{grid-template-columns: 1fr; gap: 6px;}
+    }
+    .bar .name{
+      color: var(--muted);
+      font-size: 13px;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .bar-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      width: 28px;
+      height: 20px;
+    }
+    .bar-icon svg{width:100%; height:100%; display:block;}
+    .heading-icon{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+    .heading-icon .icon-stack{
+      display:inline-flex;
+      align-items:center;
+      gap: 4px;
+    }
+    .heading-icon .icon-stack span{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 26px;
+      height: 26px;
+      flex: 0 0 auto;
+    }
+    .heading-icon svg{width: 22px; height: 22px; display:block;}
+    .subhint{
+      color: var(--muted);
+      font-size: 12px;
+      margin: -6px 0 8px 0;
+    }
+    .bar .track{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      overflow:hidden;
+    }
+    .bar .fill{
+      height:100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(155,197,255,0.95), rgba(62,255,190,0.92));
+      transition: width 900ms cubic-bezier(.2,.8,.2,1);
+    }
+    .bar .val{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      text-align:right;
+    }
+    @media (max-width: 640px){
+      .bar .val{text-align:left; color: var(--muted);}
+    }
+
+    .gauges{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 520px){
+      .gauges{grid-template-columns: 1fr;}
+    }
+    .gauge{
+      display:flex; gap: 12px; align-items:center;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+    .gauge svg{flex:0 0 auto}
+    .gauge .t{
+      display:flex; flex-direction:column; gap: 4px;
+      min-width: 0;
+    }
+    .gauge .t b{
+      font-size: 13px;
+      font-weight: 760;
+      letter-spacing: -0.1px;
+    }
+    .gauge .t span{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .cols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 820px){ .cols{grid-template-columns: 1fr;} }
+
+    ul.clean{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    ul.clean li{margin: 6px 0}
+
+    .callout{
+      border-left: 4px solid rgba(155,197,255,0.8);
+      background: rgba(155,197,255,0.08);
+      border-radius: 12px;
+      padding: 12px 12px 12px 14px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .callout b{color: var(--text)}
+    .flag-ribbon{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .flag-card{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(125deg, rgba(0,103,184,0.25), rgba(16,124,16,0.10));
+      padding: 12px 14px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+    @media (prefers-color-scheme: light){
+      .flag-card{
+        border-color: rgba(0,0,0,0.08);
+        background: linear-gradient(125deg, rgba(0,103,184,0.08), rgba(16,124,16,0.05));
+        box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+      }
+    }
+    .flag-icon{
+      flex: 0 0 auto;
+      width: 54px;
+      height: 36px;
+      border-radius: 8px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+    @media (prefers-color-scheme: light){
+      .flag-icon{border-color: rgba(0,0,0,0.1); box-shadow: 0 6px 12px rgba(0,0,0,0.12);}
+    }
+    .flag-title{
+      font-size: 13px;
+      font-weight: 760;
+      letter-spacing: 0.2px;
+    }
+    .flag-note{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+    .flag-copy{min-width:0;}
+    .riskgrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 820px){ .riskgrid{grid-template-columns: 1fr;} }
+
+    .risk{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+    .risk .rhead{
+      display:flex; align-items:center; justify-content:space-between; gap: 10px;
+      margin-bottom: 6px;
+    }
+    .badge{
+      font-size: 11px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+    .badge.high{border-color: rgba(255,107,107,0.45); color: rgba(255,107,107,0.95);}
+    .badge.med{border-color: rgba(255,205,86,0.45); color: rgba(255,205,86,0.95);}
+    .badge.low{border-color: rgba(62,255,190,0.35); color: rgba(62,255,190,0.90);}
+
+    .risk p{margin: 0; color: var(--muted); font-size: 13px;}
+    .risk h4{margin:0; font-size: 14px; font-weight: 760;}
+
+    .sources{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    @media (max-width: 900px){ .sources{grid-template-columns: 1fr;} }
+    .src{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+    .src .t{display:flex; justify-content:space-between; gap: 10px; align-items:baseline;}
+    .src .t b{font-size: 13px; font-weight: 760;}
+    .src .t span{font-size: 12px; color: var(--muted); font-family: var(--mono);}
+    .src p{margin: 6px 0 0; color: var(--muted); font-size: 13px;}
+    .src p a{word-break: break-word}
+
+    footer{
+      margin-top: 20px;
+      color: var(--faint);
+      font-size: 12px;
+    }
+    .hr{
+      height: 1px; background: var(--border);
+      margin: 14px 0;
+    }
+
+    .kbd{
+      font-family: var(--mono);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 2px 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="nav">
+      <div class="brand">
+        <div class="ms-mark" aria-hidden="true">
+          <span class="sq-blue"></span>
+          <span class="sq-green"></span>
+          <span class="sq-yellow"></span>
+          <span class="sq-red"></span>
+        </div>
+        <div>
+          <h1>Microsoft in Global Society <span class="sub">Scorecard, source-linked data</span></h1>
+        </div>
+      </div>
+      <button class="nav-toggle" type="button" id="navToggle" aria-expanded="false" aria-controls="jumpNav">
+        <span>Menu</span>
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+      <div class="navlinks" id="jumpNav" role="navigation" aria-label="Sections">
+        <a href="#scale">Scale</a>
+        <a href="#comparisons">Comparisons</a>
+        <a href="#touchpoints">Even if you’re not a customer</a>
+        <a href="#sovereignty">Sovereignty & security</a>
+        <a href="#finland">EU & Finland angle</a>
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-grid">
+        <div class="panel">
+          <h2>How significant is Microsoft — even if you never buy it?</h2>
+          <p>
+            This scorecard uses a small set of <b>high-signal metrics</b> to show Microsoft’s
+            economic scale, infrastructure footprint, and “ambient” influence through Windows,
+            Azure, Microsoft 365, LinkedIn, GitHub, and security telemetry — plus a sober
+            <b>national security / digital sovereignty</b> lens relevant to Europe.
+          </p>
+
+          <div class="meta">
+            <span class="pill"><b>As-of (market cap):</b> <code id="asof"></code></span>
+            <span class="pill"><b>Financials:</b> FY2025</span>
+            <span class="pill"><b>GDP comparisons:</b> World Bank 2024</span>
+          </div>
+
+          <div class="callout">
+            <b>What this is not:</b> a moral judgement or a “Microsoft bad/good” manifesto.
+            It’s a compact set of <b>comparison points</b> + the <b>risk surface</b> that comes with
+            concentration of critical digital infrastructure.
+          </div>
+
+          <div class="flag-ribbon" aria-label="Regional highlights contextualizing Microsoft’s scale">
+            <div class="flag-card" aria-label="Finland digital sovereignty focus">
+              <div class="flag-icon" aria-hidden="true">
+                <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="60" height="40" fill="#ffffff"/>
+                  <rect y="16" width="60" height="8" fill="#003580"/>
+                  <rect x="16" width="8" height="40" fill="#003580"/>
+                </svg>
+              </div>
+              <div class="flag-copy">
+                <div class="flag-title">Finland</div>
+                <div class="flag-note">GDP baseline for the gauges and home to the loudest sovereignty debates (see the Aura Salla briefings below).</div>
+              </div>
+            </div>
+
+            <div class="flag-card" aria-label="India comparison baseline">
+              <div class="flag-icon" aria-hidden="true">
+                <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="60" height="40" fill="#FF9933"/>
+                  <rect y="13.33" width="60" height="13.34" fill="#ffffff"/>
+                  <rect y="26.67" width="60" height="13.33" fill="#128807"/>
+                  <circle cx="30" cy="20" r="6.2" stroke="#000088" stroke-width="1.4" fill="none"/>
+                  <circle cx="30" cy="20" r="1.2" fill="#000088"/>
+                  <g stroke="#000088" stroke-width="0.9">
+                    <line x1="30" y1="13.8" x2="30" y2="26.2"/>
+                    <line x1="23.8" y1="20" x2="36.2" y2="20"/>
+                    <line x1="25.2" y1="15.2" x2="34.8" y2="24.8"/>
+                    <line x1="34.8" y1="15.2" x2="25.2" y2="24.8"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="flag-copy">
+                <div class="flag-title">India</div>
+                <div class="flag-note">Used for the headline “market cap vs GDP” ratio to show that Microsoft’s valuation is within reach of a large emerging economy.</div>
+              </div>
+            </div>
+
+            <div class="flag-card" aria-label="European Union compliance lens">
+              <div class="flag-icon" aria-hidden="true">
+                <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="60" height="40" fill="#003399"/>
+                  <defs>
+                    <polygon id="eu-star" points="0,-3 0.9,-1 2.85,-1 1.12,0.35 1.9,2.7 0,1.4 -1.9,2.7 -1.12,0.35 -2.85,-1 -0.9,-1" fill="#ffcc00"/>
+                  </defs>
+                  <g transform="translate(30 20)">
+                    <use href="#eu-star" transform="translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(30) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(60) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(90) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(120) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(150) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(180) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(210) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(240) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(270) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(300) translate(0,-12)"/>
+                    <use href="#eu-star" transform="rotate(330) translate(0,-12)"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="flag-copy">
+                <div class="flag-title">European Union</div>
+                <div class="flag-note">Signals the regulatory + compliance context (EDPS findings, DSA, procurement guardrails) that frame this page.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="factbox">
+          <div>
+            <h3>One striking comparison</h3>
+            <div class="big" id="headlineRatio">—</div>
+            <div class="small" id="headlineNote">—</div>
+            <div class="fact-bars" aria-label="Animated comparison of Microsoft market cap vs India GDP">
+              <div class="fact-bar" id="factBarIndia">
+                <div class="fact-label">
+                  <span>India GDP (2024)</span>
+                  <span class="fact-value" id="factBarIndiaVal">—</span>
+                </div>
+                <div class="fact-track" aria-hidden="true"><div class="fact-fill"></div></div>
+              </div>
+              <div class="fact-bar" id="factBarMicrosoft">
+                <div class="fact-label">
+                  <span>Microsoft market cap</span>
+                  <span class="fact-value" id="factBarMicrosoftVal">—</span>
+                </div>
+                <div class="fact-track" aria-hidden="true"><div class="fact-fill"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="hr"></div>
+          <div class="small">
+            Tip: update the numbers in <span class="kbd">metrics</span> (bottom of file) when you want a refreshed snapshot.
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SCALE -->
+    <section id="scale">
+      <div class="grid">
+        <div class="card span-12">
+          <div class="h">
+            <h3>Scale at a glance</h3>
+            <div class="hint">Sources linked below</div>
+          </div>
+          <div class="grid">
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">💹</div>
+                <div class="label">Market cap (approx.)</div>
+              </div>
+              <div class="value" data-kpi="marketCapUSD" data-fmt="moneyShort">—</div>
+              <div class="note">Fluctuates daily; used for scale comparisons, not “real economy”.</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">💵</div>
+                <div class="label">Annual revenue</div>
+              </div>
+              <div class="value" data-kpi="annualRevenueUSD" data-fmt="moneyShort">—</div>
+              <div class="note">FY2025 total revenue.</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">📊</div>
+                <div class="label">Operating income</div>
+              </div>
+              <div class="value" data-kpi="operatingIncomeUSD" data-fmt="moneyShort">—</div>
+              <div class="note">FY2025 operating income.</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">☁️</div>
+                <div class="label">Azure annual revenue</div>
+              </div>
+              <div class="value" data-kpi="azureAnnualRevenueUSD" data-fmt="moneyShort">—</div>
+              <div class="note">Disclosed as “surpassed $75B” (FY2025).</div>
+            </div>
+
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">🖥️</div>
+                <div class="label">Windows monthly active devices</div>
+              </div>
+              <div class="value" data-kpi="windowsMonthlyActiveDevices" data-fmt="countShort">—</div>
+              <div class="note">Devices, not unique people.</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">📎</div>
+                <div class="label">M365 paid commercial seats</div>
+              </div>
+              <div class="value" data-kpi="m365PaidCommercialSeats" data-fmt="countShort">—</div>
+              <div class="note">“Over 430 million” seats (Q3 FY2025).</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">🤝</div>
+                <div class="label">LinkedIn members</div>
+              </div>
+              <div class="value" data-kpi="linkedinMembers" data-fmt="countShort">—</div>
+              <div class="note">“Nearly 1.3B members” (TTM highlights).</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">💻</div>
+                <div class="label">Developers on GitHub</div>
+              </div>
+              <div class="value" data-kpi="githubDevelopers" data-fmt="countShort">—</div>
+              <div class="note">“180M+ developers” (Octoverse 2025).</div>
+            </div>
+
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">🛡️</div>
+                <div class="label">Security signals processed daily</div>
+              </div>
+              <div class="value" data-kpi="securitySignalsPerDay" data-fmt="countShort">—</div>
+              <div class="note">Illustrates threat-visibility scale (DDR 2025).</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">🌍</div>
+                <div class="label">Azure regions / datacenters</div>
+              </div>
+              <div class="value" id="infraKpi">—</div>
+              <div class="note">“70+ regions, 400+ datacenters” (Azure blog).</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">👥</div>
+                <div class="label">Employees</div>
+              </div>
+              <div class="value" data-kpi="employees" data-fmt="countShort">—</div>
+              <div class="note">FY2025 headcount (context for org scale).</div>
+            </div>
+            <div class="card kpi" style="box-shadow:none">
+              <div class="kpi-head">
+                <div class="icon" aria-hidden="true">🏦</div>
+                <div class="label">FY2025 net income</div>
+              </div>
+              <div class="value" data-kpi="netIncomeUSD" data-fmt="moneyShort">—</div>
+              <div class="note">Included because it drives reinvestment capacity.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARISONS -->
+    <section id="comparisons">
+      <div class="grid">
+        <div class="card span-7">
+          <div class="h">
+            <h3>Comparisons</h3>
+            <div class="hint">GDP ≠ market cap; use as “magnitude” only</div>
+          </div>
+
+          <div class="chart" aria-label="Market cap vs GDP bar chart">
+            <div class="hint" style="margin-bottom:6px;">Market cap vs GDP (World Bank 2024)</div>
+            <div class="bars" id="barsMarketCap"></div>
+          </div>
+
+          <div class="chart" style="margin-top:12px" aria-label="Revenue vs GDP bar chart">
+            <div class="hint" style="margin-bottom:6px;">Annual revenue vs GDP (World Bank 2024)</div>
+            <div class="bars" id="barsRevenue"></div>
+          </div>
+
+          <div class="callout">
+            <b>Why GDP comparisons are still useful:</b> if a single vendor’s “paper value” is in the same order of
+            magnitude as a major economy’s annual output, you’re looking at <b>structural power</b> (capital, R&D, lobbying,
+            acquisitions, platform leverage) — even before you discuss products.
+          </div>
+        </div>
+
+        <div class="card span-5">
+          <div class="h">
+            <h3 class="heading-icon">
+              <span class="icon-stack" aria-hidden="true">
+                <span>
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="2" width="20" height="20" fill="#f35325"/>
+                  <rect x="26" y="2" width="20" height="20" fill="#81bc06"/>
+                  <rect x="2" y="26" width="20" height="20" fill="#05a6f0"/>
+                  <rect x="26" y="26" width="20" height="20" fill="#ffba08"/>
+                </svg>
+                </span>
+                <span>
+                  <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="60" height="40" fill="#ffffff"/>
+                    <rect y="16" width="60" height="8" fill="#003580"/>
+                    <rect x="16" width="8" height="40" fill="#003580"/>
+                  </svg>
+                </span>
+              </span>
+              <span>Microsoft vs. Finland</span>
+            </h3>
+          </div>
+          <div class="subhint">Ratios use World Bank GDP for Finland (2024)</div>
+
+          <div class="gauges">
+            <div class="gauge">
+              <svg width="60" height="60" viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="50" stroke="rgba(255,255,255,0.12)" stroke-width="12" fill="none"></circle>
+                <circle id="g1" cx="60" cy="60" r="50" stroke="rgba(155,197,255,0.95)" stroke-width="12" fill="none"
+                        stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="0 999"></circle>
+              </svg>
+              <div class="t">
+                <b id="g1Title">—</b>
+                <span id="g1Sub">—</span>
+              </div>
+            </div>
+
+            <div class="gauge">
+              <svg width="60" height="60" viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="50" stroke="rgba(255,255,255,0.12)" stroke-width="12" fill="none"></circle>
+                <circle id="g2" cx="60" cy="60" r="50" stroke="rgba(62,255,190,0.92)" stroke-width="12" fill="none"
+                        stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="0 999"></circle>
+              </svg>
+              <div class="t">
+                <b id="g2Title">—</b>
+                <span id="g2Sub">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <b>Interpretation:</b> these gauges don’t mean “Microsoft could buy Finland”.
+            They mean Microsoft’s yearly cash-generation and reinvestment capacity can be comparable
+            to the output of smaller nations — which matters when you’re negotiating terms, exits, and sovereignty controls.
+          </div>
+
+          <div class="chart" style="margin-top:12px">
+            <div class="h" style="margin:0 0 8px">
+              <h3 style="font-size:14px; margin:0">Facts</h3>
+              <div class="hint">What each number does / doesn’t imply</div>
+            </div>
+            <ul class="clean">
+              <li><b>Market cap</b> is investor expectation; it can swing wildly with rates, hype, and macro cycles.</li>
+              <li><b>Revenue</b> ≠ profit, and profit ≠ “societal benefit”; it’s a measure of commercial gravity.</li>
+              <li><b>Device / member counts</b> reflect reach and default paths, not “mindshare” quality.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOUCHPOINTS -->
+    <section id="touchpoints">
+      <div class="grid">
+        <div class="card span-12">
+          <div class="h">
+            <h3>Microsoft’s “ambient” impact (even if you’re not a customer or employee)</h3>
+            <div class="hint">This is where societal dependency shows up</div>
+          </div>
+
+          <div class="cols">
+            <div class="chart">
+              <b>Paths you still likely touch</b>
+              <ul class="clean">
+                <li><b>Labor market:</b> LinkedIn influences hiring pipelines, professional identity, and visibility norms.</li>
+                <li><b>Software supply chain:</b> GitHub is a default collaboration + dependency distribution layer for a huge share of code, public and private.</li>
+                <li><b>Security ecosystem:</b> Microsoft’s telemetry + incident response posture affects global detection narratives and defensive tooling standards.</li>
+                <li><b>Interoperability gravity:</b> file formats, identity standards, and “works best with…” incentives shape what smaller vendors must support.</li>
+                <li><b>Public services indirectly:</b> schools, municipalities, and health systems using M365/Azure can define the citizen’s default channels.</li>
+              </ul>
+            </div>
+
+            <div class="chart">
+              <b>What “significance” looks like in practice</b>
+              <ul class="clean">
+                <li><b>Platform leverage:</b> bundling + default settings can tilt markets without explicit coercion.</li>
+                <li><b>Standards by adoption:</b> “common” becomes “required” when ecosystems standardize on a stack.</li>
+                <li><b>Outage blast radius:</b> a cloud incident can become a multi-sector continuity problem, not just “IT downtime”.</li>
+                <li><b>Regulatory pressure:</b> governments negotiate with a vendor that has security scale and compliance resources most local suppliers cannot match.</li>
+                <li><b>Talent gravity:</b> certifications, admin skillsets, and ecosystem jobs can reinforce lock-in beyond the product itself.</li>
+              </ul>
+
+              <div class="callout">
+                <b>Key point:</b> the societal footprint is often <b>infrastructure + defaults</b>, not “brand love”.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOVEREIGNTY -->
+    <section id="sovereignty">
+      <div class="grid">
+        <div class="card span-12">
+          <div class="h">
+            <h3>National security & digital sovereignty lens (EU-relevant)</h3>
+            <div class="hint">Scenario-based risk surface</div>
+          </div>
+
+          <div class="riskgrid">
+            <div class="risk">
+              <div class="rhead">
+                <h4>Jurisdiction / extraterritorial pressure</h4>
+                <span class="badge high">risk: HIGH</span>
+              </div>
+              <p>
+                When core comms/identity/cloud sits under a foreign legal regime, policy shocks (sanctions, subpoenas,
+                export controls) can create uncertainty—even if the vendor is “trying to help.”
+              </p>
+            </div>
+
+            <div class="risk">
+              <div class="rhead">
+                <h4>Concentration risk (single-vendor critical path)</h4>
+                <span class="badge high">risk: HIGH</span>
+              </div>
+              <p>
+                If email, identity, docs, endpoints, and cloud hosting are all one integrated stack,
+                outages or contract disputes can become systemic continuity events.
+              </p>
+            </div>
+
+            <div class="risk">
+              <div class="rhead">
+                <h4>Supply chain + dependency cascade</h4>
+                <span class="badge med">risk: MED</span>
+              </div>
+              <p>
+                Not just “Microsoft software” but the ecosystem: partner tooling, admin skills,
+                integrations, and file/workflow standards that become hard to unwind.
+              </p>
+            </div>
+
+            <div class="risk">
+              <div class="rhead">
+                <h4>Data sovereignty + enforcement reality</h4>
+                <span class="badge med">risk: MED</span>
+              </div>
+              <p>
+                Data residency commitments and contractual controls can help, but enforcement, transparency,
+                and auditability (especially cross-border) remain a persistent governance workload.
+              </p>
+            </div>
+
+            <div class="risk">
+              <div class="rhead">
+                <h4>Security upside (defensive scale)</h4>
+                <span class="badge low">benefit: HIGH</span>
+              </div>
+              <p>
+                Microsoft’s threat visibility is enormous; at scale, this can improve detection and response for customers,
+                and influence global defensive baselines.
+              </p>
+            </div>
+
+            <div class="risk">
+              <div class="rhead">
+                <h4>Mitigations that actually matter</h4>
+                <span class="badge med">effort: MED→HIGH</span>
+              </div>
+              <p>
+                Multi-vendor identity strategy, exit plans, open formats, customer-managed encryption keys,
+                and “break-glass” continuity procedures (including offline modes and alternative comms).
+              </p>
+            </div>
+          </div>
+
+          <div class="callout">
+            <b>Concrete example Europeans cite:</b> reporting around US sanctions impacting the ICC included claims that services (including email)
+            were disrupted, triggering broader debate about dependence on US tech providers. (See linked sources below.)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EU / FINLAND -->
+    <section id="finland">
+      <div class="grid">
+        <div class="card span-12">
+          <div class="h">
+            <h3>EU & Finland dependency concerns</h3>
+            <div class="hint">Digital sovereignty = resilience, bargaining power, and exit optionality</div>
+          </div>
+
+          <div class="cols">
+            <div class="chart">
+              <b>Why this is a national-security topic</b>
+              <ul class="clean">
+                <li><b>Continuity under geopolitical stress:</b> sanctions, trade disputes, or legal conflicts can create operational uncertainty.</li>
+                <li><b>Critical-sector reliance:</b> if public sector comms + identity + docs are one external stack, resilience becomes partly “vendor policy”.</li>
+                <li><b>Defense-in-depth vs monoculture:</b> standardization helps operations, but monoculture increases correlated failure modes.</li>
+                <li><b>Public procurement leverage:</b> dependency shifts negotiating power over price, terms, audit, and sovereign controls.</li>
+              </ul>
+
+              <div class="callout">
+                <b>Practical test:</b> can your org run <b>email + identity + files</b> for 30 days if a platform feature is unavailable?
+                If the answer is “no,” you have a sovereignty gap (regardless of vendor).
+              </div>
+            </div>
+
+            <div class="chart">
+              <b>Concerns from one Member of the European Parliament</b>
+              <p style="margin:10px 0 0; color:var(--muted); font-size:13px;">
+                Finnish MEP Aura Salla has publicly argued that Europe should reduce Microsoft dependency, citing the ICC-sanctions episode as a wake-up call.
+              </p>
+              <div class="callout" style="border-left-color: rgba(255,205,86,0.85); background: rgba(255,205,86,0.10);">
+                <b>Quote (Salla):</b> “...the EU cannot trust US operating system providers.” <span style="color:var(--faint)">(context in linked press release)</span>
+              </div>
+              <ul class="clean">
+                <li><b>English press release (May 2025):</b> Salla argues EU reliance on US providers is a “major cause of uncertainty.”</li>
+                <li><b>Finnish release (Nov 2025):</b> calls for Finland + EU to end Microsoft use; includes claims about public-sector license spend.</li>
+                <li><b>Policy reality check:</b> sovereignty work is slow: migration costs, user habits, legacy apps, and interoperability constraints are real.</li>
+              </ul>
+
+              <div class="callout">
+                <b>Key takeaway:</b> you don’t need to “ban Microsoft” to reduce risk.
+                You need <b>exit options</b>, <b>segmentation</b>, and <b>sovereign controls</b> for critical workflows.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOURCES -->
+    <section id="sources">
+      <div class="grid">
+        <div class="card span-12">
+          <div class="h">
+            <h3>Sources & further reading</h3>
+            <div class="hint">All links are external</div>
+          </div>
+
+          <div class="sources">
+            <div class="src">
+              <div class="t"><b>Microsoft FY2025 results</b><span>FY2025</span></div>
+              <p>
+                Investor relations / annual report summary with FY2025 revenue, operating income, and Azure “surpassed $75B”.
+                <br><a href="https://www.microsoft.com/en-us/investor/earnings/fy-2025-q4/press-release-webcast" target="_blank" rel="noopener">Microsoft FY25 Q4 earnings release</a>
+                <br><a href="https://www.microsoft.com/investor/reports/ar25/index.html" target="_blank" rel="noopener">Microsoft Annual Report 2025</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>Windows reach</b><span>Jun 24, 2025</span></div>
+              <p>
+                Windows Experience Blog stating “over 1.4B monthly active devices”.
+                <br><a href="https://blogs.windows.com/windowsexperience/2025/06/24/stay-secure-with-windows-11-copilot-pcs-and-windows-365-before-support-ends-for-windows-10/" target="_blank" rel="noopener">Windows 1.4B monthly active devices</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>M365 commercial seats</b><span>Apr 30, 2025</span></div>
+              <p>
+                Earnings call transcript noting “over 430 million” paid M365 commercial seats.
+                <br><a href="https://www.microsoft.com/en-us/investor/events/fy-2025/earnings-fy-2025-q3" target="_blank" rel="noopener">FY25 Q3 earnings call</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>LinkedIn scale</b><span>Q1 FY26 highlights</span></div>
+              <p>
+                LinkedIn’s highlights noting “nearly 1.3B members” and $18B revenue over the past twelve months.
+                <br><a href="https://news.linkedin.com/2025/Q1-Business-Highlights" target="_blank" rel="noopener">LinkedIn Q1 business highlights</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>GitHub developer scale</b><span>Oct/Nov 2025</span></div>
+              <p>
+                Octoverse 2025: “180 million-plus developers…”, +36M new developers in 2025.
+                <br><a href="https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/" target="_blank" rel="noopener">Octoverse 2025</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>Security telemetry scale</b><span>2025</span></div>
+              <p>
+                Microsoft Digital Defense Report 2025: “100T signals/day”, “4.5M malware blocks/day”, “38M identity risk detections/day”.
+                <br><a href="https://www.microsoft.com/en-us/corporate-responsibility/cybersecurity/microsoft-digital-defense-report-2025/" target="_blank" rel="noopener">Digital Defense Report 2025</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>Cloud infrastructure footprint</b><span>Azure blog</span></div>
+              <p>
+                Azure blog post describing “70+ regions” and “400+ datacenters” (plus fiber/edge figures).
+                <br><a href="https://azure.microsoft.com/en-us/blog/microsofts-commitment-to-supporting-cloud-infrastructure-demand-in-the-united-states/" target="_blank" rel="noopener">Microsoft cloud infrastructure footprint</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>EU institution compliance angle</b><span>Jul 2025</span></div>
+              <p>
+                EDPS press release on the European Commission bringing M365 use into compliance with EU-institution data protection rules.
+                <br><a href="https://www.edps.europa.eu/press-publications/press-news/press-releases/2025/european-commission-brings-use-microsoft-365-compliance-data-protection-rules-eu-institutions-and-bodies_en" target="_blank" rel="noopener">EDPS press release (Jul 28, 2025)</a>
+                <br><a href="https://www.euractiv.com/news/eus-privacy-supervisor-clears-commissions-use-of-microsoft/" target="_blank" rel="noopener">Euractiv coverage</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>ICC sanctions episode reporting</b><span>May 2025</span></div>
+              <p>
+                AP report on how US sanctions disrupted ICC operations; widely cited in digital sovereignty debates.
+                <br><a href="https://apnews.com/article/icc-trump-sanctions-karim-khan-court-a4b4c02751ab84c09718b1b95cbd5db3" target="_blank" rel="noopener">AP News (May 15, 2025)</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>Aura Salla statements</b><span>May 2025 / Nov 2025</span></div>
+              <p>
+                Salla’s releases arguing for reducing EU/Finland dependency on Microsoft.
+                <br><a href="https://www.aurasalla.eu/en/2025/05/26/mep-aura-salla-microsofts-example-shows-that-the-company-can-cut-off-europeans-access-to-critical-operating-systems/" target="_blank" rel="noopener">Salla press release (English, May 26, 2025)</a>
+                <br><a href="https://www.sttinfo.fi/tiedote/71588926/mep-aura-salla-eun-ja-suomen-lopetettava-microsoftin-kaytto?lang=fi&publisherId=69821236" target="_blank" rel="noopener">Salla release via STT Info (Finnish, Nov 26, 2025)</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>World Bank GDP (comparison baseline)</b><span>2024</span></div>
+              <p>
+                GDP (current US$) used for the Finland/India comparisons.
+                <br><a href="https://data.worldbank.org/country/finland" target="_blank" rel="noopener">Finland GDP (World Bank)</a>
+                <br><a href="https://data.worldbank.org/country/india" target="_blank" rel="noopener">India GDP (World Bank)</a>
+              </p>
+            </div>
+
+            <div class="src">
+              <div class="t"><b>EU “migration away” example</b><span>Oct 2025</span></div>
+              <p>
+                Schleswig-Holstein migration reporting (useful as a “how hard is this?” reality check).
+                <br><a href="https://www.theregister.com/2025/10/15/schleswig_holstein_open_source/" target="_blank" rel="noopener">The Register (Oct 15, 2025)</a>
+              </p>
+            </div>
+          </div>
+
+          <footer>
+            <div class="hr"></div>
+            <div>
+              <b>Note:</b> Yes, AI built this page. No matter how good ChatGPT can be in researching websites, it isn't able to think. Go to the source to validate that it is real, instead of trusting an obviously vibe-coded page like this that you find from a random person's site on the Internet.
+            </div>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ---- Metrics (edit here to refresh the snapshot) ----
+    const metrics = {
+      asOf: "2026-01-09",
+      // Market cap is approximate and changes daily; used for magnitude comparisons.
+      marketCapUSD: 3.850008526003e12,
+
+      // FY2025 (Microsoft fiscal year ended June 30, 2025)
+      annualRevenueUSD: 281.7e9,
+      operatingIncomeUSD: 128.5e9,
+      netIncomeUSD: 101.8e9,
+      azureAnnualRevenueUSD: 75e9,
+
+      // Reach / platforms
+      windowsMonthlyActiveDevices: 1.4e9,
+      m365PaidCommercialSeats: 430e6,
+      linkedinMembers: 1.3e9,
+      githubDevelopers: 180e6,
+
+      // Security telemetry (DDR 2025)
+      securitySignalsPerDay: 100e12,
+
+      // Infra footprint
+      azureRegions: 70,
+      datacenters: 400,
+      fiberMiles: 370000,
+      edgeSites: 190,
+
+      // Workforce
+      employees: 228000,
+
+      // GDP baselines (World Bank, 2024)
+      finlandGDPUSD: 298.7e9,
+      indiaGDPUSD: 3.91e12
+    };
+
+    // ---- Formatting helpers ----
+    function fmtMoneyShort(n){
+      const abs = Math.abs(n);
+      const sign = n < 0 ? "-" : "";
+      if (abs >= 1e12) return `${sign}$${(abs/1e12).toFixed(abs>=1e13?0:2)}T`;
+      if (abs >= 1e9)  return `${sign}$${(abs/1e9).toFixed(abs>=1e10?0:1)}B`;
+      if (abs >= 1e6)  return `${sign}$${(abs/1e6).toFixed(1)}M`;
+      return `${sign}$${abs.toFixed(0)}`;
+    }
+    function fmtCountShort(n){
+      const abs = Math.abs(n);
+      const sign = n < 0 ? "-" : "";
+      if (abs >= 1e12) return `${sign}${(abs/1e12).toFixed(1)}T`;
+      if (abs >= 1e9)  return `${sign}${(abs/1e9).toFixed(2)}B`;
+      if (abs >= 1e6)  return `${sign}${(abs/1e6).toFixed(1)}M`;
+      if (abs >= 1e3)  return `${sign}${(abs/1e3).toFixed(1)}K`;
+      return `${sign}${abs.toFixed(0)}`;
+    }
+    function fmtPct(x){
+      return `${(x*100).toFixed(1)}%`;
+    }
+
+    // ---- Animated KPI counter ----
+    function animateNumber(el, to, fmt, duration=900){
+      const start = performance.now();
+      const from = 0;
+      function tick(t){
+        const p = Math.min(1, (t-start)/duration);
+        const eased = 1 - Math.pow(1-p, 3);
+        const v = from + (to-from)*eased;
+        el.textContent = fmt(v);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function createBarIcon(type){
+      if (!type) return null;
+      if (type === "microsoft"){
+        const span = document.createElement("span");
+        span.className = "bar-icon";
+        span.setAttribute("aria-hidden", "true");
+        span.innerHTML = getMicrosoftSVG();
+        return span;
+      }
+      const svg = getFlagSVG(type);
+      if (!svg) return null;
+      const span = document.createElement("span");
+      span.className = "bar-icon";
+      span.setAttribute("aria-hidden", "true");
+      span.innerHTML = svg;
+      return span;
+    }
+
+    function getFlagSVG(type){
+      switch(type){
+        case "finland":
+          return `<svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="40" fill="#ffffff"/><rect y="16" width="60" height="8" fill="#003580"/><rect x="16" width="8" height="40" fill="#003580"/></svg>`;
+        case "india":
+          return `<svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="40" fill="#ff9933"/><rect y="13.33" width="60" height="13.34" fill="#ffffff"/><rect y="26.67" width="60" height="13.33" fill="#128807"/><circle cx="30" cy="20" r="6.2" stroke="#000088" stroke-width="1.4" fill="none"/><circle cx="30" cy="20" r="1.2" fill="#000088"/><g stroke="#000088" stroke-width="0.9"><line x1="30" y1="13.8" x2="30" y2="26.2"/><line x1="23.8" y1="20" x2="36.2" y2="20"/><line x1="25.2" y1="15.2" x2="34.8" y2="24.8"/><line x1="34.8" y1="15.2" x2="25.2" y2="24.8"/></g></svg>`;
+        case "azure":
+          return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path fill="#0078d4" d="M24 6L2 46h20.1L32 30h14L24 6z"/><path fill="#28a8ea" d="M42 31L32 46h30L42 31z"/></svg>`;
+        default:
+          return "";
+      }
+    }
+
+    function getMicrosoftSVG(){
+      return `<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" fill="#f35325"/>
+        <rect x="26" y="2" width="20" height="20" fill="#81bc06"/>
+        <rect x="2" y="26" width="20" height="20" fill="#05a6f0"/>
+        <rect x="26" y="26" width="20" height="20" fill="#ffba08"/>
+      </svg>`;
+    }
+
+    // ---- Bars ----
+    function renderBars(container, rows){
+      // rows: {name, value, label, iconType?}
+      const max = Math.max(...rows.map(r => r.value));
+      container.innerHTML = "";
+      rows.forEach(r => {
+        const bar = document.createElement("div");
+        bar.className = "bar";
+
+        const name = document.createElement("div");
+        name.className = "name";
+        const iconEl = createBarIcon(r.iconType);
+        if (iconEl) name.appendChild(iconEl);
+        const labelSpan = document.createElement("span");
+        labelSpan.textContent = r.name;
+        name.appendChild(labelSpan);
+
+        const track = document.createElement("div");
+        track.className = "track";
+        const fill = document.createElement("div");
+        fill.className = "fill";
+        track.appendChild(fill);
+
+        const val = document.createElement("div");
+        val.className = "val";
+        val.textContent = r.label;
+
+        bar.appendChild(name);
+        bar.appendChild(track);
+        bar.appendChild(val);
+        container.appendChild(bar);
+
+        const pct = (r.value / max) * 100;
+        requestAnimationFrame(() => {
+          fill.style.width = `${pct}%`;
+        });
+      });
+    }
+
+    function animateFactFill(fillEl, targetPct, duration, onComplete){
+      if (!fillEl) return;
+      const clamped = Math.max(0, targetPct);
+      const start = performance.now();
+      function step(now){
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        fillEl.style.width = `${clamped * eased}%`;
+        if (progress < 1){
+          requestAnimationFrame(step);
+        } else {
+          fillEl.style.width = `${clamped}%`;
+          if (typeof onComplete === "function") onComplete();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function animateFactHeadline(){
+      const indiaBar = document.getElementById("factBarIndia");
+      const microsoftBar = document.getElementById("factBarMicrosoft");
+      if (!indiaBar || !microsoftBar) return;
+
+      const indiaFill = indiaBar.querySelector(".fact-fill");
+      const microsoftFill = microsoftBar.querySelector(".fact-fill");
+      const indiaValEl = document.getElementById("factBarIndiaVal");
+      const microsoftValEl = document.getElementById("factBarMicrosoftVal");
+
+      if (indiaValEl) indiaValEl.textContent = fmtMoneyShort(metrics.indiaGDPUSD);
+      if (microsoftValEl) microsoftValEl.textContent = fmtMoneyShort(metrics.marketCapUSD);
+
+      animateFactFill(indiaFill, 100, 450);
+
+      const ratioPct = Math.min(100, (metrics.marketCapUSD / metrics.indiaGDPUSD) * 100);
+      setTimeout(() => {
+        animateFactFill(microsoftFill, ratioPct, 2200, () => {
+          microsoftBar.classList.add("fact-bar-highlight");
+        });
+      }, 250);
+    }
+
+    // ---- Gauges ----
+    function setGauge(circleEl, ratio){
+      // ratio: 0..1 (clamped)
+      const r = 50;
+      const c = 2 * Math.PI * r;
+      const v = Math.max(0, Math.min(1, ratio));
+      circleEl.setAttribute("stroke-dasharray", `${(v*c).toFixed(1)} ${(c - v*c).toFixed(1)}`);
+    }
+
+    // ---- Boot ----
+    const navToggle = document.getElementById("navToggle");
+    const jumpNav = document.getElementById("jumpNav");
+    if (navToggle && jumpNav){
+      navToggle.addEventListener("click", () => {
+        const open = jumpNav.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", open);
+      });
+      jumpNav.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          jumpNav.classList.remove("open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
+    document.getElementById("asof").textContent = metrics.asOf;
+
+    // Headline comparison: market cap vs India GDP (2024)
+    const capVsIndia = metrics.marketCapUSD / metrics.indiaGDPUSD;
+    document.getElementById("headlineRatio").textContent =
+      `${fmtPct(capVsIndia)} of India’s 2024 GDP`;
+    document.getElementById("headlineNote").textContent =
+      `Market cap ≠ GDP; this is a magnitude comparison (World Bank 2024 baseline).`;
+
+    animateFactHeadline();
+
+    // Fill KPIs
+    document.querySelectorAll("[data-kpi]").forEach(el => {
+      const key = el.getAttribute("data-kpi");
+      const fmt = el.getAttribute("data-fmt");
+      const val = metrics[key];
+      const formatter = fmt === "moneyShort" ? fmtMoneyShort : fmtCountShort;
+      animateNumber(el, val, formatter);
+    });
+
+    // Infra KPI
+    document.getElementById("infraKpi").textContent =
+      `${metrics.azureRegions}+ / ${metrics.datacenters}+`;
+
+    // Bars
+    renderBars(document.getElementById("barsMarketCap"), [
+      { name: "Microsoft market cap (approx.)", value: metrics.marketCapUSD, label: fmtMoneyShort(metrics.marketCapUSD), iconType: "microsoft" },
+      { name: "India GDP (2024)", value: metrics.indiaGDPUSD, label: fmtMoneyShort(metrics.indiaGDPUSD), iconType: "india" },
+      { name: "Finland GDP (2024)", value: metrics.finlandGDPUSD, label: fmtMoneyShort(metrics.finlandGDPUSD), iconType: "finland" }
+    ]);
+
+    renderBars(document.getElementById("barsRevenue"), [
+      { name: "Microsoft annual revenue (FY2025)", value: metrics.annualRevenueUSD, label: fmtMoneyShort(metrics.annualRevenueUSD), iconType: "microsoft" },
+      { name: "Finland GDP (2024)", value: metrics.finlandGDPUSD, label: fmtMoneyShort(metrics.finlandGDPUSD), iconType: "finland" },
+      { name: "Azure annual revenue (FY2025)", value: metrics.azureAnnualRevenueUSD, label: fmtMoneyShort(metrics.azureAnnualRevenueUSD), iconType: "azure" }
+    ]);
+
+    // Gauges (Finland baseline)
+    const revVsFin = metrics.annualRevenueUSD / metrics.finlandGDPUSD;     // ~0.94
+    const azureVsFin = metrics.azureAnnualRevenueUSD / metrics.finlandGDPUSD; // ~0.25
+
+    setGauge(document.getElementById("g1"), Math.min(1, revVsFin));
+    document.getElementById("g1Title").textContent = `${fmtPct(revVsFin)} of Finland’s GDP`;
+    document.getElementById("g1Sub").textContent = `Microsoft FY2025 revenue vs Finland GDP (2024)`;
+
+    setGauge(document.getElementById("g2"), Math.min(1, azureVsFin));
+    document.getElementById("g2Title").textContent = `${fmtPct(azureVsFin)} of Finland’s GDP`;
+    document.getElementById("g2Sub").textContent = `Azure FY2025 vs Finland GDP (2024)`;
+  </script>
+</body>
+</html>
