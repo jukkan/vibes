@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSL 101: A GUI Refugee's Guide to the Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --terminal-green: #00ff41;
+            --terminal-amber: #ffb000;
+            --terminal-red: #ff0040;
+            --terminal-blue: #00d4ff;
+            --dark-bg: #0a0e14;
+            --darker-bg: #05070a;
+            --code-bg: #151920;
+            --border: #1a1f2e;
+            --text: #c7d1e0;
+            --text-dim: #6b7897;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 65, 0.02) 51%,
+                transparent 52%
+            );
+            background-size: 100% 4px;
+            animation: scanline 8s linear infinite;
+            z-index: 1000;
+            opacity: 0.5;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100%); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            border: 2px solid var(--terminal-green);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 65, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--terminal-green);
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tldr {
+            background: var(--code-bg);
+            border-left: 4px solid var(--terminal-amber);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .tldr h2 {
+            color: var(--terminal-amber);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .tldr ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .tldr li {
+            padding: 0.3rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tldr li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--terminal-amber);
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-family: 'Space Mono', monospace;
+            color: var(--terminal-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-family: 'Space Mono', monospace;
+            color: var(--terminal-green);
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            color: var(--terminal-green);
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--terminal-green);
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--terminal-green);
+        }
+
+        .command-block {
+            background: var(--darker-bg);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .command-block .prompt {
+            color: var(--terminal-blue);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .command-block .output {
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .light-side, .dark-side {
+            padding: 1.5rem;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+
+        .light-side {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, transparent 100%);
+            border-color: var(--terminal-blue);
+        }
+
+        .light-side h4 {
+            color: var(--terminal-blue);
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 1rem;
+        }
+
+        .dark-side {
+            background: linear-gradient(135deg, rgba(255, 0, 64, 0.05) 0%, transparent 100%);
+            border-color: var(--terminal-red);
+        }
+
+        .dark-side h4 {
+            color: var(--terminal-red);
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 1rem;
+        }
+
+        .warning {
+            background: rgba(255, 176, 0, 0.1);
+            border-left: 4px solid var(--terminal-amber);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .warning::before {
+            content: '⚠️ ';
+            font-size: 1.2rem;
+        }
+
+        .tip {
+            background: rgba(0, 255, 65, 0.05);
+            border-left: 4px solid var(--terminal-green);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .tip::before {
+            content: '💡 ';
+            font-size: 1.2rem;
+        }
+
+        a {
+            color: var(--terminal-blue);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            border-bottom-color: var(--terminal-blue);
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--code-bg);
+            color: var(--terminal-green);
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 2px solid var(--terminal-green);
+        }
+
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: rgba(0, 255, 65, 0.03);
+        }
+
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .side-by-side {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    
+    <div class="container">
+        <header>
+            <h1>WSL 101</h1>
+            <p class="subtitle">A GUI Refugee's Guide to the Terminal • Because clicking is for quitters</p>
+        </header>
+
+        <div class="tldr">
+            <h2>TL;DR</h2>
+            <ul>
+                <li>WSL = Linux inside Windows without dual-booting or VMs</li>
+                <li>Two worlds: Windows (C:\Users\...) vs Linux (/home/...)</li>
+                <li>Use <code>/mnt/c/</code> to access your Windows files from Linux</li>
+                <li>Terminal commands look cryptic but are actually simple verbs</li>
+                <li>You can break things, but mostly just in your Linux world</li>
+            </ul>
+        </div>
+
+        <section>
+            <h2>What The Hell Is WSL Anyway?</h2>
+            <p>WSL (Windows Subsystem for Linux) is Microsoft's love letter to developers who got tired of rebooting into Ubuntu. It's a real Linux kernel running inside Windows 11. Not a VM, not a compatibility layer—actual Linux. You can run <code>apt install</code>, compile code, use bash scripts, and pretend you're a real hacker, all while Outlook and Edge are still running in the background.</p>
+
+            <p><strong>Think of it like this:</strong> Windows is the building, WSL is an apartment inside it. The apartment has its own interior (Linux filesystem), but you can still access the building's facilities (your Windows files and apps).</p>
+
+            <div class="tip">
+                <strong>Why you care:</strong> Modern dev tools (like Claude Code) are built for Unix-like systems. WSL lets you use them without abandoning Windows. Plus you look cooler typing in a terminal than clicking through GUIs.
+            </div>
+
+            <p><strong>Official docs:</strong> <a href="https://learn.microsoft.com/en-us/windows/wsl/" target="_blank">Microsoft WSL Documentation</a></p>
+        </section>
+
+        <section>
+            <h2>The Two-World Problem</h2>
+            <p>Here's the mindfuck that nobody explains well: you now have TWO filesystems.</p>
+
+            <table>
+                <tr>
+                    <th>World</th>
+                    <th>Where Files Live</th>
+                    <th>Accessible From</th>
+                </tr>
+                <tr>
+                    <td><strong>Windows</strong></td>
+                    <td><code>C:\Users\YourName\</code></td>
+                    <td>File Explorer, Windows apps, WSL via <code>/mnt/c/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Linux (WSL)</strong></td>
+                    <td><code>/home/yourname/</code></td>
+                    <td>Terminal, Linux apps, Windows via <code>\\wsl$\</code></td>
+                </tr>
+            </table>
+
+            <div class="warning">
+                <strong>Critical:</strong> Files in your Linux home directory (<code>/home/yourname/</code>) are NOT in your Windows Documents folder. They're in a hidden location that Windows manages. Don't edit Linux files with Windows apps unless you know what you're doing—file permissions get weird.
+            </div>
+
+            <h3>Where Should I Put My Stuff?</h3>
+            
+            <div class="side-by-side">
+                <div class="light-side">
+                    <h4>🌞 Light Side (Safe)</h4>
+                    <p><strong>Windows side for:</strong></p>
+                    <ul>
+                        <li>Documents you edit in Word/Excel</li>
+                        <li>Files you need in OneDrive</li>
+                        <li>Anything you access from Windows apps</li>
+                    </ul>
+                    <p><strong>Access from Linux:</strong><br><code>/mnt/c/Users/YourName/Documents/</code></p>
+                </div>
+
+                <div class="dark-side">
+                    <h4>🌙 Dark Side (Fast)</h4>
+                    <p><strong>Linux side for:</strong></p>
+                    <ul>
+                        <li>Code projects (way faster)</li>
+                        <li>Node modules, build outputs</li>
+                        <li>Anything only Linux tools touch</li>
+                    </ul>
+                    <p><strong>Access from Windows:</strong><br><code>\\wsl$\Ubuntu\home\yourname\</code></p>
+                </div>
+            </div>
+
+            <p><strong>Pro move:</strong> Keep code in <code>~/projects/</code> (Linux) for speed, but symlink to Windows for backups if needed.</p>
+        </section>
+
+        <section>
+            <h2>Terminal Basics: The Essential Verbs</h2>
+            <p>The terminal is just a text-based way to tell your computer what to do. Instead of clicking folders, you type where to go. Here are the commands you'll use 80% of the time:</p>
+
+            <h3>Navigation (Moving Around)</h3>
+            
+            <div class="command-block">
+                <div class="prompt">$ pwd</div>
+                <code># Print Working Directory - where am I right now?</code>
+                <div class="output">/home/yourname</div>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ ls</div>
+                <code># List - show me what's here (like viewing folder contents)</code>
+                <div class="output">projects  documents  downloads</div>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ ls -la</div>
+                <code># List with ALL details and hidden files (the good stuff)</code>
+                <div class="output">drwxr-xr-x  5 yourname yourname  4096 Jan 21 10:30 .
+drwxr-xr-x  3 root     root      4096 Jan 15 08:00 ..
+-rw-r--r--  1 yourname yourname   220 Jan 15 08:00 .bashrc
+drwxr-xr-x  2 yourname yourname  4096 Jan 20 14:22 projects</div>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ cd projects</div>
+                <code># Change Directory - go to the 'projects' folder</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ cd ..</div>
+                <code># Go up one level (parent directory)</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ cd ~</div>
+                <code># Go home - back to /home/yourname/</code>
+            </div>
+
+            <div class="tip">
+                <strong>Tab completion is magic:</strong> Type the first few letters of a file/folder name and hit TAB. The terminal autocompletes it. Hit TAB twice to see all options. This alone will 10x your speed.
+            </div>
+
+            <h3>File Operations</h3>
+
+            <div class="command-block">
+                <div class="prompt">$ mkdir my-project</div>
+                <code># Make Directory - create a new folder</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ touch readme.md</div>
+                <code># Create an empty file</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ cp file.txt backup.txt</div>
+                <code># Copy file.txt to backup.txt</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ mv old.txt new.txt</div>
+                <code># Move/rename - works for moving AND renaming</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ rm file.txt</div>
+                <code># Remove - delete a file (CAREFUL: no recycle bin!)</code>
+            </div>
+
+            <div class="warning">
+                <strong>There is no Ctrl+Z for <code>rm</code>:</strong> Deleted files are GONE. If you're nervous, use <code>rm -i file.txt</code> to get prompted before deletion. Or just move files to a trash folder first.
+            </div>
+
+            <h3>Viewing Files</h3>
+
+            <div class="command-block">
+                <div class="prompt">$ cat file.txt</div>
+                <code># Show entire file contents in terminal</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ less file.txt</div>
+                <code># View file page-by-page (q to quit, space to scroll)</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ head -n 20 file.txt</div>
+                <code># Show first 20 lines</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ tail -f log.txt</div>
+                <code># Show last lines and follow updates (great for logs)</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>Package Management: Installing Stuff</h2>
+            <p>In Windows you download .exe files or use Microsoft Store. In Linux (Ubuntu specifically, which WSL defaults to), you use <code>apt</code> (Advanced Package Tool).</p>
+
+            <div class="command-block">
+                <div class="prompt">$ sudo apt update</div>
+                <code># Update package list (like refreshing the app store)</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ sudo apt upgrade</div>
+                <code># Upgrade installed packages to latest versions</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ sudo apt install git</div>
+                <code># Install git (or any package)</code>
+            </div>
+
+            <p><strong>What's <code>sudo</code>?</strong> It means "Super User DO" - basically "run this as admin". Linux asks for permission before changing system stuff. You'll type your password (which won't show as you type—that's normal, just trust and hit Enter).</p>
+
+            <div class="tip">
+                <strong>Common installs for dev work:</strong>
+                <ul>
+                    <li><code>sudo apt install git</code> - version control</li>
+                    <li><code>sudo apt install curl</code> - download stuff from URLs</li>
+                    <li><code>sudo apt install build-essential</code> - C/C++ compilers</li>
+                    <li><code>sudo apt install python3 python3-pip</code> - Python</li>
+                </ul>
+            </div>
+
+            <p><strong>Node.js?</strong> Use <a href="https://github.com/nvm-sh/nvm" target="_blank">nvm (Node Version Manager)</a> instead of apt—it's way better for managing versions.</p>
+        </section>
+
+        <section>
+            <h2>Running Claude Code (And Other Tools)</h2>
+            <p>This is probably why you're here. Tools like Claude Code expect a Unix environment. Here's the basic flow:</p>
+
+            <h3>1. Install the tool (usually via npm or direct download)</h3>
+            <div class="command-block">
+                <div class="prompt">$ npm install -g @anthropic-ai/claude-code</div>
+                <code># Install Claude Code globally</code>
+            </div>
+
+            <h3>2. Navigate to where you want to work</h3>
+            <div class="command-block">
+                <div class="prompt">$ cd ~/projects/my-app</div>
+                <code># Or wherever your code lives</code>
+            </div>
+
+            <h3>3. Run the tool</h3>
+            <div class="command-block">
+                <div class="prompt">$ claude-code</div>
+                <code># Launches Claude Code in current directory</code>
+            </div>
+
+            <div class="tip">
+                <strong>Pro tip:</strong> Add an alias to your <code>.bashrc</code> or <code>.zshrc</code> for quick access:
+                <pre><code>alias cc='claude-code'</code></pre>
+                Then just type <code>cc</code> to launch.
+            </div>
+        </section>
+
+        <section>
+            <h2>Common Gotchas & How to Fix Them</h2>
+
+            <h3>❌ "Command not found"</h3>
+            <p>The tool isn't installed, or it's not in your PATH (the list of places the terminal looks for commands).</p>
+            <p><strong>Fix:</strong> Install it, or add its location to PATH. For global npm packages, make sure npm's global bin is in your PATH.</p>
+
+            <h3>❌ "Permission denied"</h3>
+            <p>You're trying to do something that needs admin rights.</p>
+            <p><strong>Fix:</strong> Add <code>sudo</code> before the command. Or check file permissions with <code>ls -la</code>.</p>
+
+            <h3>❌ Files changed in Windows don't show in Linux (or vice versa)</h3>
+            <p>You're looking in the wrong filesystem. Remember: Windows files are at <code>/mnt/c/</code>, Linux files are at <code>/home/yourname/</code>.</p>
+            <p><strong>Fix:</strong> Use <code>pwd</code> to check where you actually are.</p>
+
+            <h3>❌ Slow file operations when working in <code>/mnt/c/</code></h3>
+            <p>Cross-filesystem access (Windows ↔ Linux) is slower than native.</p>
+            <p><strong>Fix:</strong> Keep projects in <code>~/projects/</code> (Linux native) for speed.</p>
+
+            <h3>❌ "No such file or directory" but I can SEE the file</h3>
+            <p>Linux is case-sensitive. <code>File.txt</code> ≠ <code>file.txt</code>.</p>
+            <p><strong>Fix:</strong> Check exact spelling and capitalization.</p>
+        </section>
+
+        <section>
+            <h2>The Dark Arts: Pipes, Redirects & Chaining</h2>
+            <p>Once you're comfortable with basics, these make you dangerously efficient.</p>
+
+            <div class="side-by-side">
+                <div class="light-side">
+                    <h4>Pipes (|)</h4>
+                    <p>Send output of one command into another:</p>
+                    <pre><code>ls -la | grep ".json"
+# List files, filter for .json</code></pre>
+                    <pre><code>cat log.txt | tail -n 50
+# Show last 50 lines of log</code></pre>
+                </div>
+
+                <div class="dark-side">
+                    <h4>Redirects (> >>)</h4>
+                    <p>Save output to a file:</p>
+                    <pre><code>ls -la > files.txt
+# Save list to file (overwrites)</code></pre>
+                    <pre><code>echo "new line" >> log.txt
+# Append to file</code></pre>
+                </div>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ command1 && command2</div>
+                <code># Run command2 only if command1 succeeds</code>
+            </div>
+
+            <div class="command-block">
+                <div class="prompt">$ npm install && npm run build</div>
+                <code># Install packages, then build (if install worked)</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>Keyboard Shortcuts That Save Your Sanity</h2>
+            <table>
+                <tr>
+                    <th>Shortcut</th>
+                    <th>What It Does</th>
+                </tr>
+                <tr>
+                    <td><code>Ctrl + C</code></td>
+                    <td>Kill current command (stop it running)</td>
+                </tr>
+                <tr>
+                    <td><code>Ctrl + D</code></td>
+                    <td>Exit current shell/program</td>
+                </tr>
+                <tr>
+                    <td><code>Ctrl + L</code></td>
+                    <td>Clear screen (same as <code>clear</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>Ctrl + A</code></td>
+                    <td>Jump to start of line</td>
+                </tr>
+                <tr>
+                    <td><code>Ctrl + E</code></td>
+                    <td>Jump to end of line</td>
+                </tr>
+                <tr>
+                    <td><code>Ctrl + R</code></td>
+                    <td>Search command history (reverse search)</td>
+                </tr>
+                <tr>
+                    <td><code>↑ / ↓</code></td>
+                    <td>Cycle through previous commands</td>
+                </tr>
+                <tr>
+                    <td><code>Tab</code></td>
+                    <td>Autocomplete file/folder/command names</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>Your First Day Checklist</h2>
+            <ol>
+                <li><strong>Create a projects folder:</strong> <code>mkdir ~/projects && cd ~/projects</code></li>
+                <li><strong>Update the system:</strong> <code>sudo apt update && sudo apt upgrade</code></li>
+                <li><strong>Install essentials:</strong> <code>sudo apt install git curl build-essential</code></li>
+                <li><strong>Set up SSH keys</strong> (for GitHub etc): <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" target="_blank">GitHub SSH Guide</a></li>
+                <li><strong>Configure git:</strong> <code>git config --global user.name "Your Name"</code> and <code>git config --global user.email "you@example.com"</code></li>
+                <li><strong>Install Node via nvm:</strong> <a href="https://github.com/nvm-sh/nvm#installing-and-updating" target="_blank">nvm installation</a></li>
+                <li><strong>Customize your shell:</strong> Edit <code>~/.bashrc</code> or switch to <a href="https://ohmyz.sh/" target="_blank">Oh My Zsh</a> for better defaults</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Learning Resources</h2>
+            <ul>
+                <li><strong>Microsoft WSL Docs:</strong> <a href="https://learn.microsoft.com/en-us/windows/wsl/" target="_blank">learn.microsoft.com/windows/wsl</a> - Official documentation, surprisingly readable</li>
+                <li><strong>Linux Command Cheat Sheet:</strong> <a href="https://www.linuxtrainingacademy.com/linux-commands-cheat-sheet/" target="_blank">Linux Training Academy</a></li>
+                <li><strong>Explain Shell:</strong> <a href="https://explainshell.com/" target="_blank">explainshell.com</a> - Paste any command, get explanation of each part</li>
+                <li><strong>The Art of Command Line:</strong> <a href="https://github.com/jlevy/the-art-of-command-line" target="_blank">GitHub repo</a> - Deep dive into command-line mastery</li>
+                <li><strong>Oh My Zsh:</strong> <a href="https://ohmyz.sh/" target="_blank">ohmyz.sh</a> - Makes your shell prettier and more powerful</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Final Thoughts</h2>
+            <p>The terminal feels weird at first because you can't see what you're doing. But that's also its power—text is fast, scriptable, and doesn't care about your screen resolution. You'll fumble for a week, then suddenly realize you're navigating faster than in File Explorer.</p>
+
+            <p>Plus, now when someone says "just run <code>npm install</code>" or "check the logs with <code>tail -f</code>", you'll know exactly what they mean instead of frantically Googling.</p>
+
+            <div class="tip">
+                <strong>Remember:</strong> The terminal won't explode if you make a mistake. The worst you'll do is delete some files (which you should be backing up anyway). Just don't blindly paste commands from Reddit without reading them first—that's how people accidentally <code>sudo rm -rf /</code> their entire system.
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>Made with mild frustration and a lot of coffee • <a href="https://vibes.jukkan.com" target="_blank">vibes.jukkan.com</a></p>
+            <p>Last updated: January 2026</p>
+        </div>
+    </div>
+</body>
+</html>

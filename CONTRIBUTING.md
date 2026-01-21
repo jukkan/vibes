@@ -40,8 +40,8 @@ Every tool must include:
 
 **Header:**
 ```html
-<header style="padding: 20px; background: #1d1d1d; color: white;">
-  <a href="/" style="color: #0078d4; text-decoration: none;">← vibes</a>
+<header style="padding: 20px; background: #111; color: white; border-bottom: 1px solid #222;">
+  <a href="/" style="color: #3b82f6; text-decoration: none;">← vibes</a>
   <h1>Tool Name</h1>
   <p>Brief one-line description</p>
 </header>
@@ -111,26 +111,19 @@ try {
 
 When adding a new tool, update `index.html`:
 
-1. Add entry to `tools` array:
+Add entry to `tools` array:
 ```javascript
 const tools = [
   // Existing tools...
   {
-    name: "Your Tool Name",
-    description: "One-sentence description under 60 chars",
-    color: "#0078d4", // Pick from Metro palette
+    title: "Your Tool Name",
+    icon: "🔧", // Pick a relevant emoji
+    summary: "One-sentence summary (under 60 chars)",
+    description: "Longer description explaining what the tool does, its features, and use cases. This appears when users expand the card.",
     path: "your-tool-name.html"
   }
 ];
 ```
-
-2. Metro color palette:
-- Blue: `#0078d4` (default/general utilities)
-- Green: `#107c10` (success/creation tools)
-- Orange: `#ff8c00` (warning/calculation tools)
-- Red: `#e81123` (debugging/analysis tools)
-- Purple: `#5c2d91` (creative/transformation tools)
-- Teal: `#008272` (data/API tools)
 
 ## Dependency Guidelines
 
@@ -167,9 +160,9 @@ const tools = [
 /* Inline styles acceptable for single-file constraint */
 /* Use CSS custom properties for theming */
 :root {
-  --primary: #0078d4;
-  --bg: #1d1d1d;
-  --text: #ffffff;
+  --bg-dark: #0a0a0a;
+  --text: #e8e8e8;
+  --accent: #3b82f6;
 }
 ```
 
