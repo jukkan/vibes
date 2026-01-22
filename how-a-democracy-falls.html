@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>How a Democracy Falls: a field guide to warning signs</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --panel: #101824;
+      --text: #e6eef8;
+      --muted: #a8b3c7;
+      --faint: rgba(230,238,248,.08);
+      --border: rgba(230,238,248,.14);
+      --accent: #7dd3fc; /* cyan-ish */
+      --accent2:#a7f3d0; /* mint */
+      --warn:#fbbf24;    /* amber */
+      --bad:#fb7185;     /* rose */
+      --ok:#34d399;      /* green */
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7fafc;
+        --panel:#ffffff;
+        --text:#0b1220;
+        --muted:#4b5563;
+        --faint: rgba(15,23,42,.06);
+        --border: rgba(15,23,42,.14);
+        --shadow: 0 10px 30px rgba(2,8,23,.10);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max);margin:0 auto;padding:28px 18px 60px}
+    .hero{
+      background: radial-gradient(1200px 600px at 10% 0%, rgba(125,211,252,.20), transparent 60%),
+                  radial-gradient(1200px 600px at 90% 20%, rgba(167,243,208,.16), transparent 55%),
+                  linear-gradient(to bottom, rgba(255,255,255,.04), transparent);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px 22px;
+      overflow:hidden;
+      position:relative;
+    }
+    .kicker{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:14px}
+    .pill{
+      border:1px solid var(--border);
+      padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.03)
+    }
+    h1{margin:10px 0 6px;font-size: clamp(28px, 3.2vw, 42px); letter-spacing:-.02em}
+    .sub{max-width: 70ch;color:var(--muted);font-size: 16px;margin-top: 10px}
+    .grid{display:grid;gap:14px}
+    .grid.two{grid-template-columns: repeat(2, minmax(0, 1fr))}
+    .grid.three{grid-template-columns: repeat(3, minmax(0, 1fr))}
+    @media (max-width: 900px){ .grid.three{grid-template-columns: 1fr} }
+    @media (max-width: 760px){ .grid.two{grid-template-columns: 1fr} }
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 16px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 8px;font-size:16px;letter-spacing:-.01em}
+    .card p{margin:0 0 10px;color:var(--muted)}
+    .tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .tag{font-size:12px;color:var(--muted);border:1px solid var(--border);padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.03)}
+    .sep{height:1px;background:var(--border);margin:20px 0}
+    h2{margin:26px 0 10px;font-size: 22px;letter-spacing:-.01em}
+    .lead{max-width:80ch;color:var(--muted);margin:0 0 14px}
+    ul{margin:8px 0 0 20px}
+    li{margin:6px 0}
+    .callout{
+      border-left: 4px solid var(--accent);
+      background: rgba(125,211,252,.08);
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: var(--text);
+      margin: 14px 0;
+    }
+    .callout b{color:var(--text)}
+    .scoreboard{
+      display:grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap:10px;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.02);
+    }
+    .scoreboard .head{background: rgba(255,255,255,.04); color: var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em}
+    .cell{padding:10px 12px;border-bottom:1px solid var(--border)}
+    .scoreboard .cell:nth-child(3n+1){border-right:1px solid var(--border)}
+    .scoreboard .cell:nth-child(3n+2){border-right:1px solid var(--border)}
+    .scoreboard .cell:last-child,
+    .scoreboard .cell:nth-last-child(2),
+    .scoreboard .cell:nth-last-child(3){border-bottom:none}
+    .metric{font-family:var(--mono);font-size:13px}
+    .big{font-size:22px;font-weight:700;letter-spacing:-.02em}
+    .state{
+      display:inline-flex;align-items:center;gap:8px
+    }
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--muted)}
+    .dot.ok{background:var(--ok)}
+    .dot.warn{background:var(--warn)}
+    .dot.bad{background:var(--bad)}
+    details{
+      background: var(--panel);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+    }
+    details + details{margin-top:12px}
+    summary{cursor:pointer;font-weight:650;list-style:none}
+    summary::-webkit-details-marker{display:none}
+    summary .hint{color:var(--muted);font-weight:500}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+    @media (max-width: 760px){ .cols{grid-template-columns: 1fr} }
+    .mini{
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 12px;
+    }
+    .mini h4{margin:0 0 6px;font-size:14px}
+    .mini p{margin:0;color:var(--muted);font-size:14px}
+    .timeline{display:grid;gap:10px}
+    .step{
+      display:grid;
+      grid-template-columns: 40px 1fr;
+      gap:12px;
+      align-items:flex-start;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .num{
+      width:40px;height:40px;border-radius: 12px;
+      background: rgba(125,211,252,.10);
+      border:1px solid rgba(125,211,252,.30);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;
+    }
+    .step h3{margin:0 0 4px;font-size:16px}
+    .step p{margin:0;color:var(--muted)}
+    .kbd{font-family:var(--mono);font-size:12px;padding:2px 6px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.03)}
+    .risk{
+      display:grid;grid-template-columns: 1.1fr .9fr; gap:14px;
+    }
+    @media (max-width: 900px){ .risk{grid-template-columns: 1fr} }
+    .meter{
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 12px;
+      background: rgba(255,255,255,.02);
+    }
+    .bar{
+      height:12px;border-radius:999px;background: rgba(255,255,255,.06);
+      overflow:hidden;border:1px solid var(--border);
+    }
+    .fill{
+      height:100%;width:0%;
+      background: linear-gradient(90deg, var(--ok), var(--warn), var(--bad));
+      border-radius:999px;
+      transition: width .25s ease;
+    }
+    .meter .row{
+      display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:8px
+    }
+    .meter .row .label{color:var(--muted);font-size:13px}
+    .meter .row .val{font-family:var(--mono);font-weight:700}
+    .checklist label{display:flex;gap:10px;align-items:flex-start;margin:10px 0;color:var(--text)}
+    .checklist input{margin-top:3px}
+    .checklist small{display:block;color:var(--muted);margin-top:2px}
+    footer{margin-top:30px;color:var(--muted);font-size:13px}
+    .refs li{margin:10px 0}
+    .print{
+      margin-top: 10px;
+      display:flex;gap:10px;flex-wrap:wrap
+    }
+    .btn{
+      display:inline-flex;gap:8px;align-items:center;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(255,255,255,.06)}
+    @media print{
+      .btn, .print, .kbd { display:none !important; }
+      .card, .hero, details, .step { box-shadow:none !important; }
+      a{color:inherit;text-decoration:underline}
+      body{background:#fff;color:#000}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="kicker">
+        <span class="pill">Working artifact</span>
+        <span class="pill">Democracy warning signs</span>
+        <span class="pill">Data-driven rubric</span>
+      </div>
+      <h1>How a democracy falls</h1>
+      <p class="sub">
+        A single election does not make a country a “functioning democracy.”
+        This page uses major democracy measurement frameworks to tell a <b>hypothetical</b>
+        “how it starts” story for a large democracy drifting toward a Russia-like <i>electoral autocracy</i>—and to give you a rubric you can use to assess any country.
+      </p>
+      <div class="print">
+        <button class="btn" onclick="window.print()">Print / save as PDF</button>
+        <span class="btn" onclick="document.querySelector('#rubric').scrollIntoView({behavior:'smooth'})">Jump to rubric</span>
+        <span class="btn" onclick="document.querySelector('#refs').scrollIntoView({behavior:'smooth'})">Jump to references</span>
+      </div>
+    </header>
+
+    <div class="sep"></div>
+
+    <section>
+      <h2>Entry point: “But they have elections”</h2>
+      <p class="lead">
+        Many modern autocracies keep the <i>form</i> of elections while removing the <i>substance</i>:
+        opposition can’t campaign safely, independent media is throttled, courts and election administration are politicized, and the cost of dissent becomes unaffordable.
+      </p>
+
+      <div class="callout">
+        <b>Regimes of the World (V-Dem) is explicit about this:</b> it distinguishes four regime types.
+        “Electoral autocracies” have multiparty elections for the executive, but fail minimum standards like
+        freedom of expression/association and free & fair elections. “Liberal democracies” add strong judicial/legislative constraints and equality before the law.
+        (<a href="#ref-vdem-2025">V-Dem 2025 Democracy Report</a>)
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>Minimum democratic control (a practical definition)</h3>
+          <p>Citizens can replace leaders <i>without</i> fear or structural disadvantage, and governments cannot neutralize that threat.</p>
+          <ul>
+            <li><b>Contestability:</b> real competition and uncertainty in outcomes.</li>
+            <li><b>Participation:</b> broad, inclusive suffrage and feasible voting.</li>
+            <li><b>Rights:</b> speech, association, press, and due process are protected.</li>
+            <li><b>Constraints:</b> independent courts, legislature, and oversight can stop abuses.</li>
+          </ul>
+          <div class="tagrow">
+            <span class="tag">“More than elections”</span>
+            <span class="tag">Civil liberties</span>
+            <span class="tag">Checks and balances</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>What “Russia today” looks like in major typologies</h3>
+          <p>Independent indices converge on a Russia-like regime as authoritarian/autocratic with elections that do not meet democratic minimums.</p>
+          <ul>
+            <li><b>V-Dem RoW (2024):</b> Russia is classified as an <b>Electoral Autocracy</b> (<a href="#ref-vdem-2025">V-Dem</a>).</li>
+            <li><b>Freedom House (2025, year 2024):</b> Russia: <span class="metric"><b>12/100</b> (“Not Free”)</span> (<a href="#ref-fh-russia">Freedom House</a>).</li>
+            <li><b>EIU Democracy Index 2024:</b> Russia: <span class="metric"><b>2.03</b> / 10</span> (ranked in the “authoritarian” cluster) (<a href="#ref-eiu-2024">EIU</a>).</li>
+          </ul>
+          <div class="tagrow">
+            <span class="tag">Triangulation</span>
+            <span class="tag">Independent scoring</span>
+            <span class="tag">Transparent criteria</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <section id="rubric">
+      <h2>A fast rubric you can apply to any country</h2>
+      <p class="lead">
+        The goal is not a single magic number. It’s a <b>repeatable way</b> to decide where a country sits, and why.
+        Use multiple datasets (different methods, different biases) and look for the same story.
+      </p>
+
+      <details open>
+        <summary>Step 1 — Classify the regime type <span class="hint">(broad category)</span></summary>
+        <div class="cols">
+          <div class="mini">
+            <h4>V-Dem: Regimes of the World</h4>
+            <p>
+              4 categories: <b>Closed Autocracy</b>, <b>Electoral Autocracy</b>, <b>Electoral Democracy</b>, <b>Liberal Democracy</b>.
+              The 2025 report includes clear definitions and a per-country table for 2024.
+              <br/><br/>
+              Use for: “Is it democracy, and how deep?”
+              <br/><br/>
+              Source: <a href="#ref-vdem-2025">V-Dem Democracy Report 2025</a> (see Table 1).
+            </p>
+          </div>
+          <div class="mini">
+            <h4>EIU Democracy Index</h4>
+            <p>
+              Scores countries across five dimensions (electoral process & pluralism, functioning of government, political participation,
+              political culture, civil liberties), and groups them into regime clusters.
+              <br/><br/>
+              Use for: a well-known “single score” benchmark plus dimension scores.
+              <br/><br/>
+              Source: <a href="#ref-owid-eiu-method">Our World in Data summary</a> (method overview) + <a href="#ref-eiu-2024">EIU 2024 table</a>.
+            </p>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Step 2 — Audit the pillars <span class="hint">(why a score moved)</span></summary>
+        <div class="grid three" style="margin-top:12px">
+          <div class="card">
+            <h3>1) Elections you can lose</h3>
+            <p>Opposition can run; votes are counted; winners take office.</p>
+            <ul>
+              <li>Independent election administration</li>
+              <li>No voter intimidation, no “managed outcomes”</li>
+              <li>Peaceful transfer of power</li>
+            </ul>
+            <p class="metric">Metrics to watch: “clean elections”, “electoral integrity”.</p>
+          </div>
+          <div class="card">
+            <h3>2) Information freedom</h3>
+            <p>Citizens can learn, criticize, and organize.</p>
+            <ul>
+              <li>Independent media survives financially and legally</li>
+              <li>Government can’t criminalize dissent</li>
+              <li>Disinformation isn’t state-enforced reality</li>
+            </ul>
+            <p class="metric">V-Dem flags freedom of expression as a frequent early casualty.</p>
+          </div>
+          <div class="card">
+            <h3>3) Rule of law & equal citizenship</h3>
+            <p>Law binds rulers and protects minorities and opponents.</p>
+            <ul>
+              <li>Independent courts; credible due process</li>
+              <li>No selective prosecution / impunity</li>
+              <li>Equal political rights and equal protection</li>
+            </ul>
+            <p class="metric">Watch: judicial independence, political equality, civil liberties.</p>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Step 3 — Cross-check with two independent index families <span class="hint">(reduce “measurement illusion” risk)</span></summary>
+        <div class="cols">
+          <div class="mini">
+            <h4>Freedom House: Freedom in the World</h4>
+            <p>
+              Aggregates 25 indicators into <b>Political Rights (0–40)</b> and <b>Civil Liberties (0–60)</b>, total <b>0–100</b>.
+              (Method section inside the 2025 report.)
+              <br/><br/>
+              Source: <a href="#ref-fh-fitw-2025-method">FITW 2025 methodology</a>.
+            </p>
+          </div>
+          <div class="mini">
+            <h4>International IDEA: Global State of Democracy (GSoD)</h4>
+            <p>
+              A hierarchical framework across four attributes: <b>Representation</b>, <b>Rights</b>, <b>Rule of Law</b>, <b>Participation</b>,
+              with technical procedures and codebooks.
+              <br/><br/>
+              Source: <a href="#ref-idea-gsod-tech">GSoD Technical Procedures Guide</a>.
+            </p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <div class="sep"></div>
+
+    <section>
+      <h2>Concrete example: USA vs Russia (latest published snapshots)</h2>
+      <p class="lead">
+        Different organizations, different methods — similar gap. If someone claims “this is just an illusion,” ask them to explain why independent measures converge.
+      </p>
+
+      <div class="scoreboard" role="table" aria-label="USA vs Russia scores">
+        <div class="cell head">Index / typology</div>
+        <div class="cell head">USA</div>
+        <div class="cell head">Russia</div>
+
+        <div class="cell">
+          <div class="metric"><b>V-Dem RoW (2024)</b></div>
+          <div style="color:var(--muted);font-size:13px">Regime type</div>
+        </div>
+        <div class="cell">
+          <span class="state"><span class="dot ok"></span><span class="big">Liberal Democracy</span></span><br/>
+          <span class="metric">Table 1 lists “USA LD”.</span>
+        </div>
+        <div class="cell">
+          <span class="state"><span class="dot bad"></span><span class="big">Electoral Autocracy</span></span><br/>
+          <span class="metric">Table 1 lists “Russia EA”.</span>
+        </div>
+
+        <div class="cell">
+          <div class="metric"><b>Freedom House (FITW 2025)</b></div>
+          <div style="color:var(--muted);font-size:13px">Total score (0–100)</div>
+        </div>
+        <div class="cell">
+          <span class="big">84/100</span><br/>
+          <span class="metric">Status: “Free”.</span>
+        </div>
+        <div class="cell">
+          <span class="big">12/100</span><br/>
+          <span class="metric">Status: “Not Free”.</span>
+        </div>
+
+        <div class="cell">
+          <div class="metric"><b>EIU Democracy Index (2024)</b></div>
+          <div style="color:var(--muted);font-size:13px">Overall score (0–10)</div>
+        </div>
+        <div class="cell">
+          <span class="big">7.85</span>
+        </div>
+        <div class="cell">
+          <span class="big">2.03</span>
+        </div>
+      </div>
+
+      <p class="lead" style="margin-top:12px">
+        Sources: <a href="#ref-vdem-2025">V-Dem</a>, <a href="#ref-fh-us">Freedom House (US)</a>, <a href="#ref-fh-russia">Freedom House (Russia)</a>, <a href="#ref-eiu-2024">EIU 2024 table</a>.
+      </p>
+    </section>
+
+    <div class="sep"></div>
+
+    <section>
+      <h2>The critical pillars, and how they typically fail</h2>
+      <p class="lead">
+        Democracy rarely collapses overnight. Research on “backsliding” and “autocratization” points to a pattern of incremental moves that degrade these pillars while keeping elections as theater.
+      </p>
+
+      <details open>
+        <summary>Pillar A — Elections and alternation (the ability to vote out rulers)</summary>
+        <div class="cols">
+          <div class="mini">
+            <h4>Healthy</h4>
+            <p>
+              Opposition can campaign, media can scrutinize, election rules are stable and impartial,
+              and winners take office even when incumbents lose.
+            </p>
+          </div>
+          <div class="mini">
+            <h4>Failure modes</h4>
+            <p>
+              Rule changes that skew competition; harassment or disqualification of opponents;
+              “administrative” obstacles to voting; intimidation; selective counting/validation;
+              delegitimizing losses in advance; refusal to accept results.
+            </p>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Pillar B — Free information environment (speech, press, and reality-testing)</summary>
+        <div class="cols">
+          <div class="mini">
+            <h4>Healthy</h4>
+            <p>
+              Independent media exists at scale; journalists can investigate; citizens can organize and criticize without fear.
+            </p>
+          </div>
+          <div class="mini">
+            <h4>Failure modes</h4>
+            <p>
+              Media capture (ownership, licensing, subsidies, advertising pressure); strategic lawsuits;
+              “foreign agent” rules; platform pressure; criminalizing protest or “disrespect”;
+              surveillance creating chilling effects.
+              V-Dem reports “losses in freedom of expression are alarming” and worsening in dozens of countries.
+            </p>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Pillar C — Constraints on executive power (courts, legislature, oversight)</summary>
+        <div class="cols">
+          <div class="mini">
+            <h4>Healthy</h4>
+            <p>
+              Courts and legislatures can block illegal orders; inspectors general and auditors can investigate; law enforcement remains professional.
+            </p>
+          </div>
+          <div class="mini">
+            <h4>Failure modes</h4>
+            <p>
+              “Executive aggrandizement” (legal-seeming changes concentrating power); replacing independent officials with loyalists;
+              sidelining oversight; weaponizing prosecution; emergency powers that never sunset.
+              (See Bermeo’s typology of backsliding.)
+            </p>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Pillar D — Equal citizenship and civil liberties</summary>
+        <div class="cols">
+          <div class="mini">
+            <h4>Healthy</h4>
+            <p>
+              Equal political rights; minority protection; due process; non-discrimination; no collective punishment.
+            </p>
+          </div>
+          <div class="mini">
+            <h4>Failure modes</h4>
+            <p>
+              Making rights conditional (ethnicity, religion, loyalty); using policing/surveillance selectively;
+              mass administrative coercion; restricting education and scientific institutions to enforce ideology.
+            </p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <div class="sep"></div>
+
+    <section>
+      <h2>The “how it starts” scenario (fictional, but mapped to measurable criteria)</h2>
+      <p class="lead">
+        Below is a <b>theoretical sequence</b> of events that would plausibly push a large democracy down the same measurement channels that distinguish a liberal democracy from an electoral autocracy.
+        Think of it as a stress test: <span class="kbd">If X happened, which pillar fails first?</span>
+      </p>
+
+      <div class="timeline">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>Information capture becomes financially “normal”</h3>
+            <p>
+              Ultra-wealthy donors and aligned firms consolidate mainstream media and the ad-tech money pipeline.
+              It looks like “business efficiency,” but it changes the feasible range of criticism and investigation.
+              <br/><br/>
+              <b>Index impact:</b> press freedom + freedom of expression indicators decline → civic space shrinks.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>Rules shift from persuasion to enforcement</h3>
+            <p>
+              Executive orders push boundaries that used to be career-ending; courts and congress stop acting as effective brakes.
+              “Legal” becomes the primary cover story.
+              <br/><br/>
+              <b>Index impact:</b> executive constraints weaken; rule of law and judicial independence degrade.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h3>Surveillance + selective punishment changes incentives</h3>
+            <p>
+              A broad surveillance machine (online + facial recognition) is built; “speech” is still nominally legal,
+              but the expected cost of dissent rises sharply (job loss, legal harassment, travel restrictions).
+              <br/><br/>
+              <b>Index impact:</b> association, protest, and civil liberties indicators fall; “fear” replaces debate.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">4</div>
+          <div>
+            <h3>Equal citizenship becomes negotiable</h3>
+            <p>
+              Targeted questioning of citizenship rights and mass-scale deportation machinery becomes normalized.
+              This does two things: (1) it narrows who can safely participate; (2) it signals that rights are conditional.
+              <br/><br/>
+              <b>Index impact:</b> political equality + civil liberties collapse; participation becomes stratified.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">5</div>
+          <div>
+            <h3>Science and education become ideology enforcement</h3>
+            <p>
+              Public institutions that create shared reality (universities, public health, national statistics, curricula)
+              are attacked or captured. Book restrictions become a proxy war for “who controls the future voters.”
+              <br/><br/>
+              <b>Index impact:</b> deliberative quality and academic freedom proxies decline; polarization + misinformation become structural.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">6</div>
+          <div>
+            <h3>Elections remain — but democracy doesn’t</h3>
+            <p>
+              Elections continue, but the contest is no longer fair: opposition is constrained, the information environment is warped,
+              and losing becomes too dangerous for incumbents.
+              <br/><br/>
+              <b>Regime outcome:</b> this is the path toward <i>electoral autocracy</i> — the “elections-as-window-dressing” regime type explicitly described by RoW.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:14px">
+        <b>Global context:</b> V-Dem reports that <b>72%</b> of the world’s population lives in autocracies (about <b>5.8 billion</b> people),
+        and that liberal democracies host less than 12% (~0.9 billion). These are not marginal phenomena.
+        (<a href="#ref-vdem-2025">V-Dem 2025</a>)
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <section>
+      <h2>Money and oligarchs: the “Access All Areas” pass</h2>
+      <p class="lead">
+        Money can be a powerful accelerator because it buys <b>control over chokepoints</b>: media, legal defense/offense, patronage networks, and access to decision-makers.
+        But in most backsliding research, money is rarely the only cause — it becomes decisive when it aligns with institutional weakness and polarization.
+      </p>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>What money can do (high leverage moves)</h3>
+          <ul>
+            <li><b>Media capture:</b> buy outlets, starve competitors, shape the agenda.</li>
+            <li><b>Rule-making access:</b> regulatory capture, private “drafting” of laws, procurement favoritism.</li>
+            <li><b>Legal asymmetry:</b> fund strategic litigation, intimidate watchdogs, finance compliance costs for allies.</li>
+            <li><b>Political gatekeeping:</b> bankroll primary challenges, fund parallel campaign ecosystems.</li>
+          </ul>
+          <p class="metric">
+            Related concepts: “state capture” (systematically shaping rules/decisions for narrow interests).
+            See classic state capture framing and modern “media capture” work.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>What money usually can’t do alone</h3>
+          <ul>
+            <li>Replace courts and enforcement without a loyal bureaucracy.</li>
+            <li>Prevent electoral defeat if elections remain clean and outcomes are accepted.</li>
+            <li>Stop civic mobilization if speech/association are robust and fear is low.</li>
+          </ul>
+          <p class="metric">
+            Empirically, democratic decline is often explained by combinations of:
+            <b>executive aggrandizement</b>, <b>strategic electoral manipulation</b>, <b>shrinking civic space</b>, and <b>information control</b>.
+            Money amplifies each, but institutions decide whether it “sticks.”
+          </p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <b>Data point worth remembering:</b> V-Dem highlights “losses in freedom of expression” worsening in <b>44 countries</b> by 2024.
+        If oligarchic capture controls media and speech enforcement, this pillar can fall early — and everything else becomes easier.
+        (<a href="#ref-vdem-2025">V-Dem 2025</a>)
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <section>
+      <h2>Self-check: could your democracy still correct itself?</h2>
+      <p class="lead">
+        This is a lightweight diagnostic — not a scientific score. It maps common early-warning signals to the pillars above.
+      </p>
+
+      <div class="risk">
+        <div class="meter">
+          <div class="row">
+            <div class="label">Backsliding risk (illustrative)</div>
+            <div class="val" id="riskVal">0%</div>
+          </div>
+          <div class="bar" aria-hidden="true"><div class="fill" id="riskFill"></div></div>
+          <p class="lead" style="margin-top:10px" id="riskText">
+            Check boxes to see how risk accumulates when multiple pillars degrade simultaneously.
+          </p>
+          <p class="lead" style="margin-top:10px">
+            Tip: pair this with real data from <a href="#ref-fh-fitw-2025-method">Freedom House</a>, <a href="#ref-vdem-2025">V-Dem</a>, and <a href="#ref-idea-gsod-tech">IDEA</a>.
+          </p>
+        </div>
+
+        <div class="card checklist" id="checklist">
+          <h3>Early warning checklist</h3>
+
+          <label><input type="checkbox" data-weight="12" />
+            <span>
+              Independent media is financially or legally cornered.
+              <small>Ownership concentration, licensing pressure, defamation/“foreign agent” patterns.</small>
+            </span>
+          </label>
+
+          <label><input type="checkbox" data-weight="12" />
+            <span>
+              Courts/oversight stop constraining executive actions.
+              <small>Non-enforcement, captured appointments, ignored rulings, emergency powers that persist.</small>
+            </span>
+          </label>
+
+          <label><input type="checkbox" data-weight="10" />
+            <span>
+              Election rules tilt systematically (not just one-off disputes).
+              <small>Structural barriers; selective enforcement; intimidation; disqualification of viable opponents.</small>
+            </span>
+          </label>
+
+          <label><input type="checkbox" data-weight="10" />
+            <span>
+              Surveillance + selective punishment becomes normal.
+              <small>The cost of dissent rises (jobs, visas, prosecutions), even if laws still “allow speech.”</small>
+            </span>
+          </label>
+
+          <label><input type="checkbox" data-weight="12" />
+            <span>
+              Equal citizenship is weakened or made conditional.
+              <small>Targeting minorities/opponents, mass administrative coercion, differential rights.</small>
+            </span>
+          </label>
+
+          <label><input type="checkbox" data-weight="10" />
+            <span>
+              Public institutions that create shared reality are attacked.
+              <small>Science, statistics, education standards, and independent agencies politicized.</small>
+            </span>
+          </label>
+
+          <label><input type="checkbox" data-weight="8" />
+            <span>
+              Political competition turns into existential warfare.
+              <small>Mutual toleration erodes; rivals treated as illegitimate enemies; “winner takes all” norms.</small>
+            </span>
+          </label>
+
+          <label><input type="checkbox" data-weight="8" />
+            <span>
+              Business elites trade support for protection and exclusive access.
+              <small>State capture dynamics; preferential procurement and regulation; “Access All Areas” governance.</small>
+            </span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <section id="refs">
+      <h2>References and datasets (for fact-checking and rebutting “it’s all vibes”)</h2>
+      <p class="lead">
+        These are widely used, relatively transparent measurement efforts and peer-reviewed research commonly cited in political science and policy analysis.
+      </p>
+
+      <ol class="refs">
+        <li id="ref-vdem-2025">
+          <b>V-Dem Institute — Democracy Report 2025: “25 Years of Autocratization – Democracy Trumped?”</b>
+          (March 2025). Includes regime definitions, Table 1 (RoW classification), and global shares (e.g., 72% living in autocracies).
+          <br/>https://www.v-dem.net/documents/60/V-dem-dr__2025_lowres.pdf
+        </li>
+
+        <li id="ref-fh-fitw-2025-method">
+          <b>Freedom House — Freedom in the World 2025 (methodology + global report)</b>.
+          Explains scoring across 25 indicators (Political Rights 0–40, Civil Liberties 0–60; total 0–100).
+          <br/>https://freedomhouse.org/sites/default/files/2025-02/FITW_World_2025_Feb.2025.pdf
+        </li>
+
+        <li id="ref-fh-us">
+          <b>Freedom House — United States country page (Freedom in the World 2025, year 2024)</b>.
+          <br/>https://freedomhouse.org/country/united-states/freedom-world/2025
+        </li>
+
+        <li id="ref-fh-russia">
+          <b>Freedom House — Russia country page (Freedom in the World 2025, year 2024)</b>.
+          <br/>https://freedomhouse.org/country/russia/freedom-world/2025
+        </li>
+
+        <li id="ref-eiu-2024">
+          <b>Economist Intelligence Unit — Democracy Index 2024 table (Topline scores and ranks)</b>.
+          (Campaign page with downloadable table.)
+          <br/>https://campaigns.eiu.com/democracy-index-2024
+        </li>
+
+        <li id="ref-owid-eiu-method">
+          <b>Our World in Data — Democracy Index (EIU) dataset notes</b>.
+          Summarizes the EIU’s five-category structure (electoral process & pluralism; functioning of government; participation; culture; civil liberties).
+          <br/>https://ourworldindata.org/grapher/democracy-index-eiu
+        </li>
+
+        <li id="ref-owid-fh-score">
+          <b>Our World in Data — Freedom House freedom score dataset notes</b>.
+          Describes how the 0–100 score aggregates Political Rights and Civil Liberties.
+          <br/>https://ourworldindata.org/grapher/freedom-score-fh
+        </li>
+
+        <li id="ref-idea-gsod-tech">
+          <b>International IDEA — Global State of Democracy Indices: Technical Procedures Guide (v8, 2024)</b>.
+          Framework across Representation, Rights, Rule of Law, Participation; includes subattributes and procedures.
+          <br/>https://www.idea.int/sites/default/files/2024-09/gsod-indices-technical-procedures-guide-v8-2024.pdf
+        </li>
+
+        <li id="ref-idea-gsod-sources">
+          <b>International IDEA — GSoD sources and framework overview</b>.
+          High-level description of the hierarchical categories and coverage years.
+          <br/>https://www.idea.int/gsod/2024/chapters/global-trends-methodology/box/gsod-indices-sources
+        </li>
+
+        <li id="ref-bermeo">
+          <b>Nancy Bermeo (2016) — “On Democratic Backsliding” (Journal of Democracy)</b>.
+          Influential typology: executive aggrandizement and strategic electoral manipulation (among others).
+          <br/>https://www.journalofdemocracy.org/articles/on-democratic-backsliding/
+        </li>
+
+        <li id="ref-gilenspage">
+          <b>Gilens & Page (2014) — “Testing Theories of American Politics”</b>.
+          Study on policy responsiveness and the relative influence of elites/interest groups vs average citizens.
+          <br/>https://doi.org/10.1017/S1537592714001595
+        </li>
+
+        <li id="ref-statecapture">
+          <b>Hellman, Jones & Kaufmann (2000) — “Seize the State, Seize the Day” (World Bank)</b>.
+          Classic framing of “state capture” as shaping rules/decisions via undue influence.
+          <br/>https://documents.worldbank.org/en/publication/documents-reports/documentdetail/318961468764908760/seize-the-state-seize-the-day-state-capture-corruption-and-influence-in-transition
+        </li>
+
+        <li id="ref-mediacapture">
+          <b>Schiffrin (2017) — “In the Service of Power: Media Capture and the Threat to Democracy”</b>.
+          Overview of media capture mechanisms and democratic implications.
+          <br/>https://cpb-us-w2.wpmucdn.com/voices.uchicago.edu/dist/7/2733/files/2017/05/Schiffrin_MediaCapture_FullReport-4m3ob4x.pdf
+        </li>
+
+        <li id="ref-measuring-democracy">
+          <b>Library of Parliament (Canada) — “Measuring Democracy”</b>.
+          A neutral explainer comparing Freedom House, EIU, and V-Dem, including limitations.
+          <br/>https://lop.parl.ca/sites/PublicWebsite/default/en_CA/ResearchPublications/202403E
+        </li>
+      </ol>
+
+      <footer>
+        <p>
+          Notes: This page uses publicly available definitions and aggregate scores. The scenario section is hypothetical and intended as a structured way to think about risk.
+          For country-level deep dives, use the source organizations’ country pages and underlying component indicators.
+        </p>
+      </footer>
+    </section>
+  </div>
+
+  <script>
+    (function(){
+      const checklist = document.getElementById('checklist');
+      const riskFill = document.getElementById('riskFill');
+      const riskVal = document.getElementById('riskVal');
+      const riskText = document.getElementById('riskText');
+
+      function compute(){
+        const boxes = Array.from(checklist.querySelectorAll('input[type="checkbox"]'));
+        const total = boxes.reduce((s,b)=>s + (Number(b.dataset.weight)||0), 0);
+        const score = boxes.reduce((s,b)=> s + (b.checked ? (Number(b.dataset.weight)||0) : 0), 0);
+
+        // Simple normalization into 0–100.
+        const pct = total ? Math.round((score/total)*100) : 0;
+
+        riskFill.style.width = pct + '%';
+        riskVal.textContent = pct + '%';
+
+        let msg = '';
+        if(pct < 20){
+          msg = 'Low on this checklist — but confirm using real index data (component scores matter).';
+        } else if(pct < 45){
+          msg = 'Meaningful warning signs — backsliding often accelerates when multiple pillars erode together.';
+        } else if(pct < 70){
+          msg = 'High-risk configuration — this is where “elections remain but democracy doesn’t” becomes plausible.';
+        } else {
+          msg = 'Severe erosion pattern — this resembles a transition path toward electoral autocracy in major frameworks.';
+        }
+        riskText.textContent = msg;
+      }
+
+      checklist.addEventListener('change', compute);
+      compute();
+    })();
+  </script>
+</body>
+</html>
