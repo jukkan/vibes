@@ -9,7 +9,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "8e665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -21,7 +23,9 @@
     "level": "200",
     "speakers": "Paula Januszkiewicz",
     "description": "The transformation is gaining momentum! Over the last tumultuous years, the investments in the digital transformation have been growing, with companies worldwide exploring its potential by introducing new technologies, approaches and social changes. As more data than ever is put online, cybersecurity is now a major concern for everyone – large corporations, governments, and companies of all sizes. The transformation, however, also has its dark side. Thanks to it, the hackers are able to exploit vulnerabilities in the infrastructure with even greater precision than before. As the financial, operational, legal, and reputational implications of neglecting cybersecurity risks could be considerable, well-known analysis & protection methods should be developed and complemented.During this presentation, the most serious risks of 2026 will be explored and explained. Paula Januszkiewicz will demonstrate how hackers and cybercriminals identify and exploit threats using the most up-to-date techniques, so that you are able to observe them on your monitoring system and prevent them in the future. You will also become familiar with the most advanced phishing attacks, credential theft techniques, ransomware distribution methods, and ways of gaining access to vendor-controlled systems.Join Paula to understand what actually is possible in the year of 2026. As the cyber transformation leads to better effectiveness of hackers' activities, there is no time to lose!      Paula Januszkiewicz",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "0b15c293-e2aa-f011-bbd2-6045bd8f8f87",
@@ -33,7 +37,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "df26da49-e4aa-f011-bbd2-6045bdf2f545",
@@ -45,7 +51,9 @@
     "level": "200",
     "speakers": "Carl Cookson, James Connelly",
     "description": "The new Generative Pages feature is set to revolutionise how organisations craft custom, enterprise-grade apps—at speed and scale ⚡✨. With just a prompt, your team can turn ideas into powerful tools tailored precisely to your needs. But building the future isn’t just about the tech—it’s about adoption, quality, and impact 📈.💡 How do you make the most of your investment? 🧠 How do you architect a robust, secure, and intuitive app from a single spark of imagination?Join James and Carl as they guide you through this transformational journey:🎶Live Demos & Real-Life Scenarios — Watch as Generative Pages come to life in real business contexts 🔬 Iterate with Intention — Learn how to evolve your pages through edge cases and testing, making AI your co-creator 🛠️ Know When to Go Manual — Explore when to step away from the prompt and write clean, purposeful code for precision and performance🔐 Build with Enterprise Principles — Structure your prompts with security, usability, and accessibility in mind ♿🎯  Drive Real ROI — Define your use cases clearly and design with intention, so your pages deliver real results🐕‍🦺 Assist in Workshops — Utilise Generative apps in the brainstorming process, shaping UI/UX in real timeWhether you're a Power Platform veteran or just stepping into the low-code revolution, this session will ignite your inspiration and equip you with practical strategies to elevate your development gameReady to reimagine app creation—from prompt to production? Let's build the future together 💪✨      Carl Cookson",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "90665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -57,7 +65,9 @@
     "level": "100",
     "speakers": "Caroline Kallin",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "dea96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -69,7 +79,9 @@
     "level": "300",
     "speakers": "Joe Griffin, Laura Graham-Brown",
     "description": "It's common that we need to integrate Power BI alongside Dataverse and our model-driven apps (hey, that's the beauty of the Power Platform, right?), to help present our key business data in the most effective manner. But confusion can sometime arise when it comes to the best storage mode to use. Real-time reports sounds great in theory, but if approached in the incorrect manner, those spinning wheels will drive your users crazy. Import mode can get around these issues, but what if our users are impatient or if we need to refresh more than 8 or 48 times a day? For a poor person working with all of this for the first time, it's a true minefield to navigate. To help you through this or the preserve your sanity (maybe both!), join our two Dataverse and Power BI experts for a deep-dive session on how to build the most effective, highly performant reports, that surface your Dataverse data, while also dealing with those pesky end-user requirements for having everything real-time. In this session, you'll learn: - The key differences between Import, Direct Query and composite storage modes. - How both the underlying model and visualization layer impact the performance of your reports. - The steps involved to build a highly performant underlying model when using DirectQuery mode. - What tools are available to help us benchmark performance, identify potential problems and resolve them. If you're a functional consultant or system customizer who works frequently with Power BI, then this is the ideal session for you!      Joe Griffin",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "d6a96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -81,7 +93,9 @@
     "level": "100",
     "speakers": "Jonah Andersson",
     "description": "The European AI Act is here to protect human integrity, privacy, and more while building solutions with AI. The EU AI Act is not just for organizations but also relevant to any use and integration with artificial intelligence (AI) in application development. In this session, you will learn the relevance of the European AI Act through the lens of IT project leadership, cloud development, AI engineering, cloud security, and cloud compliance when integrating existing applications or systems with AI technologies, particularly if you are working with projects in European-based organizations or users that need to comply with the new act.This session combines learning the basics with a focus on what developers, IT architects, and IT business decision-makers need to consider. Learn how to build and leverage the good features of AI technologies while designing and building secure and robust systems responsibly without breaking the rules that come with the EU AI Act, Responsible AI, by utilizing the tools and resources available within the cloud platform such for example,",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "4826da49-e4aa-f011-bbd2-6045bdf2f545",
@@ -93,7 +107,9 @@
     "level": "300",
     "speakers": "Jörgen Nilsson, Nicklas Ahlberg",
     "description": "Windows 11 is the most secure Windows version built so far, and there are differences between securing a W10 and a W11-device.In the times we live in with constant cyber threats we must learn and know about new security features to keep our devices protected, regardless if they are physical or virtual.During this session we will cover our top 10 configurations we must configure in Windows 11, using",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "af2ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -105,7 +121,9 @@
     "level": "200",
     "speakers": "Lee Ford",
     "description": "If you've spent anytime around AI and Copilot recently you will have seen MCP being talked about. A lot.But what is MCP? It stands for Model Context Protocol - yeah, that doesn’t help much. Come along to this session where I will break down what MCP is, why you should understand it, and how you can make use of it in your Copilot or",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "d7a96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -117,7 +135,9 @@
     "level": "300",
     "speakers": "Nikos Delis",
     "description": "In this session, I’ll walk through the real-world process of designing and building a cloud-based, multi-tenant SaaS product using",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "0c15c293-e2aa-f011-bbd2-6045bd8f8f87",
@@ -129,7 +149,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "42120e4b-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -141,7 +163,9 @@
     "level": "300",
     "speakers": "B. Onur Okutucu",
     "description": "The Model Context Protocol (MCP) is redefining how large language models interact with the outside world, enabling them to securely call external tools and APIs. In this session, we’ll explore how",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "232ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -153,7 +177,9 @@
     "level": "200",
     "speakers": "Chloé Moreau, Yves Habersaat",
     "description": "Discover how to enhance M365 Copilot capabilities using Power Platform custom connectors!In this session, you'll learn how to create and secure custom connectors and integrate them into M365 Copilot. We'll explore a real-world scenario, diving deep into the extensibility of M365 Copilot. From creating and securing the custom connector to publishing it as part of an Agent as a connector Action, you'll see all the concepts in practice through a step-by-step demo.Join us to uncover the potential of Power Platform in transforming your M365 Copilot experience and gain actionable insights to drive innovation within your organization.      Chloé Moreau MVP Business Applications | Dynamics 365 & Power Platform solution architect @Abalon Consulting SARL    Yves Habersaat",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "dca96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -165,7 +191,9 @@
     "level": "300",
     "speakers": "Fabian Bader",
     "description": "According to",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "02db3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -177,7 +205,9 @@
     "level": "200",
     "speakers": "Máté Tóth",
     "description": "Most conference sessions are about listening and taking notes. This one is different.In 45 minutes, I’ll challenge you to do something many of us find tricky: actually get to know people during a session. No long lectures, no heavy slides. Instead, we’ll run quick, practical exercises that make it easier to start conversations, share experiences, and build real connections.You’ll walk out with:- New contacts you’ve already met in the room- Simple techniques to make networking feel natural, not forced- Confidence to keep the conversations going after the session endsIt’s not about collecting LinkedIn connections. It’s about practicing the art of turning strangers into peers - and maybe even future collaborators - right here, right now.      Máté Tóth",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "dd869f43-71fb-f011-8406-000d3a468a4a",
@@ -189,7 +219,9 @@
     "level": "100",
     "speakers": "Matthijs van der Veer",
     "description": "Let's examine the growing concern over low-quality generative AI content and explore how we can build automated systems that produce high-quality output. You’ll learn to identify the signs of 'AI Slop' and implement strategies that counteract our automation bias, ensuring that the content we create meets the standards we expect. Using session abstract generation as a case study, I will provide practical guidelines to elevate the quality of your AI-generated content.This talk is designed for developers and IT professionals who are dedicated to improving the quality of AI-driven content in their organisations. Get ready to roll up your sleeves and discover how a little effort can lead to significant improvements in the content we create.      Matthijs van der Veer Coding Architect &",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "dba96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -201,7 +233,9 @@
     "level": "200",
     "speakers": "Sergii Zelenko",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "f2da3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -213,7 +247,9 @@
     "level": "200",
     "speakers": "Vesa Juvonen",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "6c4fdf90-e2aa-f011-bbd2-7c1e525ddd3f",
@@ -225,7 +261,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "fa29d74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -237,7 +275,9 @@
     "level": "200",
     "speakers": "Gerlyn Tiigemäe",
     "description": "Running a consulting and training business alone means wearing many hats — from sales and marketing to content creation and admin. Instead of building a team, I’ve built a system of over 15 Copilot agents that help me manage and scale my work more efficiently.In this session, I’ll walk you through how I’ve designed and integrated AI agents into my daily operations. These agents support me with research, idea development, proposal writing, course material generation, and even social media content — allowing me to focus on the work that really needs a human.You’ll also see how I combine",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "7426c111-e6f3-f011-8406-6045bd8e2a78",
@@ -249,7 +289,9 @@
     "level": "200",
     "speakers": "Michaël Maillot, Yves Habersaat",
     "description": "Discover insights into how you can create intelligent, purpose-built agents for",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "39120e4b-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -261,7 +303,9 @@
     "level": "100",
     "speakers": "Pauline Kolde",
     "description": "Have you ever been in a meeting where everyone is stuck in their opinion, and the harder you argue, the less anyone changes their mind? There’s a better way. This session introduces Street Epistemology – a modern version of the Socratic method. It’s a simple approach where you ask calm, curious questions to understand why someone believes what they believe. It’s often used in conversations where opinions are strong, and arguments don’t work – like tech debates, stakeholder discussions, or team disagreements. I discovered Street Epistemology this year and found it so interesting that I started using it in my work and daily life. Now I want to share it with you! You’ll learn: - What Street Epistemology is and why it works - How to use it in real situations like “We must use Technology X” or “Feature Y will never work” - A beginner-friendly toolkit of questions and techniques you can apply right away       Pauline Kolde",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "022ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -273,7 +317,9 @@
     "level": "200",
     "speakers": "Sebastian Nilsson",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "8a665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -285,7 +331,9 @@
     "level": "300",
     "speakers": "Stas Lebedenko",
     "description": "Platform engineering is all hype, so this talk is about a practical implementation on",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "2788f2d2-e5f6-f011-8406-000d3a468a4a",
@@ -297,7 +345,9 @@
     "level": "300",
     "speakers": "Stephan van Rooij",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "aa120e4b-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -309,7 +359,9 @@
     "level": "100",
     "speakers": "Tomislav Hlupić",
     "description": "Welcome to wild world of",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "0915c293-e2aa-f011-bbd2-6045bd8f8f87",
@@ -321,7 +373,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "b865aff3-3ff2-f011-8406-6045bd8e2380",
@@ -333,7 +387,9 @@
     "level": "200",
     "speakers": "Andrew Taylor",
     "description": "Managing",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "f08b292e-44d9-f011-8544-7c1e525ddd3f",
@@ -345,7 +401,9 @@
     "level": "200",
     "speakers": "Anthony Mashford, Kirk Ryan",
     "description": "Your unstructured data is currently a black box to your AI ambitions. Let’s crack it open. We are pulling back the curtain on a 2-year development journey with top-tier enterprises to show you exactly how to prep, pipeline, and prune your data for",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "0e87fb35-20ec-f011-8544-7ced8d10dbdc",
@@ -357,7 +415,9 @@
     "level": "200",
     "speakers": "Edijs Pērkums",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "6d9d2495-e2aa-f011-bbd2-6045bdf2f545",
@@ -369,7 +429,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "efda3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -381,7 +443,9 @@
     "level": "300",
     "speakers": "Erlend Rushfeldt",
     "description": "Ever wondered how to migrate your",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "2a69b54d-e4aa-f011-bbd2-000d3a44517e",
@@ -393,7 +457,9 @@
     "level": "200",
     "speakers": "Katerina Chernevskaya",
     "description": "In conversational AI, it’s unclear whether long dialogues mean users are engaged or simply stuck, and whether short ones indicate efficiency or frustration. Likes and dislikes don’t solve the mystery - most users skip feedback, and when they do, it rarely reflects the whole session.Without understanding the real user experience, teams risk optimizing blindly. Bots might look successful on paper but fail in practice, frustrating customers and wasting investment. A reliable, scalable way to interpret conversations is critical for improving both satisfaction and ROI.We’ll embed an AI prompt directly in Copilot Studio to classify user messages and configure memory to preserve conversation context. All telemetry is then streamed into",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "4726da49-e4aa-f011-bbd2-6045bdf2f545",
@@ -405,7 +471,9 @@
     "level": "300",
     "speakers": "Lee Ford, Reshmee Auckloo",
     "description": "What if your Copilot agent could reason over enterprise data and external intelligence at the same time? In this session, we’ll explore how to build declarative agents using the",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "562f3a84-1eb7-f011-bbd3-7c1e525ddd3f",
@@ -417,7 +485,9 @@
     "level": "300",
     "speakers": "Paula Januszkiewicz, Sami Laiho",
     "description": "Join us for an exclusive Ask Me Anything session with two of the most respected voices in the cybersecurity world—Sami Laiho and Paula Januszkiewicz. With decades of combined experience in threat mitigation, system hardening, and enterprise security architecture, Sami and Paula bring deep insights into the evolving landscape of cyber defense. Whether you're curious about zero trust, endpoint protection, identity security, or the latest attack vectors, this is your chance to ask the experts directly. No slides, no scripts—just raw, real answers from two of the best in the business.      Paula Januszkiewicz",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "5169b54d-e4aa-f011-bbd2-000d3a44517e",
@@ -429,7 +499,9 @@
     "level": "200",
     "speakers": "Renato Romão",
     "description": "Discover how to turn raw business data into intelligent, conversational experiences without writing code. In this session, you’ll see how Data Agents in",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "4bffae8f-23c9-f011-bbd2-7ced8d59c70f",
@@ -441,7 +513,9 @@
     "level": "200",
     "speakers": "Sandra Kiel",
     "description": "Minecraft is a game. But at the same time, it’s one hell of a mirror for team behavior.In this session, I’ll show how you can use Minecraft to create real team challenges in the context of Modern Work and why our brains are wired to love these game mechanics.Together, we’ll take a look behind the scenes:What happens in our brains when teams play?How can gamification principles like feedback loops, reward systems, and progression be harnessed for team growth?Which challenge formats work best, from scavenger hunts to adventure scenarios to capture-the-flag?And of course:How to put all of this into practice in Minecraft, without needing a massive dev team but with Fun and Learnings.This session is an invitation to rethink teamwork in a playful, powerful way.      Sandra Kiel Managing Director and",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "ecda3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -453,7 +527,9 @@
     "level": "200",
     "speakers": "Valerie Junk",
     "description": "Creating reports with Power BI may seem easy at first. However, many people eventually discover that their reports are not being viewed, end-users are confused about navigation, and the whole development process is more complicated than anticipated. This session will address these challenges and provide you with the skills to create visually appealing and actionable data visualizations that serve a clear purpose and effectively guide end-users to take action.In this session, I will show how to create data visualizations that are visually appealing, intuitive, and actionable, only using Power BI core visuals. Since many of us are creating reports for others who eventually need to maintain them themselves, I think it is important not to involve too many external tools and additional code and instead focussing on keeping it simple and insightful. The techniques you will learn are practical and can be immediately applied to your work. You will learn how to:- Ask the right questions to get to know your audience.- Use DAX to Enhance Visuals: Learn how to modify your visuals using DAX, such as changing colors and highlighting important information, to make critical insights stand out.- Focus on Key Information: Learn techniques to refine your visuals so they display the most critical data, making sure users can quickly see what matters most.Join me as we explore how to create insightful, user-friendly visualizations using only Power BI's core visuals, no SVGs or external tools required.  Session Slides     Valerie Junk Data Analytics, Visualization & Storytelling |",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "6e4fdf90-e2aa-f011-bbd2-7c1e525ddd3f",
@@ -465,7 +541,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "efa96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -477,7 +555,9 @@
     "level": "200",
     "speakers": "Alessandro Gherardi",
     "description": "In this session, I will demonstrate why and how to leverage Tabular Editor's Best Practice Analyzer and PBI Inspector within an",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "2b27770b-a4fa-f011-8406-6045bd8e2380",
@@ -489,7 +569,9 @@
     "level": "400",
     "speakers": "Carl Cookson",
     "description": "Tired of messy Typescript and inconsistent PCF projects? Want to speed up your delivery, improve code quality and transform your custom projects? Need a standard way of working across all your components?This lab will take a novice React developer 🧑‍💻to the next level, allowing them to provide enhanced user interfaces beyond the standard, utilising themes common with full-stack developers. It will also provide you with approaches to utlising Gen AI across your development and user interfaces, whether Copilot, Claude or others. It will also highlight some common mistakes to watch out for, particularly with new devs (or new AI tooling)In this lab, we’ll build PCF controls together, using a robust, reusable architecture that brings clarity and structure to every solution. We’ll dive into how output properties supercharge your controls, enabling dynamic interactions across the form and unlocking powerful, responsive behaviours. By working through a living example and creating code together, this session will enable you for the next wave user interfaces.If you want to build PCF controls that are not just functional but future-proof, this session is your next step.Agenda1. Intros and setting up your environment.2. What is mobx - building your first view3. Defining interactions and improving performance4. Github Copilot in action5. Reviewing Generated Apps       Carl Cookson",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "00db3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -501,7 +583,9 @@
     "level": "100",
     "speakers": "Dan Barber",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "dc26da49-e4aa-f011-bbd2-6045bdf2f545",
@@ -513,7 +597,9 @@
     "level": "300",
     "speakers": "Klaus Bierschenk",
     "description": "Data backup has always been a fundamental aspect of IT.So why is this principle so often neglected when it comes to",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "dda96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -525,7 +611,9 @@
     "level": "300",
     "speakers": "Magnus Gether Sørensen",
     "description": "Transform your",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "d5a96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -537,7 +625,9 @@
     "level": "100",
     "speakers": "Marin Niehues",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "2c69b54d-e4aa-f011-bbd2-000d3a44517e",
@@ -549,7 +639,9 @@
     "level": "200",
     "speakers": "Sari Soinoja",
     "description": "Many organizations still struggle with outdated perceptions of SharePoint, seeing it as difficult, limited, or stuck in the past. Meanwhile, their document management needs are growing more complex, and AI is reshaping the way we work with information. The result? Missed opportunities to modernize and streamline knowledge management.Despite persistent myths, SharePoint has long been a powerful platform for document management—and today, it's evolving faster than ever thanks to innovations in AI. In this updated session, I’ll show you why SharePoint is not only still a valid document management system, but why it's becoming one of the smartest ones out there.With over ten years of hands-on experience in building real-world knowledge management solutions with SharePoint, I’ll walk you through & demo the key features - both familiar and new - that make it a strong foundation for managing information with AI features. We'll explore\t• Metadata & AI: smarter tagging and classification\t• M365 Copilot & agents: how AI supports document tasks and governance\t• Secure external sharing & M365 Copilot access to your files\t• Search that understands intent.If you're ready to challenge outdated perceptions and see what modern document management in SharePoint really looks like, this session is for you.      Sari Soinoja Leading modern work specialist &",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "639d2495-e2aa-f011-bbd2-6045bdf2f545",
@@ -561,7 +653,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "ea882739-cae1-f011-8544-000d3a262d32",
@@ -573,7 +667,9 @@
     "level": "200",
     "speakers": "Emilie Lundblad",
     "description": "Abstract (WHAT, WHY, HOW, WHO)AI, Security & M365WHAT: AI, Security & M365AI is moving from copilots that draft to agents that execute. This session shows how to design, secure, and govern an enterprise “agent fleet” across",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "3ca9d5e0-69ea-f011-8544-7c1e525ddd3f",
@@ -585,7 +681,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-29",
+    "dayLabel": "Thursday, Jan 29"
   },
   {
     "id": "609d2495-e2aa-f011-bbd2-6045bdf2f545",
@@ -597,7 +695,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "3a2da763-ebbb-f011-bbd2-000d3a262d32",
@@ -609,7 +709,9 @@
     "level": "100",
     "speakers": "Linnar Viik",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "619d2495-e2aa-f011-bbd2-6045bdf2f545",
@@ -621,7 +723,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "512ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -633,7 +737,9 @@
     "level": "300",
     "speakers": "Edine Olijve-Watkinson",
     "description": "Many organisations have a SharePoint intranet, but not everyone uses it. That is often because it is hard to find the right information or it feels like just another place to search.In this session, you will learn how to turn your intranet into a helpful and smart platform using SharePoint, Viva Engage and",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "db26da49-e4aa-f011-bbd2-6045bdf2f545",
@@ -645,7 +751,9 @@
     "level": "300",
     "speakers": "Erwin Staal",
     "description": "For organizations in the EU, moving to the cloud raises important questions about control, data protection, and compliance with European laws like the GDPR. In this session, we’ll explore what digital sovereignty means in the context of",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "ed26da49-e4aa-f011-bbd2-6045bdf2f545",
@@ -657,7 +765,9 @@
     "level": "100",
     "speakers": "Kristo Raun, Madli Allikmäe",
     "description": "Lifting code to the cloud is easy. But cloud migration is more than just a technical challenge. How do you make sure that the migration actually accelerates your business?How do you avoid turning the journey into maintenance hell?Should you even migrate at all?Join us for a chat on Ramirent’s move of 200+ integrations across 9 countries from on-prem to",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "f1a96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -669,7 +779,9 @@
     "level": "300",
     "speakers": "Magnus Gether Sørensen",
     "description": "Stop crossing your fingers and hoping AI-generated code works. In this session, we'll move beyond \"vibe coding\" and into the world of agentic engineering, where AI doesn't just write code that works - it writes code you'd be proud to ship to production.Since August 2025, I've been successfully deploying AI-written code to real customer environments. The secret? An open-source framework that transforms AI from a coding assistant into a professional developer who writes safe, maintainable, and thoroughly tested Dataverse and",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "e43a7d55-e4aa-f011-bbd2-6045bd8f8f87",
@@ -681,7 +793,9 @@
     "level": "300",
     "speakers": "Michael Mwangi",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "d9a96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -693,7 +807,9 @@
     "level": "300",
     "speakers": "Nicole Enders",
     "description": "Delivering exceptional customer service requires more than just human effort—it demands intelligent automation and AI-driven assistance. But with so many tools, apps and services available, how do you choose the right solution for your needs?In this session, we’ll explore how to design and implement a customer service AI assistant using",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "8f665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -705,7 +821,9 @@
     "level": "300",
     "speakers": "Simon Skotheimsvik",
     "description": "Is your Intune environment quietly falling behind? Are you worried your policies, apps, and security measures aren’t keeping pace with the latest in cloud endpoint management? You’re not alone, but you don’t have to stay stuck on the platform.Climb aboard the Intune Night Train for a fast-track journey from your current setup to the cutting-edge of 2026. Our conductor will guide you through each major stop, showing exactly what needs to be modernized, automated, and secured so you arrive fully equipped for the future.You’ll go to sleep with concerns about your environment, and wake up with a roadmap to the latest and greatest. The whistle’s blowing, it’s time to catch the train.      Simon Skotheimsvik",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "629d2495-e2aa-f011-bbd2-6045bdf2f545",
@@ -717,7 +835,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "43120e4b-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -729,7 +849,9 @@
     "level": "300",
     "speakers": "Daniel Laskewitz, Mats Necker",
     "description": "Model Context Protocol (MCP) quickly became the thing everybody talks about who is doing AI in the moment and its adoption rate across different tech providers is rapid.",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "1b00c0b5-5aed-f011-8544-7c1e525ddd3f",
@@ -741,7 +863,9 @@
     "level": "200",
     "speakers": "Daniel Rohregger",
     "description": "This session is all around the now essential feature from the \"SharePoint Advanced Management\"-Suite. We'll discover what great possibilities we will have with it to bolster our data governance and get ahead of oversharing. We'll delve into how this feature can improve IT governance, enhance security and compliance, and provide AI-powered insights. I will show about policies, lifecycle management, mitigation actions and strategies to prevent content sprawl. We'll also explore optimizing access control for Copilot and Agents, managing inactive sites, and redefining data governance. By the end of this session, you'll have a comprehensive understanding of how SharePoint Advanced Management can help your daily IT operations and address key concerns in oversharing of IT administrators, data stewards, and IT leaders.Key takeaways include:- How to get data governance with SharePoint Advanced Management implemented quickly- Enhancing security and compliance- Leveraging AI-powered insights for better decision-making- Use Access Review, Restricted Content Discover and Restricted Site Access to limit access for sensitive sites Perfectly suitable if you are planning an Copilot Pilot or Implementation OR if you already using it and want to stay ahead and develop processes to permanently manage your data and oversharing risks.       Daniel Rohregger",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "ae2ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -753,7 +877,9 @@
     "level": "200",
     "speakers": "David Kofod Hanna",
     "description": "“You do not rise to the level of your goals, you fall to the level of your systems.”We all have a vision for great documented Power BI solutions - but well to often we push it at the end, forget it or can't remember it. This session will suggest a well-designed Power BI documentation systems that lead to progress, even when motivation is low.In this session, you'll get hands-on methods for making documentation a natural part of your Power BI workflow.We'll explore Power Query metadata, Table Groups and scripting in Tabular Editor, INFO.VIEW DAX functions, external tools, model layout views, TMDL view documentation, VertiPaq Analyzer in DAX Query views, Semantic Link Labs, and JSON theme documentation.Everything is tied together in a user-friendly, accessible app – where the end user meets the documentation directly.This isn’t just inspiration – it’s a system you can take home and apply.A Power BI documentation system – not just an afterthought      David Kofod Hanna Senior Advisor at Twoday and",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "e0a96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -765,7 +891,9 @@
     "level": "300",
     "speakers": "Eduard Keilholz",
     "description": "Join my session on",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "ab120e4b-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -777,7 +905,9 @@
     "level": "100",
     "speakers": "Eeva-Jonna Panula",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "dfa96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -789,7 +919,9 @@
     "level": "100",
     "speakers": "Fabian Bader, Stephan van Rooij",
     "description": "Is your",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "f426da49-e4aa-f011-bbd2-6045bdf2f545",
@@ -801,7 +933,9 @@
     "level": "100",
     "speakers": "Sebastian Sieber",
     "description": "Let's face it - AI doesn't read our minds (yet). But what it can do, it does follow instructions. Pretty well even. If you know how to talk to it. Or should I say: how you instruct it to do so. We'll dive into the magical world of telling Copilot and your agents exactly what you want, without sounding like a robot yourself. Learn how to charm your agent with just the right words, handy commands, and helpful tricks to reach your implementation goals.       Sebastian Sieber 2x",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "704fdf90-e2aa-f011-bbd2-7c1e525ddd3f",
@@ -813,7 +947,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "682ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -825,7 +961,9 @@
     "level": "300",
     "speakers": "Antti Koskela, Michaël Maillot",
     "description": "Ready to geek out and supercharge your productivity? Join us for a hands-on session tailored for code-curious Teams power users!Discover how to build smart, AI-driven agents using the",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "91665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -837,7 +975,9 @@
     "level": "200",
     "speakers": "Hans Muns",
     "description": "Modern DevOps on",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "ac665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -849,7 +989,9 @@
     "level": "200",
     "speakers": "Jan Chlebek",
     "description": "Unlock the next level of business intelligence by integrating application workflows using write-back capabilities, enabling seamless data entry and powerful interactions directly within the dashboards. Learn about technical implementation, licensing considerations, and potential use cases of writebacks, all including implementation snippets.The session incorporates insights from market research on existing writeback solutions. Participants will gain an understanding of leading writeback solutions such as Insightsoftware's Power ON and Inforiver’s Writeback, learning about their pricing models, key features, and how they compare to custom implementations using",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "012ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -861,7 +1003,9 @@
     "level": "200",
     "speakers": "Kasper Nørregaard",
     "description": "Getting started with data protection in",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "782ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -873,7 +1017,9 @@
     "level": "200",
     "speakers": "Matthijs van der Veer",
     "description": "Let's discover how to effectively combine pre-built orchestrations with custom workflows to create sophisticated multi-agent applications. Learn how agents can communicate to achieve greater results or when a more deterministic approach is necessary to prevent communication breakdowns. We will also cover adding tools to your agents, recognising when to solicit human input, and leveraging",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "fada3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -885,7 +1031,9 @@
     "level": "100",
     "speakers": "Melissa Hale, Stephanie Stasey",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "3069b54d-e4aa-f011-bbd2-000d3a44517e",
@@ -897,7 +1045,9 @@
     "level": "300",
     "speakers": "Tatu Seppälä",
     "description": "Does the complexity and clumsiness of access and security role management in Power Platform and Dataverse leave you feeling unsure of how to keep things under control at scale? Do you find yourself wishing you could bring in the familiar and powerful access management and governance functionalities of Entra ID (formerly known as",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "6d4fdf90-e2aa-f011-bbd2-7c1e525ddd3f",
@@ -909,7 +1059,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "f22f10f5-3ff2-f011-8406-6045bd8e2a78",
@@ -921,7 +1073,9 @@
     "level": "200",
     "speakers": "Dean Ellerby",
     "description": "Keeping third-party applications up to date in Intune sounds simple, until you are the one responsible for making it work in production.In reality, teams spend time rebuilding packages, maintaining detection logic, managing rollout waves, and reacting when updates fail. At scale, this quickly becomes manual, fragile, and hard to sustain, especially as security expectations and patch frequency continue to increase.In this session, Dean Ellerby shows how Robopack takes a different approach to third-party patching in Intune. Instead of relying on custom scripts and constant repackaging, Robopack focuses on automated discovery, tested packaging, and controlled rollout that you can trust.You will see how to:•⁠  ⁠Discover unmanaged third-party applications already installed across your Intune environment•⁠  ⁠Automatically build and maintain application packages with reliable detection logic•⁠  ⁠Roll out updates in staged deployment waves with clear visibility and control•⁠  ⁠Pause or roll back updates safely when something does not go as planned•⁠  ⁠Keep patching consistent as you move from Configuration Manager to Intune, or operate in bothThis session is designed for Intune admins, cloud architects, security-focused teams, and",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "ec4e6f3b-20ec-f011-8544-7c1e525ddd3f",
@@ -933,7 +1087,9 @@
     "level": "100",
     "speakers": "Liviu Barbat",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "4c4958a0-16e8-f011-8544-6045bd8ffc3b",
@@ -945,7 +1101,9 @@
     "level": "200",
     "speakers": "Michał Cheba",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "13e21496-e2aa-f011-bbd2-000d3a44517e",
@@ -957,7 +1115,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "ad665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -969,7 +1129,9 @@
     "level": "200",
     "speakers": "Björn Zahnow, Pauline Kolde",
     "description": "Welcome to Jurassic Park, where the dinosaurs are back, but the visitors aren’t. After the recent “incidents,” the park needs a bold marketing strategy to win back trust and boost ticket sales. In this interactive session, you’ll step into the role of the park’s marketing team. Your mission: use Copilot, Copilot Studio, Power Automate, and Dynamics 365 Customer Insights to create smarter campaigns that bring visitors roaring back.  We’ll show you how to enhance the default Copilot, making it more powerful and fun, and demonstrate real marketing use cases that go far beyond text generation. Together, we’ll build custom Copilot features live, automate processes, and design campaigns that even a T-Rex would love. Maybe we even see one of these rare autonomous agents. What you’ll take away: - How to customize Copilot with Copilot Studio for real-world marketing scenarios - Ways to integrate it with Customer Insights for smarter workflows - Practical examples of AI-driven marketing beyond content creation - A creative approach to making AI tools engaging and useful for your team       Björn Zahnow",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "9c665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -981,7 +1143,9 @@
     "level": "200",
     "speakers": "Daniel Rohregger",
     "description": "Copilot offers powerful features—but do you know which settings truly matter? And where to find them? The answer is: Copilot Control SystemIn this 45-minute session, you’ll get a concise yet comprehensive overview of the most important admin controls, along with my best practice recommendations. We’ll walk through key configuration options, discuss their impact on end users, and ensure you know how to optimize Copilot for your organization.Topics include:✅ Access to website content & Bing Web Plugin✅ Copilot licensing & user pinning✅ Copilot in Edge – configuration & limitations✅ Loop sites & Copilot✅ DLP & SharePoint control✅ Copilot agent managementAdditional topics may be covered depending on the latest releases. This session isn’t just for admins—it’s for anyone working with Copilot who wants to maximize its potential.      Daniel Rohregger",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "8b2ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -993,7 +1157,9 @@
     "level": "200",
     "speakers": "Lisa Hoving",
     "description": "Azure Databricks is expensive. Running a cluster can cost thousands, if not 10s of thousands of Euros per month. Therefore, Databricks is only suitable for the biggest of datasets. Seems to be common knowledge… right? Let’s be honest, it doesn’t need to be this way. With some tips and tricks,",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "d8a96149-e4aa-f011-bbd2-6045bd8f8f87",
@@ -1005,7 +1171,9 @@
     "level": "100",
     "speakers": "Marin Niehues",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "d629d74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -1017,7 +1185,9 @@
     "level": "400",
     "speakers": "Morten Knudsen",
     "description": "Gain insights from real-life experiences on how to craft an effective privileged access strategy that supports \"Just Enough, Just In Time\" access while maintaining control and avoiding potential security breaches.Explore the various use-cases, potential pitfalls, and limitations inherent in implementing privileged access using the",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "092ad74f-e4aa-f011-bbd2-6045bdf2f545",
@@ -1029,7 +1199,9 @@
     "level": "200",
     "speakers": "Nathan Sweeney",
     "description": "This is an interactive session so bring your big voices and be expected to engage.In this session, I’ll show you why you and your business should be 100% invested in vibe coding. I will break down what vibe coding really means, why it changes the way we build, and how you can put it into practice immediately.Bring your ideas we will build them live. Along the way, we’ll explore VS Code, GitHub Spark, and the tools that make vibe coding not just possible, but powerful.Developers may leave a little frustrated (and maybe even hate me for making it look this easy), but business leaders will see the bigger opportunity: how vibe coding can accelerate delivery, reduce friction, and transform innovation at pace.I’ll also share lessons learned from implementing this approach in real world scenarios, so you leave not just inspired, but ready to act.      Nathan Sweeney Principle",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "93665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -1041,7 +1213,9 @@
     "level": "200",
     "speakers": "Sandra Kiel",
     "description": "What if we could take the captivating principles of gaming and apply them to solve real business challenges? In this session, you’ll discover how to use Game UX principles—like progression systems, feedback loops, and rewards—to create engaging experiences in Power Apps. We’ll focus on the example of a Copilot Adoption App, showcasing how a gamified learning path can guide users to explore and master new tools step by step.Through practical demonstrations, you’ll learn how Power Apps can leverage gaming-inspired design to boost user engagement and drive adoption of complex processes like Copilot. Whether you’re looking to simplify user onboarding, make workflows fun, or increase engagement in any business scenario, this session will equip you with actionable insights to get started.      Sandra Kiel Managing Director and",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "0a15c293-e2aa-f011-bbd2-6045bd8f8f87",
@@ -1053,7 +1227,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "dd3a7d55-e4aa-f011-bbd2-6045bd8f8f87",
@@ -1065,7 +1241,9 @@
     "level": "300",
     "speakers": "Alexander Benoit",
     "description": "Imagine getting a message on",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "17db3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -1077,7 +1255,9 @@
     "level": "200",
     "speakers": "Amanda Sterner ✨, Marijn Somers",
     "description": "Join us for an engaging, life-changing, and sometimes “on no do I need to delete things” session where we apply the principles of Marie Kondo's KonMari Method™ to declutter and organize your",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "f1da3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -1089,7 +1269,9 @@
     "level": "200",
     "speakers": "Bas Land",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "3899e733-44d9-f011-8544-000d3a262d32",
@@ -1101,7 +1283,9 @@
     "level": "300",
     "speakers": "Kaido Järvemets",
     "description": "This session covers",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "a9665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -1113,7 +1297,9 @@
     "level": "100",
     "speakers": "Kayleigh Duddy, Lynsey Winchurch",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "a8665c4f-e4aa-f011-bbd2-6045bd8f8f87",
@@ -1125,7 +1311,9 @@
     "level": "100",
     "speakers": "Ulrikke Akerbæk",
     "description": "I have spent the last two years working with Power Platform Pipelines on a customer project - and MAN have I learned a thing or two. And now I want to share them with you. In this session, you will learn the basics, and I will share with you all the mistakes I made, the way we should have done it, and the very important fine print from",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "a4120e4b-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -1137,7 +1325,9 @@
     "level": "200",
     "speakers": "Zoe Wilson",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "6b4fdf90-e2aa-f011-bbd2-7c1e525ddd3f",
@@ -1149,7 +1339,9 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "f6da3351-e4aa-f011-bbd2-7c1e525ddd3f",
@@ -1161,7 +1353,9 @@
     "level": "100",
     "speakers": "Sami Laiho",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   },
   {
     "id": "7fa9d5e0-69ea-f011-8544-7c1e525ddd3f",
@@ -1173,6 +1367,8 @@
     "level": "",
     "speakers": "",
     "description": "",
-    "notes": ""
+    "notes": "",
+    "day": "2026-01-30",
+    "dayLabel": "Friday, Jan 30"
   }
 ]
