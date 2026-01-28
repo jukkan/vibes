@@ -64,7 +64,7 @@
     "topic": "Microsoft 365",
     "level": "100",
     "speakers": "Caroline Kallin",
-    "description": "",
+    "description": "Congratulations! You've got a shiny new AI assistant – it’s like having your very own Miss Moneypenny.Now, will you a) use M365 Copilot to attend even more meetings for you to multitask on and continue your usual work-around-the-clock-routine, or will you b) embrace M365 Copilot to become a more present and compassionate leader/colleague, changing your digital habits for you and your teams better mental health?If you chose option b, you're in luck! Join this session where Caroline Kallin, MVP in M365 Copilot, will reveal the magical use cases that will help you, as a leader and collague, free up precious time and brainpower. This will not only boost your team's spirit but also make you look like a rockstar.Examples include: figuring out who spoke the least in meetings (introverts unite!), sending well-deserved praise to a colleague with just the right amount of motivation, finding collaboration time with that elusive colleague, getting Copilot to coach you before a tough conversation, boosting your serotonin by reflecting on the good things you've done during the week, and asking Copilot to detect if someone’s having a rough day so you can cheer them up.",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -232,7 +232,7 @@
     "topic": "Data & AI",
     "level": "200",
     "speakers": "Sergii Zelenko",
-    "description": "",
+    "description": "Are you tired of reinventing the wheel every time you start a new Power BI report? When used wisely, templates can transform how you build reports, saving hours of repetitive work. In this hands-on session, you'll learn how to create reusable Power BI templates that not only save time but also enforce consistency and deliver a great user experience.We’ll start with the key benefits of using templates and walk through how to build one from scratch. You'll see practical Power Query examples commonly used in templates, such as capturing the report refresh timestamp, creating a centralized empty table for DAX measures, and other reusable elements that speed up your workflow.Next, we’ll explore the perfect DAX-based calendar table and dive into layout and navigation design. You'll learn how to create clean, multi-page structures, use buttons for guided navigation, and leverage grouped elements, bookmarks, and hidden panels for tooltips or contextual info.Before finally packaging everything into a Power BI template (.PBIT), we'll generate Power BI theme using no-code web tool and take it further by editing the JSON metadata to make template creation even faster and more flexible.Perfect for Power BI users who want to work smarter, not harder, this session will help you build once, and reuse with confidence!",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -246,7 +246,7 @@
     "topic": "Microsoft 365",
     "level": "200",
     "speakers": "Vesa Juvonen",
-    "description": "",
+    "description": "Step into the future of intelligent collaboration with SharePoint Agents. This session introduces both custom agents and the new SharePoint Knowledge Agent - your AI-powered content curator designed to keep information fresh, relevant, and actionable. Learn how organizations can empower employees by transforming SharePoint sites and documents into scoped agents that serve as subject matter experts, automate workflows, and enhance Copilot responses.We’ll explore the end-user experience, admin setup, and real-world business scenarios that demonstrate how agents streamline content management, reduce manual effort, and improve decision-making. Whether you're building tailored solutions or leveraging the Knowledge Agent to maintain content quality and governance, this session will show you how SharePoint is leading the way in agentic productivity.",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -316,7 +316,7 @@
     "topic": "Data & AI",
     "level": "200",
     "speakers": "Sebastian Nilsson",
-    "description": "",
+    "description": "In today's world of fast moving LLMs and generative AI, \"trust me\" isn't a strategy—it's a liability. AI outputs are inherently non‑deterministic, especially given the factors of different models, temperature settings, provider switches and more. So, “it worked on my AI” is not a sustainable approach. This is why you need AI-aware observability, not just classic logging.What really defines a working AI solution? At least, it has to be measurable, monitorable, and reliable. We'll cut through some important tracking metrics, including latency, throughput, error rates and token usage.Since AI is probabilistic, not deterministic like traditional software, we need robust evaluation frameworks. We'll need things like automated evals, human-in-the-loop assessment, user-feedback, or even LLM-driven judging, to confirm expected behavior and detect regressions.You wouldn't ship a classic app without telemetry, so why treat AI differently? This talk equips developers with the mindset and tools to build AI systems that are intelligent and production-ready: traceable, testable, monitored, and trustworthy.",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -344,7 +344,7 @@
     "topic": "Security",
     "level": "300",
     "speakers": "Stephan van Rooij",
-    "description": "",
+    "description": "You built this API for your new product and it is protected with tokens from Entra ID (or any other IDP). To truly test your API, you don't want to disable the authentication part.How do you actually run your (mandatory) integration tests without disabling authentication? Using a man-in-the-middle attack on your api, you can create tokens that, for the application, appear to be from Entra ID and actually get validated.Do you want to run your integration tests on your api, without compromising the integrity of your API?Want to test if the role-based-access-control is working as expected?Broken access control and Identification and Authentication failures are both in the OWASP top 10, let's make sure you don't make these mistakes.And while we are at it, I'll show you how you can protect your API against these forged tokens",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -414,7 +414,7 @@
     "topic": "Security",
     "level": "200",
     "speakers": "Edijs Pērkums",
-    "description": "",
+    "description": "Fast, demo‑first session that shows how to prepare, validate, and deliver applications reliably through Intune. See live demonstrations of creating Intune‑ready installers for predictable rollouts. The session uses both free and paid tools from Master Packager to illustrate practical steps you can apply immediately, with real‑world tips for reducing deployment failures and simplifying ongoing app maintenance. Ideal for Intune administrators and endpoint teams who need scalable, repeatable processes for cloud‑first application delivery.",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -582,7 +582,7 @@
     "topic": "Community & Business",
     "level": "100",
     "speakers": "Dan Barber",
-    "description": "",
+    "description": "High-performing teams aren’t just efficient—they’re the most rewarding, engaging & energizing environments to be part of. When people feel seen, supported, and empowered, they don’t just deliver results—they thrive.In this session, we’ll explore the human dynamics that fuel exceptional team performance, focusing on how understanding and meeting the real needs of your team members creates a culture of trust, fun, and shared success.Whether you’re leading a team or part of one, you’ll learn:- How to foster a culture of shared accountability and psychological safety- What motivates individuals—and how to tap into it- How empathy, clarity, and emotional intelligence drive performance- Practical strategies to build teams that are not only effective, but deeply enjoyable to work inThis session is for anyone who believes that great teams should feel great to be part of. You’ll leave with actionable insights to help your team not just perform, but become the kind of team people are proud to belong to—and excited to show up for.",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -624,7 +624,7 @@
     "topic": "Data & AI",
     "level": "100",
     "speakers": "Marin Niehues",
-    "description": "",
+    "description": "Your personas are fiction. Beautiful, well-researched fiction – but fiction nonetheless.They tell you Sarah is a \"tech-savvy marketing manager who values efficiency\" but can't explain why she abandoned your onboarding flow at step 3. Surveys tell you what people claim they want, not what actually drives their decisions or stops them cold.Here's what actually works: Digital customer clones built with AI that think, respond, and behave like your real users. Not avatars or chatbots – actual reasoning agents you can interrogate about edge cases, test controversial ideas with, and explore the messy reality of customer behavior.In this session, I'll demonstrate how to build these clones and use them to make product decisions that actually stick. You'll see a live build: from training data to having real conversations.What you'll walk away with:-> Why your current personas are sabotaging product decisions-> A practical framework for building AI customer clones that actually work-> How to surface the hidden \"why\" behind user behavior and requests-> A new approach to validating ideas, prioritizing features, and shipping products people actually useLive demo included: Watch me build a customer clone from scratch and interrogate it about a real product decision.",
     "notes": "",
     "day": "2026-01-29",
     "dayLabel": "Thursday, Jan 29"
@@ -708,7 +708,7 @@
     "topic": "Data & AI",
     "level": "100",
     "speakers": "Linnar Viik",
-    "description": "",
+    "description": "Join Linnar Viik, an Estonian information technology scientist, entrepreneur and IT visionary. Also one of the founders of AI Leap (TI-Hüpe) - an initiative to integrate AI into the national education system.Bringing together the country, systems, AI and most importantly, the people.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -792,7 +792,7 @@
     "topic": "Data & AI",
     "level": "300",
     "speakers": "Michael Mwangi",
-    "description": "",
+    "description": "Failed Power BI refreshes and broken reports can derail decision making. This session shows how to build an automated monitoring and recovery system using Power Automate,and Copilot. We will walk through detecting refresh failures, alerting stakeholders, diagnosing the root cause, and triggering fixes without manual intervention. Perfect for data analysts and BI teams who want to reduce downtime and keep stakeholders informed with minimal firefighting.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -904,7 +904,7 @@
     "topic": "Community & Business",
     "level": "100",
     "speakers": "Eeva-Jonna Panula",
-    "description": "",
+    "description": "Technology isn't neutral. It shows the perspectives and biases of the people who build it. When development teams lack diversity, the products they create often exclude, marginalize, or even harm users who don't share their experiences and assumptions.This talk challenges the idea that \"code doesn't discriminate\". It will look into examples of how homogeneous teams have created products with problematic assumptions embedded in their core functionality. But this talk isn't just about pointing out problems. We will explore how bias enters the development process in different stages, and discuss successful examples of what happens when diverse perspectives are included.This talk will give the attendees some tools for self-reflection, and practical strategies for pushing for more inclusive development practices. After listening to this talk, you will be able to build better products, and understand, how your actions can affect the users, and not discriminate them.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1030,7 +1030,7 @@
     "topic": "Community & Business",
     "level": "100",
     "speakers": "Melissa Hale, Stephanie Stasey",
-    "description": "",
+    "description": "How a Chemist and Biologist career switched to tech and started multi-cloud AI communities for thousands...let us share our stories. AI is all about experimentation and rapid learning...last year the CTT keynote inspired us to launch UK wide and now our inclusive AI communities help us learn faster with friends.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1086,7 +1086,7 @@
     "topic": "Security",
     "level": "100",
     "speakers": "Liviu Barbat",
-    "description": "",
+    "description": "The problems are ones you know: Ransomware is a global threat that costs businesses hundreds of millions of dollars per year. Since 2011, we’ve been here to help companies automate software patching, saving them time, hassle and stress that exposures could turn into damaging and expensive incidents.Our customers have spoken: Patch My PC just works, and we intend to keep it that way.We recently released a few new features in our stack that help keep our product fresh and functional in an ever-changing tech landscape (We welcome our AI overlords).We can confidently say that our product is:Your go-to analytics platform: Advanced Insights for Intune is coming to give you more visibility and control than ever before.Your trusted security partner: Get notified when a problem impacts you, and we’ll help you remediate it ASAP.Your ally in future-proofing: We created the first realistic solution to migrate your ecosystem from ConfigMgr to Intune.Your almost-invisible morale booster: IT pros, security teams, and users agree, our product improves their on-the-job experience.So, come out and see us at Cloud Tech Tallinn and get a front-row seat to the future.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1100,7 +1100,7 @@
     "topic": "Security",
     "level": "200",
     "speakers": "Michał Cheba",
-    "description": "",
+    "description": "Data loss, cyber attacks, or system failures. How to backup modern environments in 2026. How to build a resilient recovery plan that ensures business continuity.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1170,7 +1170,7 @@
     "topic": "Community & Business",
     "level": "100",
     "speakers": "Marin Niehues",
-    "description": "",
+    "description": "Agile was supposed to fix everything. Faster delivery. Better collaboration. Happier customers. That’s what the consultants promised. That’s what the slide decks still say.And yet… your product is still late. Still not what the customer asked for. Still somehow worse than last quarter.Companies are still burning millions on \"Agile transformations\" that never end. Teams are drowning in meetings, sprint boards, and Jira tickets. Leadership still doesn’t know what’s going on, but now they have new words for it.Scrum, Kanban, SAFe: They were meant to be tools, not religions. But somewhere along the way, companies stopped solving problems and started worshiping the process itself.I’ve seen teams spend more time debating backlog grooming than improving the product. I’ve watched companies mistake motion for progress, convinced that sprinting fast and often enough will somehow fix their broken foundation.If your organization is chaotic, misaligned or hiding behind process, Agile won’t save you. Customers don’t care what framework you use. They care if you solve their problems and too many teams forgot how to do that.What You’ll Walk Away With...... how to stop Agile from getting in the way of actual work.... how to fix your product development process without another Agile coach.... the questions leadership should ask before jumping on agile.... how to tell if your Agile setup is making things better or just making things busier.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1268,7 +1268,7 @@
     "topic": "Data & AI",
     "level": "200",
     "speakers": "Bas Land",
-    "description": "",
+    "description": "I have spent the better part of my career designing, refining, and maintaining dashboards in Power BI to help my clients answer business questions. Until now.In this session, we will break free from predefined visuals and fixed dashboards. It is time to talk to your data!Over the past years, everybody has been exposed to AI LLMs such as ChatGPT, Claude, and Gemini.What if I told you that you could chat with your data, just like you can chat with your AI?With Fabric Data Agents, you can! You get a chat interface that understands the context of your data. You can ask questions in natural language (no need to learn SQL or DAX!) and get answers, fast.In this session we will start by explaining some of the basics behind the Fabric Data Agents.Then we'll jump into the prerequisites in order to start using the Data Agents.After all the boring stuff is done I will take you into a live demo of setting up the Agent, tuning it to get accurate responses, and will show how we can chat with our own data to generate insights and drive decision making.You'll walk away from this session understanding the following:- Why this shift from dashboards to chatting matters for you and your organisation- How Fabric Data Agents actually work \"under the hood\"- How to build, configure, and use your first Fabric Data AgentIf you are involved in building modern data platforms, please consider Data Agents as an amazing tool to help users find insights faster!",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1296,7 +1296,7 @@
     "topic": "Community & Business",
     "level": "100",
     "speakers": "Kayleigh Duddy, Lynsey Winchurch",
-    "description": "",
+    "description": "Do you ever feel like you are struggling to keep up?The rapid evolution of the Power Platform can lead to a flood of information, leaving even the most driven professionals feeling overwhelmed.This session explores the practical strategies to prioritize learning, manage information overload, and focus on the skills that matter most. We'll share actionable advice on maintaining a balanced approach to career development whilst safeguarding personal wellbeing.Whether you're just starting out or looking to level up sustainably, this session will equip you with the tools to thrive, not just survive.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1324,7 +1324,7 @@
     "topic": "Microsoft 365",
     "level": "200",
     "speakers": "Zoe Wilson",
-    "description": "",
+    "description": "Microsoft has announced many Copilots across their entire range of products, which provide generative AI capabilities embedded in our every day tools and systems. Copilot is already starting to revolutionise how people work - how they write code, manage security, build apps and even how they work day-to-day in their office apps.Yet for enterprise organisations embarking on this Copilot and AI journey, there are many questions about the strategy for deploying and adopting Copilots, and due to the premium price tag, a significant focus on driving business value and realising return on investment.In this session, I will share:- an overview of learnings and observations gained through almost 2 years of deploying Copilot for enterprise organisations- the role that Copilot plays within a broader AI strategy- the foundations that the most successful organisations have in place- the importance of a robust change enablement and adoption strategy- the roadmap from personal productivity to business value- the role of role-based Copilots and extensibility in unlocking business value",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
@@ -1352,7 +1352,7 @@
     "topic": "Security",
     "level": "100",
     "speakers": "Sami Laiho",
-    "description": "",
+    "description": "What if security didn’t slow you down—it made you faster? In this high-energy keynote, Sami Laiho, Chief Research Officer of Adminize, reframes cybersecurity from “cost center and blocker” to “strategic accelerator.” - an Enabler. Drawing on real-world cases from enterprises of all sizes, Sami shows how strong identity, least privilege, secure-by-default endpoints, and trustworthy Privileged Access Workstations, don’t just reduce risk—they unlock safer innovation, quicker onboarding, smoother audits, and more productive users. Expect pragmatic patterns you can apply next week and cutting attack surface without cutting velocity. You’ll leave with a playbook to align CISOs, IT, and the business around outcomes that matter: resilience, speed, and user joy.",
     "notes": "",
     "day": "2026-01-30",
     "dayLabel": "Friday, Jan 30"
