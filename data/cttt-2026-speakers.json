@@ -1,0 +1,576 @@
+[
+  {
+    "id": "e88b9128-30bc-4553-a2d9-f94f34c9f671",
+    "name": "Alessandro Gherardi",
+    "tagline": "Business Intelligence Freelance Consultant - PowerBI, SQL & Fabric",
+    "bio": "6+ years of experience working in Business Intelligence in different contexts: startup/scaleup, Big 4 consultancy firm, remote contractor for US-based tech company and as Community Leader for the Italian Power BI User Group. Currently working as a freelance consultant with customers ranging from small-sized shops to multinational corporations.\n\nI have experience on ETL (Extract, Transform, Load) processes, Data Warehousing, Dimensional Modeling and Data Visualization. My main tech stacks are Pow",
+    "photo": "https://sessionize.com/image/abfb-200o200o2-sK7cXrs6hisP4BZnbFbQbz.jpg"
+  },
+  {
+    "id": "d363d4a9-1e95-4308-b6ae-71d39463b6f8",
+    "name": "Alexander Benoit",
+    "tagline": "Pirate | ceo water IT Security & Defense",
+    "bio": "Alexander Benoit is the CEO of water IT Security and Defense a company that provides holistic and continuous security. Specializing not only in enterprise security consulting but also in 24/7 managed SOC, Alex has deep threat insights from over 100 thousand endpoints, identities and SaaS usage. He is a Microsoft MVP for Security and a member of the privileged group of Microsoft Regional Directors. With Trust in Tech Cologne, he leads a community of now several thousand white-hats.",
+    "photo": "https://sessionize.com/image/da80-200o200o2-ENNLvrr6Be9ARP785512tH.jpg"
+  },
+  {
+    "id": "7f01e365-fb7e-4f04-b066-633f49b7a5ce",
+    "name": "Amanda Sterner ✨",
+    "tagline": "Microsoft MVP ✨ | Employee Experience and Productivity Expert at Xenit 💚",
+    "bio": "Amanda Sterner works as an Employee Experience and Productivity Expert at Xenit 💚, where she helps her customers make the most out of their Microsoft investment focusing on Microsoft 365, Microsoft Teams and Copilot. Amanda is a Microsoft MVP and actively contributes to the community by organizing events, presenting at conferences and sharing collaboration ideas in her blog and LinkedIn. Amanda's goal is to help people understand how Microsoft Teams, Copilot and other tools can improve their da",
+    "photo": "https://sessionize.com/image/f4e6-200o200o2-8yK5tTt6iKEKgEyxHJ9Sj.jpg"
+  },
+  {
+    "id": "ee620346-a3dd-42de-a8bc-23635ba636bd",
+    "name": "Andrew Taylor",
+    "tagline": "EUC Architect",
+    "bio": "CTO at Software Central. MVP in Intune and Security Copilot. Far too many years in IT, likes PowerShell, Graph and all things Intune",
+    "photo": "https://sessionize.com/image/6807-200o200o2-snssnfPLgBdNqEese7uf96.jpg"
+  },
+  {
+    "id": "34072a46-c0d6-4e5d-a35c-f3332c448a71",
+    "name": "Anthony Mashford",
+    "tagline": "Microsoft MVP | Cloud Solutions Architect at NetApp working in the EMEA Azure Business Group",
+    "bio": "With more than two decades working in large Enterprises, Corporations and within the Microsoft Partner network, Anthony has gained a wealth experience & knowledge in varying architectures.\n\nNow specialising in Azure, specifically Azure NetApp Files and NetApp Cloud Volumes ONTAP, Anthony works to help clients envision and plan their journey to the cloud.",
+    "photo": "https://sessionize.com/image/9d4d-200o200o2-LiB1biQCcCFSjWbb9iiNhQ.png"
+  },
+  {
+    "id": "f80444d6-5227-483e-be76-7337bece2025",
+    "name": "Antti Koskela",
+    "tagline": "Solutions Architect at Omnia Digital Workplace",
+    "bio": "Antti Koskela is a proud digital native nomadic millennial full-stack developer, who works as the Head of Managed Customizations at Omnia Intranet.\n\nHe's a Microsoft MVP for Azure and M365, and he's been a developer since 2004 (starting with PHP and Java, then graduating to C# and TypeScript professionally), and bending and twisting SharePoint into different shapes since MOSS.\n\nLately, he's building, running, and extending scalable SaaS solutions on Azure and occasionally builds things with Blaz",
+    "photo": "https://sessionize.com/image/5e95-200o200o2-d6-5227-483e-be76-7337bece2025.dab6060f-8def-4679-a255-a92ac9a5e2e1.jpg"
+  },
+  {
+    "id": "78ce6a60-8102-4b89-9fcb-72ff95ed48cd",
+    "name": "B. Onur Okutucu",
+    "tagline": "Microsoft MVP, Automation Architect, International Speaker",
+    "bio": "https://mvp.microsoft.com/en-us/PublicProfile/4025351",
+    "photo": "https://sessionize.com/image/6b54-200o200o2-60-8102-4b89-9fcb-72ff95ed48cd.ff62d080-f0c8-4b45-943f-830fdd814edf.png"
+  },
+  {
+    "id": "e9735820-91a2-49ca-a713-f292d7168f5e",
+    "name": "Bas Land",
+    "tagline": "That Fabric Guy - Data Architect - MVP - Co-Founder",
+    "bio": "Bas is co-founder of Kimura Data Intelligence. He works as a data architect and specialises in Microsoft Fabric. \nHe speaks and blogs about these experiences to share knowledge with the community. \nHe is an experienced data engineer and architect with over 10 years of experience in Microsoft SQL Server, Azure and now Fabric technology implementations and holds a Microsoft Dataplatform MVP award.\nIn his spare time he likes to practice sports (Brazilian jiu-jitsu, running, weight lifting) and also",
+    "photo": "https://sessionize.com/image/8d4c-200o200o2-a9NwzwtXAwrVAB1gqAuDDj.jpg"
+  },
+  {
+    "id": "8a1f9d31-5905-4441-8ebd-e127ea97cbc7",
+    "name": "Björn Zahnow",
+    "tagline": "Microsoft MVP | Partner & Solution Architect @CRMK Deutschland",
+    "bio": "In 2011 I started my journey in the Microsoft world with good old Navision. In the meantime, I have been working with the Sales solution for several years and try to make my life there as easy as possible when it comes to managing and deploying solutions.",
+    "photo": "https://sessionize.com/image/7992-200o200o2-aQUDu6QDK2V6FkBPoNfihW.jpg"
+  },
+  {
+    "id": "b2aa67b1-d97b-4687-8613-c24a3f209801",
+    "name": "Carl Cookson",
+    "tagline": "Microsoft Architect, MVP",
+    "bio": "Power Platform seasoned (ex) developer with a passion for community and enabling everyone.\nI am a seasoned professional developer who has experience with Dynamics 365 as well as other CRMs for over 20 years.\nMicrosoft MVP for Business Applications since 2020",
+    "photo": "https://sessionize.com/image/08b1-200o200o2-p8B7T5EcKXkv843yCUCAvu.png"
+  },
+  {
+    "id": "7a92aaeb-22ce-40a8-a03d-354138e1f962",
+    "name": "Caroline Kallin",
+    "tagline": "MVP, Change and adoption driver @ Exobe",
+    "bio": "❤️Passionate change and adoption driver within Microsoft 365. Microsoft MVP in M365 Copilot and Teams.\nMy aim is to help people work smarter within the digital workplace in order to free up time and brain power.\nI believe that by working smarter, we do not only improve our professional lives but also create more space for creativity, strategic thinking and time for being a good and present colleague.\n\n❓ How we get there? By learning about the benifits of the whole Microsoft 365-platform and how ",
+    "photo": "https://sessionize.com/image/0cd3-200o200o2-WfJv1BDSdpDzXKMxEwZH7z.png"
+  },
+  {
+    "id": "5671f156-3a5c-4886-aa52-5d090dc65420",
+    "name": "Chloé Moreau",
+    "tagline": "MVP Business Applications | Dynamics 365 & Power Platform solution architect @Abalon Consulting SARL",
+    "bio": "Architecte de solution spécialisée sur Dynamics 365 et Power Platform chez Abalon Consulting SARL. Ma mission est d’accompagner les entreprises dans leurs projets de digitalisation des processus métiers. \n---------------------------------------------------------------------------------------------------------------\nSolution architect specializing on Dynamics 365 and Power Platform at Abalon Consulting SARL. My mission is to support companies in building their business process and digitalization ",
+    "photo": "https://sessionize.com/image/5d00-200o200o2-hr7R5QGA3ENMXEkcHm3nv6.jpg"
+  },
+  {
+    "id": "85cbafc5-4f92-4c90-8676-630fa395a16f",
+    "name": "Dan Barber",
+    "tagline": "Mentor| Coach | MVP | MD @ Strathos",
+    "bio": "A passionate and long-standing contributor to the Dynamics and Power Platform community, I bring over 20 years of hands-on experience in technology and consulting. From leading global system integrators to building high-growth practices and now leading my own business, I’ve had the privilege of working alongside brilliant minds on transformative projects—and picked up a few hard-earned lessons along the way. I love to share this knowledge and experience through my community activities with The D",
+    "photo": "https://sessionize.com/image/e886-200o200o2-K9hCujVRy6XHhVbeV97erV.png"
+  },
+  {
+    "id": "4c125671-951b-4798-8e48-02a45be346e7",
+    "name": "Daniel Laskewitz",
+    "tagline": "Senior Cloud Advocate, Microsoft",
+    "bio": "Daniel Laskewitz is a Senior Cloud Advocate at Microsoft, specializing in the Power Platform. He helps (advanced) makers, IT professionals, developers, and architects accelerate solution delivery through both low-code and pro-code tools. \n\n▶️ Career progression: Former Microsoft MVP (6 years) and Fast-Track Recognized Solution Architect before joining Microsoft. \n▶️ Community voice: Regular speaker at leading tech conferences and co-author of Power Platform Weekly. \n▶️ Platform breadth: Deep kno",
+    "photo": "https://sessionize.com/image/faf2-200o200o2-EGpqLSWNpVrXLWsA3hVE8D.jpg"
+  },
+  {
+    "id": "c935eeb7-b01f-492d-ad62-315fd7309fda",
+    "name": "Daniel Rohregger",
+    "tagline": "Microsoft MVP | Cloud Architect 🎙️Podcast: 365 Checkpoint",
+    "bio": "Daniel is a international Speaker covering topic all around Microsoft 365. With a big focus on Copilot, Adoption and Modern Workplace he loves what he does. With large to medium Enterprises from EMEA he get's experience from the real world and combines that with the passion for technology. \n\n💼 M365 Copilot MVP\n💼 AI, Hybrid Work, Teams and Modern Work-Freak\n💼 Speaker and Instructor for Microsoft 365 Services\n🎓 Certified ScrumMaster, Bachelor Professional for Project Organisation (CCI) \n\n🌇 Re",
+    "photo": "https://sessionize.com/image/911e-200o200o2-EQ9E7ZBZpCZ3C9Fvq2kmGH.png"
+  },
+  {
+    "id": "480fde6b-0b1f-46c6-8028-37d012c6c2d7",
+    "name": "David Kofod Hanna",
+    "tagline": "Senior Advisor at Twoday and Microsoft MVP",
+    "bio": "My aim is to guide self-service Power BI developers for more enterprise manageable concepts in a consumable and practical way - because I have been on that journey for years, and still is.. \n\nMicrosoft Data Platform MVP, MCT, Certified Tabular Editor 3 Trainer, DP-600, DP-700, PL-300, CPUX-F, PL-900",
+    "photo": "https://sessionize.com/image/a94c-200o200o2-WVKcx2HHYtT2WjGKG9ULtj.jpg"
+  },
+  {
+    "id": "cb99cb8e-cdaa-44bc-84e7-7ab217870be6",
+    "name": "Dean Ellerby",
+    "tagline": "Senior Security Architect",
+    "bio": "Organizer @ Workplace Ninjas UK and Microsoft Security MVP, Microsoft Certified Trainer, Speaker and Author at Petri.com, Author and Trainer at Pluralsight.com",
+    "photo": "https://sessionize.com/image/6f22-200o200o2-sUT2sJJa5HStmNwxB7SZFS.png"
+  },
+  {
+    "id": "d09feddf-9a10-47c4-a9fd-291db5b76ba6",
+    "name": "Edijs Perkums",
+    "tagline": "Co-Founder of Master Packager",
+    "bio": "Application packaging expert with 10 years of experience and over 8500 packages created.",
+    "photo": "https://sessionize.com/image/15e5-200o200o2-PwW4s3KScAHSXwPpmtmRyL.jpg"
+  },
+  {
+    "id": "5b245335-8578-464c-a998-045889616a8a",
+    "name": "Edine Olijve-Watkinson",
+    "tagline": "Microsoft 365 consultant with focus on collaboration",
+    "bio": "I’m Edine, a passionate advocate for Microsoft 365 technologies, with a particular focus on SharePoint Online, Teams, Copilot, Purview, and the modern workplace. I thrive on simplifying complex concepts, making them accessible to IT professionals and business users alike.\n\nWith 9 years of experience in the Microsoft ecosystem, I specialize in helping organizations unlock the full potential of their digital workplace. Whether it’s streamlining collaboration, getting the most out of Copilot, enhan",
+    "photo": "https://sessionize.com/image/2f04-200o200o2-aM1Wpote1UAXgYmrsjm8uA.jpg"
+  },
+  {
+    "id": "b7f1eaad-b1b9-4216-b1bf-eb9119e747bc",
+    "name": "Eduard Keilholz",
+    "tagline": "Cloud Solution Architect @ 4Dotnet | Book Author | International Conference Speaker | Founder of https://spreaview.com",
+    "bio": "Eduard Keilholz is a seasoned software developer and cloud architect at 4Dotnet, where he specializes in Microsoft development and cloud technologies. With a passion for helping organizations build highly performant cloud software solutions, Eduard has made significant contributions in the field of cloud architecture.\n\nHe is the author of the book Azure Infrastructure as Code, which delves into infrastructure automation using Azure, and is a frequent international conference speaker. Eduard is a",
+    "photo": "https://sessionize.com/image/3aca-200o200o2-MtEBMBHSgr2QvyQHNrKW5z.jpg"
+  },
+  {
+    "id": "6a7b0ee2-2d50-42b7-8225-1df145d255ea",
+    "name": "Eeva-Jonna Panula",
+    "tagline": "Accessibility Specialist, Senior Android Developer",
+    "bio": "Eeva-Jonna, or Eevis, is an accessibility specialist and senior Android developer. She is also Android GDE. Her passion is to share knowledge, and she speaks and writes a blog. When she is not doing that, she explores the beautiful Finnish nature either by foot or kayak.",
+    "photo": "https://sessionize.com/image/fcbe-200o200o2-SVVjQhkgm8NTQhUofxixAd.png"
+  },
+  {
+    "id": "0564199c-85cf-40eb-abef-ed00afd1dc9c",
+    "name": "Emilie Lundblad",
+    "tagline": "Microsoft AI MVP & RD - Make the world better with Data & AI",
+    "bio": "Microsoft MVP in AI | Microsoft Regional Director | Board Member at Pioneer Center for AI, Danish Data Science Community & BLG\n\nEmilie Lundblad stands at the forefront of Data & AI, holding prestigious roles such as Microsoft 3xMVP in AI and 2x Microsoft Regional Director. Her profound expertise spans across leveraging AI securely in multi-agent systems. As an esteemed board member at the Pioneer Center for Artificial Intelligence and the Danish Data Science Community, she actively contributes t",
+    "photo": "https://sessionize.com/image/5a53-200o200o2-Xi3ypfwcyvoZqadb2cgoz.jpg"
+  },
+  {
+    "id": "3e70d82f-572b-423f-8db4-31893d4317d8",
+    "name": "Erlend Rushfeldt",
+    "tagline": "Cloud Advisor @ Atea",
+    "bio": "Erlend is working as a Cloud advisor at Atea in Norway. He is specialized in Microsoft Azure and is certified at expert level within the subject. He specializes in Azure Cost Optimization and have created cost optimization services that have helped customers save hundreds of thousands of Euros in Azure.",
+    "photo": "https://sessionize.com/image/45e0-200o200o2-Gf8uQdn6CZDEJJnYpLRDyN.JPG"
+  },
+  {
+    "id": "b67647dc-8ec0-4bb0-b1a2-7c4b603830f8",
+    "name": "Erwin Staal",
+    "tagline": "Independent Solution Architect, Author of 'Azure Infrastructure as Code'",
+    "bio": "I am a Tech Lead and Azure Solution Architect from the Netherlands, with over a decade of experience spanning startups, enterprise organizations, and international teams. I thrive at the intersection of technology, strategy, and leadership, helping companies deliver software to customers using DevOps practices and Cloud-Native architectures.\n\nBeing on the line between IT and business is where I feel most at home—creating technical solutions that address real user needs while driving teams toward",
+    "photo": "https://sessionize.com/image/9d5a-200o200o2-dc-8ec0-4bb0-b1a2-7c4b603830f8.8fa6c36d-b6c3-4ba9-a718-96ce8390c8ab.jpg"
+  },
+  {
+    "id": "e256f23f-f712-4096-9baf-3d8ab230dfde",
+    "name": "Fabian Bader",
+    "tagline": "Cyber Security Architect and Microsoft MVP",
+    "bio": "Fabian Bader is a Cyber Security Architect and Microsoft MVP from Germany. He focuses on security and cloud solutions and works mainly with Microsoft technologies.\nFrom Azure cloud to on-premises Active Directory, he likes to automate stuff with PowerShell.\n\nBesides being a speaker at community events, he blogs at \"cloudbrothers.info\", hosts the \"Elbe Security User Group\", \"Hamburg PowerShell User Group\" and is part of the organizing team of \"PowerShell Saturday Hamburg\".\n\n❤️ PowerShell and Secu",
+    "photo": "https://sessionize.com/image/8a77-200o200o2-RPfPH5GJP8Fh4Ta4TgEojF.jpg"
+  },
+  {
+    "id": "b3781d77-e2b9-4d01-a73f-0d055a3bc4ec",
+    "name": "Gerlyn Tiigemäe",
+    "tagline": "AI trainer and advisor",
+    "bio": "Gerlyn Tiigemäe is a hands-on trainer and trusted advisor helping companies integrate AI into their business operations. With over a decade of experience in finance, data, and business intelligence, she now focuses exclusively on practical AI implementation across various industries.\n\nGerlyn has personally trained and guided over 1,000 professionals through AI workshops, team sessions, and executive briefings — with a strong focus on use case selection, AI literacy, and real-world application. S",
+    "photo": "https://sessionize.com/image/533d-200o200o2-h2BHyBvDfSpyDjrV4DK24v.jpg"
+  },
+  {
+    "id": "c3c152a7-494c-412e-9580-1ea415e4411c",
+    "name": "Hans Muns",
+    "tagline": "Freelance .NET/Azure Engineer & Microsoft Certified Trainer @ Backnook",
+    "bio": "Hans Muns is a freelance Software Engineer and Microsoft Certified Trainer (MCT) at Backnook.\n\nAs a software engineer, Hans focuses on designing, building, and implementing software solutions mainly using the Microsoft technology stack, including .NET, C#, and Azure. He enjoys working on innovative projects that help customers address real-world challenges.\n\nIn addition to his engineering work, Hans is a Microsoft Certified Trainer, where he shares his knowledge and enthusiasm for technology wit",
+    "photo": "https://sessionize.com/image/149b-200o200o2-E5pAsqyR6kvkSPhVZRedKq.jpg"
+  },
+  {
+    "id": "d78dcec5-d6ff-48e4-938e-77bffdfeffbb",
+    "name": "James Connelly",
+    "tagline": "Network Rail, Power Platform Technical Lead.",
+    "bio": "James owns the strategy and direction of the Power Platform at Network Rail (NR), a 40,000 end user organisation. James oversees an on and offshore pro dev team, is lead enterprise and solution architect at NR, implements platform security, and he's a Microsoft Power Champion.",
+    "photo": "https://sessionize.com/image/03b7-200o200o2-SJxAjfBG9j35i6dXPKtJHu.jpg"
+  },
+  {
+    "id": "c02334db-1b43-45ef-ad8a-663852ae4084",
+    "name": "Jan Chlebek",
+    "tagline": "Power Platform Expert & Tech Lead @ Clouds On Mars",
+    "bio": "10x Certified Microsoft Expert with 5 years of experience in Power Platform. Active public speaker, blogger, and code snippet author with countless public contributions, prominent both on LinkedIn and GitHub. Actively working as Power Platform Tech Lead at Clouds On Mars. My passion lies in transforming ideas into powerful, efficient solutions that maximize the potential of low-code. Whether it’s simplifying complex workflows or building hyper-optimized applications, I’m always seeking smarter w",
+    "photo": "https://sessionize.com/image/5a0f-200o200o2-MuLhcFTDX7abi7BQ9eBnmq.jpg"
+  },
+  {
+    "id": "eb5e6fb4-0e39-41fa-91f1-41f647c12579",
+    "name": "Joe Griffin",
+    "tagline": "CEO at proMX UK Limited / Business Applications MVP",
+    "bio": "My name’s Joe Griffin, and I’m CEO of proMX UK, a Microsoft Inner Circle partner within the proMX group of companies. I hold various Microsoft certifications in Dynamics CRM/365 Customer Engagement, Azure, Power BI and SQL Server and am also a PRINCE2 Project Manager and Agile Practitioner. I have a broad knowledge of working with and managing projects involving Dynamics 365 Customer Engagement, Azure, Power BI, .NET and other technologies within the Microsoft cloud stack. During this time, I’ve",
+    "photo": "https://sessionize.com/image/96dc-200o200o2-b4-0e39-41fa-91f1-41f647c12579.ce3a9d16-68fb-43e5-a5ec-78b3b86704fa.jpg"
+  },
+  {
+    "id": "5c5fa629-7932-4154-8171-dbfa338761c0",
+    "name": "Jonah Andersson",
+    "tagline": "Senior Azure Consultant at Solidify, Cloud DevSecOps Engineer • Microsoft MVP • Microsoft Certified Trainer • MCT Community Lead • Book Author",
+    "bio": "Jonah Andersson is a Developer and Lead Cloud DevOps Engineer based in Sweden. She works as a Senior Azure Consultant at Solidify. \n\nWith a background in Computer Science and System Development, Jonah specializes in .NET technologies and excels in cloud development, particularly within Microsoft Azure.\n\nPassionate about solving complex problems and crafting modern applications, Jonah succeeds in working with cloud platforms like Azure, and her expertise in cloud computing and development has ear",
+    "photo": "https://sessionize.com/image/cc1a-200o200o2-TikxpyChb41cSNtun2Le2q.jpg"
+  },
+  {
+    "id": "f02700df-930b-4f6f-91cd-602f04fc4286",
+    "name": "Jörgen Nilsson",
+    "tagline": "Onevinn - Ccmexec.com",
+    "bio": "Jorgen is working as a principal consultant at Onevinn in Sweden. He has been working as a consultant since 1993 with a focus on Enterprise Client Management and System Management. Involved in many projects and also a Microsoft Certified Trainer, Microsoft Security MVP and deliver training's mostly on Intune and Windows 11. Jörgen is also an appreciated speaker at event like Microsoft Ignite, Microsoft Techdays, Microsoft Management Summit(MMS), TechED, Techorama, TechMentor and Workplace Ninjas",
+    "photo": "https://sessionize.com/image/96df-200o200o2-UVS8nKrixhSg5JePEyTkPQ.png"
+  },
+  {
+    "id": "5a5fff9d-2564-4ab9-8a1b-9e95ba3abbac",
+    "name": "Kaido Järvemets",
+    "tagline": "Microsoft Hybrid-Cloud Expert",
+    "bio": "Kaido Järvemets is a Microsoft MVP and founder of Lakeforest Consulting, specializing in Azure identity and security for large enterprise environments. With over 20 years of experience, he focuses on building high-impact solutions using Entra ID, Microsoft Sentinel, and Azure Arc. His work is known for combining deep technical insight with automation, visibility, and control - shared through his premium blog and training programs.",
+    "photo": "https://sessionize.com/image/5c8f-200o200o2-pSZraQTyGouzZhvyrPaqSw.jpg"
+  },
+  {
+    "id": "25f6f41a-068c-41bb-886a-141a87191a55",
+    "name": "Kasper Norregaard",
+    "tagline": "Solution Architect - Globeteam",
+    "bio": "Microsoft infrastructure specialist with over 20 years of experience in implementing, operating, and securing complex IT environments for large organizations. Specialized in leading Microsoft 365 migration projects, delivering solutions that are both technically robust and aligned with strategic business goals.\n\nIn recent years, the focus has shifted toward cybersecurity, with deep expertise in Zero Trust architecture, Active Directory tiering and hardening, data loss prevention (DLP), and Micro",
+    "photo": "https://sessionize.com/image/255d-200o200o2-hmttdwTwUq5R6iSoKXSpiD.jpg"
+  },
+  {
+    "id": "266b8a40-2b77-4236-b58e-9a776c12ec45",
+    "name": "Katerina Chernevskaya",
+    "tagline": "Power Platform Architect at KPMG Delivery Network Bulgaria | BizApps MVP | MCT",
+    "bio": "Katerina, an MVP, MCT, and renowned public speaker, focuses on Power Platform & AI. With twenty years of experience and key certifications in PROSCI, PMI, Power Platform Solution Architect, she leads in app development, AI, and adaptive work models. Active in the Microsoft community, Katerina mentors new tech talent and supports innovation. Katerina takes part in the #SharingIsCaring initiative, guiding community contributions to the Microsoft Sample Solution Gallery.\n\nhttps://www.linkedin.com/i",
+    "photo": "https://sessionize.com/image/cb6e-200o200o2-RtddraprP3YjotaqzcXFBv.png"
+  },
+  {
+    "id": "5957a59e-3590-47dc-ac4e-4c64b98025ed",
+    "name": "Kayleigh Duddy",
+    "tagline": "D365 Solution Architect & Team Leader, ANS Group",
+    "bio": "With over 13 years of hands-on experience, starting from the early days of CRM v3.0, I am a certified Microsoft professional and a Team Leader at a leading Microsoft Partner. As a Dynamics 365 Solution Architect, I specialize in developing user-centric solutions that revolutionize business processes and elevate employee satisfaction.\n\nPassionate about promoting an inclusive tech landscape, I believe that great minds don’t always think alike. As a proud Dyslexic Thinker, I approach problem-solvin",
+    "photo": "https://sessionize.com/image/9d9e-200o200o2-TQ7sawRTxgoUB4hDTxnCAx.jpg"
+  },
+  {
+    "id": "1bdf8883-8c95-4698-bf80-92d8bab171e8",
+    "name": "Kirk Ryan",
+    "tagline": "Principal Engineer",
+    "bio": "Kirk Ryan is a Principal Engineer leading development of the Neo: an innovative, scalable solution that unlocks secure, AI‑powered access to enterprise knowledge without data migration. He also spearheads agentic AI competitive analysis, market research, and opportunity intelligence for global sales teams, enabling smarter, faster decisions. Beyond product building, Kirk provides GenAI guidance to technology companies and publishes industry analysis across API security, AI‑assisted code editors,",
+    "photo": "https://sessionize.com/image/21ce-200o200o2-TawjKz7TQsavW7XtN8zvia.jpg"
+  },
+  {
+    "id": "9c5e53a2-b368-4286-9c2c-52e6306fec2a",
+    "name": "Klaus Bierschenk",
+    "tagline": "Microsoft MVP for Security | Director Consulting Expert @CGI Germany; Author; Speaker, Blogger",
+    "bio": "Klaus is a Microsoft Security MVP and works as a Technology Consultant at CGI Germany. He focuses on hybrid Microsoft technologies, with a particular emphasis on Microsoft Active Directory and Microsoft Entra ID. Driven by a strong passion for Microsoft solutions, he supports IT operators in tackling complex challenges related to modern infrastructure and identity scenarios. Klaus is a speaker at international conferences and actively contributes to the Microsoft Azure community. He also shares ",
+    "photo": "https://sessionize.com/image/4161-200o200o2-3RcZKNyny4TKY4tLqatCne.png"
+  },
+  {
+    "id": "4adeee6c-a773-4ae9-9d5b-c3b767a343ad",
+    "name": "Kristo Raun",
+    "tagline": "Data Professional",
+    "bio": "Kristo is a data person. \nHe has worked on various data projects for 10+ years. Most of the work has involved cloud-based data engineering and data warehousing in industries such as media and marketing, finance, e-commerce, urban mobility, technology, supply chain systems. For the past 5 years, Kristo has also been a lecturer and supervisor at the University of Tartu on topics related to data engineering. He is also a co-founder of the data consultancy company Curione.",
+    "photo": "https://sessionize.com/image/835e-200o200o2-wwpHFHsbXtzTuvRrUFK83A.jpg"
+  },
+  {
+    "id": "2fd785bc-63a1-4e42-8d71-26c83d9544a3",
+    "name": "Laura Graham-Brown",
+    "tagline": "MVP, Power Platform Consultant and Agony Aunt",
+    "bio": "Data Platform and Business Applications Microsoft MVP\nBusiness solutions should solve business problems and the business should own the problem and the solution. I've spent my whole career empowering businesses to do that.",
+    "photo": "https://sessionize.com/image/dcf3-200o200o2-H8iCWCQXPKpkEJNTW9t48p.png"
+  },
+  {
+    "id": "8639756f-633a-4c86-8645-710c74a1c248",
+    "name": "Lee Ford",
+    "tagline": "Development Lead & Solution Architect, Symity | Microsoft MVP",
+    "bio": "Based in the UK, I am a Microsoft MVP in M365 specialising in M365 development - Teams, Copilot, Graph - you name it! I also work with and embrace other technologies such as PowerShell, Power Platform, Azure.",
+    "photo": "https://sessionize.com/image/806f-200o200o2-RUvjwM4nEnMVMEUmrV28Pc.png"
+  },
+  {
+    "id": "7af31d36-0605-4bd0-908c-ce4aaafea89c",
+    "name": "Linnar Viik",
+    "tagline": "Co-founder, AI LEAP",
+    "bio": "Estonian information technology scientist, entrepreneur and IT visionary. Founder of PoCo - world pop art museum in Tallinn",
+    "photo": "https://sessionize.com/image/7173-200o200o2-J4k8ESk9VF8vpmtk1SaWX4.png"
+  },
+  {
+    "id": "b0f3a0c4-1de7-4340-b24b-6bb8a36380df",
+    "name": "Lisa Hoving",
+    "tagline": "Data Engineer & Neurodiversity advocate",
+    "bio": "Your friendly neighbourhood Data Engineer. My background is in Finance, but I have had the pleasure to be working in IT for the past 8 or so years. In my daily life, I design and build scalable data solutions in the Azure cloud.",
+    "photo": "https://sessionize.com/image/78fe-200o200o2-MmkUE381MGiStXgQARxyQH.png"
+  },
+  {
+    "id": "77af24a4-c6b7-4690-bfab-20965ea992c1",
+    "name": "Liviu Barbat",
+    "tagline": "Customer Engineer | Patch My PC",
+    "bio": "Liviu: Romanian IT guy who's a travel junkie and gaming geek. Loves working with apps to simplify work for customers at Patch My PC. Likes going to the gym, but LOVES BBQs. Has a ginger cat. The most relaxing thing Liviu finds is snorkeling.",
+    "photo": "https://sessionize.com/image/db7c-200o200o2-4doL7TPvGNHa7KxEFfDQD1.jpg"
+  },
+  {
+    "id": "d3f85f35-25cc-4dd0-8abd-2c860fffdc42",
+    "name": "Lynsey Winchurch",
+    "tagline": "Power Platform & Dynamics 365 Architect at CPS",
+    "bio": "With over 13 years of experience in Microsoft Dynamics 365 and Power Platform (dating back to the CRM v3.0 on-prem days), I specialise in leading multi-phase projects that adopt first-party Customer Engagement applications to deliver impactful solutions across diverse industries. Passionate about transforming business processes, I focus on building scalable systems that empower teams, enhance employee satisfaction, and ensure projects are delivered on time and within budget.\n\nAs a Team Lead, I t",
+    "photo": "https://sessionize.com/image/7311-200o200o2-ND7QyVeJRi7avgR6mnyoXw.jpg"
+  },
+  {
+    "id": "4a37926e-816d-4f73-a194-e5bbe8780d29",
+    "name": "Madli Allikmäe",
+    "tagline": "Head of Data and Information Management",
+    "bio": "I bring together the right people to make things happen, I have experience in building teams and leading digital transformations whether it is automating finance processes via RPA, fostering digital mindset or driving an integration platform migration to cloud. My logical thinking, interest in technology and eagerness to learn are a good supplement to any technical team, even though I do not have an IT education myself.",
+    "photo": "https://sessionize.com/image/fb34-200o200o2-PjHyQV3Z4jEGHXedRm9Ynw.jpg"
+  },
+  {
+    "id": "b6e04935-0f27-4a07-b3d8-3c342cc117d3",
+    "name": "Magnus Gether Sørensen",
+    "tagline": "Microsoft MVP. Developer. Computer Scientist. Type Validation Advocate",
+    "bio": "As a Computer Scientist and Engineer, that loves to improve the way I work, I push the limitations of the xRM SDK daily. My goal as a developer for xRM is to make the developer experience easier for my colleagues. I do this by creating developer tools. Thus, I have gotten the nickname xRM Tooling Wizard.\nMy goal is to bring best practices from both the academic- and real world into the world of Business Applications - and where else applicable.",
+    "photo": "https://sessionize.com/image/dcc4-200o200o2-STQiPHFXFrsNWksiC2GD7R.jpg"
+  },
+  {
+    "id": "88ca0c9d-751c-4d65-b837-ec2993dedecd",
+    "name": "Marijn Somers",
+    "tagline": "Microsoft 365 Spirit Guide, MVP, MCT",
+    "bio": "Marijn is a Microsoft 365 specialist, MCT and Microsoft MVP who has over 16 years experience implementing the full value of information worker solutions in any organization, large and small. He loves to share his experiences as a speaker on international events and blogger.\n\nIn 2016 he launched “Mijn 365 Coach”, a portfolio of video products helping end users onboard with and on top of the quick moving world of Office 365. He does consultancy via Balestra and has a podcast called #Office365Disti",
+    "photo": "https://sessionize.com/image/fbef-200o200o2-9d-751c-4d65-b837-ec2993dedecd.01a7ba53-714b-45dd-8081-be916eae2152.jpg"
+  },
+  {
+    "id": "742df405-cc79-4b67-a493-4a4cebdc7e4f",
+    "name": "Marin Niehues",
+    "tagline": "Founder & Principal Consultant",
+    "bio": "Marin Niehues is an independent consultant with a track record of over 20 client projects and two startups of his own. He works with VC-backed scaleups and DAX40 companies alike, advising on organizational design, operational performance, and management structures that actually scale.\n\nIn the past three years, Marin has been a featured speaker at conferences in more than ten countries across three continents - including repeated invitations from Google and Microsoft.",
+    "photo": "https://sessionize.com/image/7fa6-200o200o2-XHtujJimCuK5okxwNxFRv8.jpg"
+  },
+  {
+    "id": "db1b40bf-9bbc-4a72-b21b-6af7a1d995fe",
+    "name": "Máté Tóth",
+    "tagline": "Microsoft MVP | Certified Power Platform Trainer & Consultant | User Group Leader | Low-Code Adoption & Citizen Development | Speaker",
+    "bio": "Máté is passionate about technology and how it can enhance the way people work and collaborate. He began his Power Platform career years ago as a citizen developer. He leads the Hungary Power Platform User Group and shares his expertise at conferences, focusing on Power Platform, user experience, and mentoring.\n\nBeyond technology, Máté advocates for the role of soft skills in tech - fostering collaborative groups, mentoring, and helping professionals identify and leverage their transferable skil",
+    "photo": "https://sessionize.com/image/84e6-200o200o2-JSmDuVGPWHyvLZxuHZeBcj.jpg"
+  },
+  {
+    "id": "3503700b-280d-45c3-b0c5-58a519aeec52",
+    "name": "Mats Necker",
+    "tagline": "Microsoft MVP / Solution Architect / Developer",
+    "bio": "I like lots of stuff 👉 Power Platform 💘 Dynamics 365 🚀 Azure 🧙‍♂️\n\nMicrosoft MVP ✍ blogs at https://nckr.de\n\nI worked for over 10 years with Microsoft Biz Apps as a solution architect / developer, starting with Business Central, nowadays loving the Power Platform & Azure \n\nBuilding repeatable software has always been my passion and I'm continuing to talk about the best ways to do that 🙂",
+    "photo": "https://sessionize.com/image/2989-200o200o2-48kxVmXurXauBCScnL8gst.jpg"
+  },
+  {
+    "id": "91cd00ff-7972-4f90-bbc7-223c5eace824",
+    "name": "Matthijs van der Veer",
+    "tagline": "Coding Architect & Microsoft MVP at Xebia",
+    "bio": "Matthijs is a Coding Architect at Xebia. With a strong focus on Azure and AI, he helps clients achieve more on Azure. Matthijs has a passion for good work environments, great code, and amazing teams.\n\nMatthijs trained and led teams in different countries. He strongly believes that remote and distributed teams can be just as (or more) effective than sitting in the same old office together. Matthijs received the Microsoft MVP Award four years in a row.",
+    "photo": "https://sessionize.com/image/4734-200o200o2-Epe3sEiZbBabDgMPKG4b59.png"
+  },
+  {
+    "id": "e5db9e81-c381-49f5-aa43-e593615fecc4",
+    "name": "Melissa Hale",
+    "tagline": "Power Platform Consultant @ Inciper",
+    "bio": "Melissa Hale is a Power Platform Developer who transitioned from pursuing a PhD in venom and parasite research to finding a more fulfilling career and work-life balance in tech. With a strong background in SharePoint, Power Automate and Canvas Apps, Melissa has transformed business practices in both start ups and large firms. Beyond her professional role, she dedicates her expertise to the charity \"Collaboration for Kids,\" enhancing their operations through the Power Platform. Based in Liverpool",
+    "photo": "https://sessionize.com/image/c424-200o200o2-SvpnU8mrBDmBsVjfddx2ZT.png"
+  },
+  {
+    "id": "95054f0f-3e9a-46fb-93ab-312b3ac1530b",
+    "name": "Michael Mwangi",
+    "tagline": "Credit Data Analyst, Apollo Agriculture, E-sport enthusiast",
+    "bio": "My name is Michael Mwangi Gichuki, and I’m a data analyst with over nine years of experience in business intelligence, data science, and analytics. Over the last 4.5 years, I’ve focused on credit analysis and data engineering, leveraging data to drive strategy and deliver impactful results. \n\nBeyond my professional work, I am also an avid e-sports enthusiast with a keen interest in exploring the growing impact of e-sports in Africa. I’m passionate about showcasing the potential of e-sports as a ",
+    "photo": "https://sessionize.com/image/4644-200o200o2-PeQWNkyUGPYaFhD2N4tsUy.jpg"
+  },
+  {
+    "id": "fc6c18ea-4343-4a25-a7ee-b8ae06da3d03",
+    "name": "Michaël Maillot",
+    "tagline": "Technical Lead at Onepoint",
+    "bio": "Working on SharePoint plaform for more than 10 years now (from On-Prem to Online), I enjoy solving challenges about business problems, bringing the latest enhancements and exploring every part of the Microsoft 365 / Azure world! I also take part to the PnP Initiative and love working with the community!",
+    "photo": "https://sessionize.com/image/4664-200o200o2-ea-4343-4a25-a7ee-b8ae06da3d03.fb07525f-c1c5-4347-83e8-2d4def0c3bbc.png"
+  },
+  {
+    "id": "01cc60c9-8570-4c63-96f1-258161a6822b",
+    "name": "Michał Cheba",
+    "tagline": "Sales Engineer",
+    "bio": "Sales Engineer at Xopero Software & GitProtect.io | GitHub, GitLab, Atlassian, Azure DevOps, MS365 #1 Backup & DR",
+    "photo": "https://sessionize.com/image/96c1-200o200o2-PkKnHKxaaENP44M9T3Q9zG.jpg"
+  },
+  {
+    "id": "eee7c4bd-de60-428e-b5b9-6eef8aa5fd04",
+    "name": "Morten Knudsen",
+    "tagline": "Triple Microsoft MVP (Security, Azure, Security Copilot) | MCT | Security & Cloud Architect | Co-Founder Experts Live Denmark | Speaker | Blogger aka.ms/morten",
+    "bio": "Morten is a Triple Microsoft MVP (Security, Azure, and Security Copilot), a Microsoft Certified Trainer, and holds over 20 active Microsoft certifications. \n\nAs a Cloud and Security Architect, he focuses on Azure infrastructure, Microsoft 365, automation, security, AI, and hybrid cloud. \n\nHe actively shares insights and tools with the community through his blog at aka.ms/morten / mortenknudsen.net, where his community tools have reached over 2 million downloads.\n\nMorten is also a strong advocate",
+    "photo": "https://sessionize.com/image/e051-200o200o2-hN6dX3r776EFdSecEAvB5k.jpg"
+  },
+  {
+    "id": "ffa9ecc3-3d38-4359-93fa-7103a2d05a0d",
+    "name": "Nathan Sweeney",
+    "tagline": "Principle Azure Architect - KPMG - Microsoft MVP",
+    "bio": "Nathan has 15 years of IT experience and has been using Microsoft Azure for the last 8 of those years. Whilst helping build cloud centre of excellences for many MSP's around the world Nathan loves to help business and customers alike accelerate cloud adoption bringing the untold advantages to businesses. \n\nNathan works for KPMG as an Azure Solutions architect advising some of the worlds biggest customers and users of cloud technology ranging from financial services organisations to government de",
+    "photo": "https://sessionize.com/image/5fe5-200o200o2-njt3Khv5YJKT6WrkJVrHLd.jpg"
+  },
+  {
+    "id": "5bdc2bd1-4850-44ab-8009-e7273ba3883f",
+    "name": "Nicklas Ahlberg",
+    "tagline": "Trusted Security Advisor @ Onevinn",
+    "bio": "Nicklas is a Trusted Security Advisor employed at Onevinn, specializing in providing cutting-edge Microsoft security solutions. His primary objective is assisting organisations in navigating the terrain of Intune, ensuring they obtain an optimal and highly secure user experience.\n\nNicklas is a dual Microsoft MVP:\n* Security (Microsoft Intune)\n* Windows and Devices (Windows)\n\nHe has spoken at events such as:\n* Workplace Ninja Virtual Event (21)\n* HTMD (21)\n* TechMentor Orlando (22)\n* Live 360 Orl",
+    "photo": "https://sessionize.com/image/942f-200o200o2-9SGutzT2xGWVSfdeMDGCHi.jpg"
+  },
+  {
+    "id": "062af035-e8d9-41ea-bfac-499374a37c56",
+    "name": "Nicole Enders",
+    "tagline": "Microsoft 365 MVP | Evangelist Microsoft Solutions, CONET Solutions GmbH",
+    "bio": "Nicole Enders lives and breathes Modern Work.\n\nAs a Microsoft MVP and Evangelist for Microsoft based Solutions, she turns cloud tech into real‑world impact - think Microsoft Teams makeovers and Power Platform magic.\n\nFor 15 + years she’s crafted collaboration experiences that stick, blending out‑of‑the‑box features with tailor‑made code until every social intranet or digital workplace feels like it was built just for you.\n\nCatch Nicole on conference stages, in her books, or on her blog, where sh",
+    "photo": "https://sessionize.com/image/433a-200o200o2-4D3pSmiqsKHroaGzYUX4GY.png"
+  },
+  {
+    "id": "b74c9691-d0c6-4513-8f85-676edc3764d9",
+    "name": "Nikos Delis",
+    "tagline": "Senior Cloud & Software Engineer | Microsoft MVP for Azure & IoT",
+    "bio": "Microsoft Certified x6, MVP for Azure & IoT, Senior Cloud Architect and tech enthusiast. Passionate about software architecture and solution design.\n\nDuring my 10+ years of hands-on experience in Software Engineering, I have primarily focused on .NET-based solutions and Azure as a cloud-services provider. I have worked with pretty much all kinds of applications, from small Windows Forms tools to large-scale enterprise web-based solutions. The more I code, the more I realize that my true passion ",
+    "photo": "https://sessionize.com/image/7247-200o200o2-HGaCEp5AYxP31LXxgQA3o.jpg"
+  },
+  {
+    "id": "5f2c7bd9-2b76-425b-b507-c48c547b2e26",
+    "name": "Paula Januszkiewicz",
+    "tagline": "CEO of CQURE, Cybersecurity Expert",
+    "bio": "Paula Januszkiewicz is the Founder and CEO of CQURE and CQURE Academy, companies she established back in 2008. She is also an Enterprise Security MVP, honorable Microsoft Regional Director, and a world-class cybersecurity expert, consulting Customers worldwide. In 2017, Paula graduated from Harvard Business School. She delivers keynotes and sessions at the biggest world conferences such as RSA, Black Hat, Microsoft Ignite, SecTor Canada, Australian Cyber Conference, GISEC, GITEX, LEAP, and many ",
+    "photo": "https://sessionize.com/image/d67c-200o200o2-fVszBgsRwgic2tpX5LNVy3.jpg"
+  },
+  {
+    "id": "3b045b3b-f92c-4dfc-9328-5f3641ce9647",
+    "name": "Pauline Kolde",
+    "tagline": "Microsoft MVP & Manager @ Reply",
+    "bio": "Always on the road in search of inspiration and ideas. I have been a consultant for Dynamics 365 and Customer Experience for more than 7 years. My focus is on customer insights and there is so much to discover that it never gets boring. My curiosity drives me to try and test things - be it new technologies or innovative methods to solve complex challenges. #staycurious\nAnd in my spare time, things never get boring. When I’m not working on client projects or writing my blog, you’ll likely find me",
+    "photo": "https://sessionize.com/image/4b17-200o200o2-Gaagf3kj8FUuUwPpR2KzFJ.jpg"
+  },
+  {
+    "id": "51621058-238a-41ee-9eaa-0397c4a8fb6f",
+    "name": "Renato Romão de Souza",
+    "tagline": "Microsoft MVP, Copilot Studio Super User & Senior M365/Power Platform Developer",
+    "bio": "Renato Romão has been a Microsoft Most Valuable Professional in Business Applications since 2020 and a Microsoft Certified Trainer since 2022. He was considered the founder and the first Copilot Super User for Microsoft Copilot Studio (aka Power Virtual Agents). With over a decade of experience developing Microsoft 365 solutions and seven years with the Power Platform, Renato has trained over 9,000 students and has a YouTube channel with 11,000+ subscribers, sharing best practices and tutorials ",
+    "photo": "https://sessionize.com/image/9437-200o200o2-B2tQ4kfCtLy7jb7Muc98y9.jpg"
+  },
+  {
+    "id": "61d83225-cef8-497f-af47-978854b19dd2",
+    "name": "Reshmee Auckloo",
+    "tagline": "Software Developer",
+    "bio": "I have been a software developer for over a decade focusing on Microsoft technologies from .net to SharePoint developer/administrator. \n\nOriginally from Mauritius, I did my first degree in Management with Information Systems where I discovered my passion about Microsoft technologies to improve processes and increase efficiency. I actively shares my knowledge and experiences through my blog and PnP open source repositories for several years and was honoured to have been awarded the MVP award in J",
+    "photo": "https://sessionize.com/image/67fc-200o200o2-9EshwikfcVq3cyxhg6miGr.jpg"
+  },
+  {
+    "id": "a76e807b-3868-4b69-914d-17c96ba474c3",
+    "name": "Sami Laiho",
+    "tagline": "Chief Research Officer, MVP",
+    "bio": "Sami Laiho is one of the world's leading professionals in the Windows OS and Security. Sami has been working with and teaching OS troubleshooting, management, and security since 1995. Sami's session was evaluated as the best session in TechEd North America, Europe and Australia in 2014, and Nordic Infrastructure Conference in 2016, 2017, 2019, 2020, 2022, 2023 and 2024. \n\nAt Ignite 2018 Sami's sessions were ranked as #1 and #2 out of 1708 sessions!! This was the first time in the history of the ",
+    "photo": "https://sessionize.com/image/111e-200o200o2-7b-3868-4b69-914d-17c96ba474c3.a1ddda9e-6e3f-4950-ac5a-8526a233687a.jpg"
+  },
+  {
+    "id": "8f6ce371-38c5-40f5-b471-ea4a7a463c16",
+    "name": "Sandra Kiel",
+    "tagline": "Managing Director and Microsoft MVP",
+    "bio": "Sandra Kiel's multifaceted career is a testament to her relentless pursuit of innovation and transformation. As an \"innovation nerd\" she brings a unique blend of insight and expertise to every endeavor. Sandra's dynamic skill set is rooted in over 15 years of experience in project and event management across various sectors, with a significant impact in IT projects.\n\nHer approach is distinct; Sandra focuses on the human element in technology, prioritizing processes and people over mere technical",
+    "photo": "https://sessionize.com/image/c6b8-200o200o2-SBkxfPUBbbN148peWxdqGf.png"
+  },
+  {
+    "id": "279a7ce4-87e9-4099-b121-a39ebad80fb0",
+    "name": "Sari Soinoja",
+    "tagline": "Leading modern work specialist & Microsoft MVP",
+    "bio": "Sari is a passionate and experienced Leading Specialist at The Finnish Innovation Fund Sitra. Drawing on her extensive experience from a wide range of customer projects—ranging from modern ways of working to change management and digital transformation—she brings a valuable perspective on the real-world challenges organizations face. Her background in product development adds depth to her understanding of how Microsoft 365 tools can be used effectively to solve these challenges.\n\nAs a Microsoft ",
+    "photo": "https://sessionize.com/image/4647-200o200o2-4KF725LBwdNHiQbvCC9xXp.jpg"
+  },
+  {
+    "id": "23d0efa5-3502-4358-88f4-6497c602501c",
+    "name": "Sebastian Nilsson",
+    "tagline": "Renaissance engineer - Developing great ideas into impactful solutions",
+    "bio": "Meet Sebastian, an experienced problem-solver who's professionally been blending technology with creativity since 2003. He’s helped teams bring ideas to life and build cultures that truly put people first. Whether freelancing or leading global teams, Sebastian finds clever solutions that make a real impact.\n\nA regular speaker at tech events—and once the organizer behind Sweden’s biggest .NET meetup at the .NET Core 1.0 launch—he's always exploring fresh ways to mix tech and teamwork, proving tha",
+    "photo": "https://sessionize.com/image/3fab-200o200o2-MVkvYSnwsGpANEN6ThD1ns.jpg"
+  },
+  {
+    "id": "a26a7cb1-94f2-459d-82c6-c6e7e0fb1201",
+    "name": "Sebastian Sieber",
+    "tagline": "2x Microsoft MVP | Global Director Technology at proMX AG | Microsoft Dynamics 365 Project Operations Specialist | Speaker, Blogger, AI Enthusiast and Power Platform Advocate",
+    "bio": "For the past decade, Sebastian has been a member of the ISV Solutions team at proMX AG. During this time, proMX’s project and resource management tool, proRM Fast Start, has won numerous awards. Sebastian was one of proMX’s liaisons to Microsoft’s Dynamics 365 Project Operations development team, thus gaining exceptionally thorough knowledge of the product almost since its first release. He has proven his Power Platform expertise in several successful implementation projects for proMX's internat",
+    "photo": "https://sessionize.com/image/570a-200o200o2-sqoXKooqELvYhbHwTSyZ7G.jpg"
+  },
+  {
+    "id": "bc8038e9-6bed-4b6c-a7d9-6c3da7234ed3",
+    "name": "Sergii Zelenko",
+    "tagline": "Business Intelligence Analyst",
+    "bio": "Hi all, my name is Sergii, and I am excited to have the opportunity to connect with all of you!\n\nI am a Business Intelligence analyst with 5 years of practical experience in Power Platform, Microsoft Certified Associate, and a proud member of Microsoft Fabric Community in the role of Super User. \n\nMy journey in this field has been a blast, thanks to the fantastic support and vibes of the community. Now, it’s my turn to pay it forward by sharing with all of you the best of my knowledge and experi",
+    "photo": "https://sessionize.com/image/b2f9-200o200o2-7uy94kVLxkkfdVZK8hrJr9.jpg"
+  },
+  {
+    "id": "3710537d-f8c4-4118-be46-571615309234",
+    "name": "Simon Skotheimsvik",
+    "tagline": "Microsoft MVP | Senior Cloud Consultant at CloudWay",
+    "bio": "Introducing Simon, a Microsoft MVP and distinguished Senior Cloud Consultant at CloudWay, renowned for his expertise in Microsoft 365 and extensive experience in enterprise mobility. With a career spanning back to the late 90s, Simon has immersed himself in the IT industry, progressively specializing in Microsoft technologies.\n\nHaving started as an in-house IT expert, Simon transitioned into consultancy in the mid-2000s, where he excelled as a go-to authority for all things cloud-related. His pr",
+    "photo": "https://sessionize.com/image/8e89-200o200o2-VYZgCf1qQt3DGWdWgCTwWe.jpg"
+  },
+  {
+    "id": "87a80a1c-9b90-4636-8bae-46075f10cb09",
+    "name": "Stas Lebedenko",
+    "tagline": "Microsoft AI & Azure MVP | Cloud Architect | Developer",
+    "bio": "Stas Lebedenko is a full-stack cloud architect and platform engineer at Solidify AB. He is also a co-organizer of the Odesa Microsoft. NET User Group, a speaker and author, and an active member of the international and Ukraine .NET/Azure/Operations communities. He has been building and designing software for the last twenty years and has been the Microsoft Azure Most Valuable Professional since 2020.",
+    "photo": "https://sessionize.com/image/8873-200o200o2-RVx3EybRRu96nJtHxkXxZA.jpg"
+  },
+  {
+    "id": "322ca7c2-91f3-443d-aa44-ac36a78776c3",
+    "name": "Stephan van Rooij",
+    "tagline": "Software architect at Smartersoft",
+    "bio": "A blogger, a speaker but mainly a software architect with a strong focus on security, identity and automation. My day job is all .NET core and single-sign-on. If I have some spare time, I'm mostly working on one off my home automation projects (with over half a million combined downloads)\n\nI'm also an occasional contributor to @azure/msal, azure/microsoft docs and Azure pipeline tasks\n\nCheck my blog or github profile for more details",
+    "photo": "https://sessionize.com/image/9814-200o200o2-h6MdxQLENi8HXoYLSdbtM2.jpg"
+  },
+  {
+    "id": "e952943e-a1b0-407a-aa9e-f00d54ff7475",
+    "name": "Stephanie Stasey",
+    "tagline": "Miss AI: The AI Skilling Platform",
+    "bio": "Stephanie has over 19 years' experience in leading automation, digital transformation and change programmes for some of the UK's largest organisations.\nShe believes that IT programmes should be focussed on workers unarticulated needs.\n\nAI, agents and data analytics tools are transforming the world of work at an unprecedented pace.\n\nBy day Stephanie empowers organisations with agentic AI, strategy, governance and skilling. By night she builds technical communities.\n\nAfter 3 years at Microsoft, sh",
+    "photo": "https://sessionize.com/image/d108-200o200o2-PA7RsScoY6mubiEscwfi3s.jpg"
+  },
+  {
+    "id": "f15c2bcd-a2d0-4b80-afd0-6daf884b1dd9",
+    "name": "Tatu Seppälä",
+    "tagline": "Blogger & speaker | Microsoft MVP Security | MCT | Data Security, Insider Risk, Power Platform Security & Governance, IAM",
+    "bio": "Tech explorer & lifetime learner. Deep experience in consultancy, advisory and architectural roles in the Microsoft cloud tech space. Special focus areas include (but are not limited to) insider risk, compliance and data security.",
+    "photo": "https://sessionize.com/image/088e-200o200o2-DRefnV69jEHMSV2axVPX1t.jpg"
+  },
+  {
+    "id": "2327331b-69b3-4796-9b0e-78e10a8b9a3d",
+    "name": "Tomislav Hlupić",
+    "tagline": "Principal consultant at Solvership",
+    "bio": "I work as a principal consultant at Solvership since 2016, with experience in various industries (banking, retail / wholesale, insurance...). My primary technology stack is Microsoft SQL Server & Azure with some experience in Big Data tools, primarily Cloudera-related. Besides the consulting work, I am a senior lecturer at Algebra University College in Zagreb since 2018 and external associate at Faculty of electrical engineering and computing in Zagreb since 2020, where I have defended my PhD th",
+    "photo": "https://sessionize.com/image/9436-200o200o2-MuWzD52BJKLPzjcCk8rDA3.jpg"
+  },
+  {
+    "id": "89a20aa9-b492-433f-a74e-f95b1eb95abd",
+    "name": "Ulrikke Akerbæk",
+    "tagline": "Power Platform Practice Lead at Itera and Microsoft MVP",
+    "bio": "Ulrikke Akerbæk, Microsoft MVP since 2021, was named one of the top 50 women in tech in Norway in 2022. She is a leading expert in Power Pages, has 15 years of experience working in tech, and started her career as a SharePoint consultant. She now works as a Power Platform Practice Lead, advisor, architect, developer, and consultant at Itera Fredrikstad.\n\nShe is a #PowerAddict and an active contributor in the Power Platform community, peaking at events worldwide and helping others on their journe",
+    "photo": "https://sessionize.com/image/ed96-200o200o2-NTti6qCdhEFEg6Kh1VVQPa.jpg"
+  },
+  {
+    "id": "86ad078d-a7d8-4431-b2c3-3b2ce7bbe05c",
+    "name": "Valerie Junk",
+    "tagline": "Data Analytics, Visualization & Storytelling | Microsoft Data Platform MVP | Wortell",
+    "bio": "Hi there. I am Valerie Junk. \nI am passionate about creating insights from data and designing dashboards using Power BI. With my expertise in data analytics and visualization, I support companies in developing effective data-driven strategies that yield results and take the business to the next level.\nMicrosoft Data Platform MVP",
+    "photo": "https://sessionize.com/image/4f4f-200o200o2-wv3gBYfpKv5J77vbE9PJm9.png"
+  },
+  {
+    "id": "4cc52d3a-501a-4907-9dab-9c0e00f61b5f",
+    "name": "Vesa Juvonen",
+    "tagline": "Principal Product Manager",
+    "bio": "Vesa Juvonen works as a Principal Program Manager focusing on the community and ecosystem across Microsoft 365. He leads the Microsoft 365 & Power Platform Community initiative which is providing tooling, guidance and assistance on Microsoft 365 and Power Platform areas.\n\nHe has worked in different roles at Microsoft engineering helping on building capabilities in Microsoft 365 and to help customers and partners to use the different features across the platform. Prior moving to engineering role(",
+    "photo": "https://sessionize.com/image/237d-200o200o2-n3gEyL2eweU17vNLwRCMUj.jpg"
+  },
+  {
+    "id": "1a4d86e6-803f-4faf-911a-c71934f361c1",
+    "name": "Yves Habersaat",
+    "tagline": "Microsoft MVP (M365) & MCT | Business Applications Consultant & AI Tech Lead",
+    "bio": "Yves Habersaat is a Business Applications Consultant and AI Tech Lead at Sword Group in Switzerland, specializing in building applications and solutions with Microsoft 365, Azure, Dynamics 365, and the Power Platform.\n\nWith a strong passion for modern development technologies and application lifecycles, Yves focuses on Microsoft 365 services such as Microsoft Teams, SharePoint Online, OneDrive for Business, Microsoft Viva, and Microsoft Copilot. He possesses expertise in modern development tools",
+    "photo": "https://sessionize.com/image/66bb-200o200o2-s8TF8JNA8crAcGud3MZkbq.png"
+  },
+  {
+    "id": "fcf4f835-b8b2-46bd-a763-206116a4b143",
+    "name": "Zoe Wilson",
+    "tagline": "Global Digital Workplace Services Consult Leader, Kyndryl",
+    "bio": "Zoe leads the Digital Workplace Services Consult practice globally for Kyndryl, covering all Microsoft AI Business Solutions technology, ServiceNow, and other ecosystem partners, driving technology-based innovation and owning the future of work vision for clients.\n\nIn this role, Zoe works with colleagues from across the Kyndryl organisation to drive innovation, centered around business problems, leveraging the full range of modern work technologies including agentic capabilities, to help organis",
+    "photo": "https://sessionize.com/image/e717-200o200o2-4kDwZFfksrp8RaXPK3omGk.jpg"
+  }
+]
