@@ -439,13 +439,19 @@
     }
     
     function populateFilters() {
-      // Extract unique days from time field (e.g., "08:30 - 09:15" on different dates)
-      const days = [...new Set(allSessions.map(s => {
-        // We don't have explicit dates in scraped data, so we'll skip day filtering for now
-        return null;
-      }))].filter(Boolean).sort();
+      // Extract unique days
+      const days = [...new Set(allSessions.map(s => s.day))].filter(Boolean).sort();
+      const dayFilter = document.getElementById('dayFilter');
+      days.forEach(day => {
+        const option = document.createElement('option');
+        // Get dayLabel from first session of that day
+        const session = allSessions.find(s => s.day === day);
+        option.value = day;
+        option.textContent = session.dayLabel;
+        dayFilter.appendChild(option);
+      });
       
-      // For now, use topic as the main filter
+      // Extract unique topics
       const topics = [...new Set(allSessions.map(s => s.topic))].filter(Boolean).sort();
       const trackFilter = document.getElementById('trackFilter');
       topics.forEach(topic => {
@@ -454,18 +460,17 @@
         option.textContent = topic;
         trackFilter.appendChild(option);
       });
-      
-      // Hide day filter since we don't have date info in scraped data
-      document.getElementById('dayFilter').style.display = 'none';
     }
     
     function renderSessions() {
       const container = document.getElementById('sessions');
       const searchTerm = document.getElementById('search').value.toLowerCase();
+      const dayFilter = document.getElementById('dayFilter').value;
       const trackFilter = document.getElementById('trackFilter').value;
       
       // Filter sessions
       let filtered = allSessions.filter(session => {
+        if (dayFilter && session.day !== dayFilter) return false;
         if (trackFilter && session.topic !== trackFilter) return false;
         
         if (searchTerm) {
@@ -483,12 +488,16 @@
         return true;
       });
       
-      // Sort by time
-      filtered.sort((a, b) => {
-        if (!a.time) return 1;
-        if (!b.time) return -1;
-        return a.time.localeCompare(b.time);
+      // Group by day
+      const byDay = {};
+      filtered.forEach(session => {
+        const day = session.day || 'unknown';
+        if (!byDay[day]) byDay[day] = [];
+        byDay[day].push(session);
       });
+      
+      // Sort days
+      const sortedDays = Object.keys(byDay).sort();
       
       // Render
       container.innerHTML = '';
@@ -498,9 +507,30 @@
         return;
       }
       
-      filtered.forEach(session => {
-        const sessionEl = renderSession(session);
-        container.appendChild(sessionEl);
+      sortedDays.forEach(day => {
+        const daySection = document.createElement('div');
+        daySection.className = 'day-section';
+        
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'day-header';
+        // Get day label from first session
+        const dayLabel = byDay[day][0].dayLabel || day;
+        dayHeader.textContent = dayLabel;
+        daySection.appendChild(dayHeader);
+        
+        // Sort sessions by time
+        byDay[day].sort((a, b) => {
+          if (!a.time) return 1;
+          if (!b.time) return -1;
+          return a.time.localeCompare(b.time);
+        });
+        
+        byDay[day].forEach(session => {
+          const sessionEl = renderSession(session);
+          daySection.appendChild(sessionEl);
+        });
+        
+        container.appendChild(daySection);
       });
     }
     
@@ -744,6 +774,7 @@
     
     // Event listeners
     document.getElementById('search').addEventListener('input', renderSessions);
+    document.getElementById('dayFilter').addEventListener('change', renderSessions);
     document.getElementById('trackFilter').addEventListener('change', renderSessions);
     document.getElementById('refreshBtn').addEventListener('click', () => {
       document.getElementById('loading').style.display = 'block';
