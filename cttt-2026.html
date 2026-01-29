@@ -212,6 +212,39 @@
       margin-left: 20px;
       color: var(--text);
     }
+
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .session-header-content {
+      flex: 1;
+    }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 8px;
+      cursor: pointer;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      color: var(--success);
+      border-color: var(--success);
+    }
     
     .modal {
       display: none;
@@ -543,17 +576,36 @@
         div.classList.add('has-notes');
       }
       
+      // Header with time, title, and copy button
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'session-header';
+
+      const headerContent = document.createElement('div');
+      headerContent.className = 'session-header-content';
+
       // Time
       const timeDiv = document.createElement('div');
       timeDiv.className = 'session-time';
       timeDiv.textContent = session.time || 'Time TBA';
-      div.appendChild(timeDiv);
-      
+      headerContent.appendChild(timeDiv);
+
       // Title
       const titleDiv = document.createElement('div');
       titleDiv.className = 'session-title';
       titleDiv.textContent = session.title;
-      div.appendChild(titleDiv);
+      headerContent.appendChild(titleDiv);
+
+      headerDiv.appendChild(headerContent);
+
+      // Copy button
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-btn';
+      copyBtn.textContent = '📋';
+      copyBtn.title = 'Copy session info to clipboard';
+      copyBtn.onclick = (e) => copySessionInfo(session, e);
+      headerDiv.appendChild(copyBtn);
+
+      div.appendChild(headerDiv);
       
       // Meta
       const metaDiv = document.createElement('div');
@@ -736,6 +788,30 @@
     
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
+    }
+
+    function copySessionInfo(session, event) {
+      event.stopPropagation();
+
+      const lines = [session.title];
+      if (session.speakers) {
+        lines.push(`Speaker(s): ${session.speakers}`);
+      }
+      lines.push(`Session ID: ${session.id}`);
+
+      const text = lines.join('\n');
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.currentTarget;
+        btn.classList.add('copied');
+        btn.textContent = '✓';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = '📋';
+        }, 1500);
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+      });
     }
     
     function saveCache(data) {
