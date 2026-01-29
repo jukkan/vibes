@@ -1,5 +1,14 @@
 {
   "version": "1.0",
   "description": "Photo manifest for Cloud Tech Tallinn 2026 sessions",
-  "photos": {}
+  "photos": {
+    "8e665c4f-e4aa-f011-bbd2-6045bd8f8f87": [
+      {
+        "path": "assets/events/cttt/8e665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769677628171-bp6zqy.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/8e665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769677628171-bp6zqy.jpg",
+        "timestamp": 1769677631678
+      }
+    ]
+  },
+  "sha": "62a2fe1b1a5a8aaef20fbfb41b2586d14ce05ac7"
 }
