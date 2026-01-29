@@ -87,6 +87,34 @@
     .controls button:hover {
       background: var(--accent-hover);
     }
+
+    .my-sessions-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .my-sessions-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    .my-sessions-toggle:has(input:checked) {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    .my-sessions-toggle input {
+      display: none;
+    }
     
     .loading {
       text-align: center;
@@ -727,6 +755,10 @@
     <select id="trackFilter">
       <option value="">All tracks</option>
     </select>
+    <label class="my-sessions-toggle">
+      <input type="checkbox" id="mySessionsFilter">
+      <span>My Sessions</span>
+    </label>
     <button id="refreshBtn">↻ Refresh</button>
   </div>
 
@@ -936,12 +968,20 @@ Tap the quick insert buttons above for common note types, or use the format bar 
       const searchTerm = document.getElementById('search').value.toLowerCase();
       const dayFilter = document.getElementById('dayFilter').value;
       const trackFilter = document.getElementById('trackFilter').value;
-      
+      const mySessionsOnly = document.getElementById('mySessionsFilter').checked;
+
       // Filter sessions
       let filtered = allSessions.filter(session => {
         if (dayFilter && session.day !== dayFilter) return false;
         if (trackFilter && session.topic !== trackFilter) return false;
-        
+
+        // "My Sessions" filter: show only sessions with notes or photos
+        if (mySessionsOnly) {
+          const hasNotes = !!(localNotes[session.id] || notes[session.id]);
+          const hasPhotos = !!(photoManifest.photos && photoManifest.photos[session.id] && photoManifest.photos[session.id].length > 0);
+          if (!hasNotes && !hasPhotos) return false;
+        }
+
         if (searchTerm) {
           const searchable = [
             session.title,
@@ -950,10 +990,10 @@ Tap the quick insert buttons above for common note types, or use the format bar 
             session.topic,
             session.room
           ].join(' ').toLowerCase();
-          
+
           if (!searchable.includes(searchTerm)) return false;
         }
-        
+
         return true;
       });
       
@@ -1557,6 +1597,7 @@ Tap the quick insert buttons above for common note types, or use the format bar 
     document.getElementById('search').addEventListener('input', renderSessions);
     document.getElementById('dayFilter').addEventListener('change', renderSessions);
     document.getElementById('trackFilter').addEventListener('change', renderSessions);
+    document.getElementById('mySessionsFilter').addEventListener('change', renderSessions);
     document.getElementById('refreshBtn').addEventListener('click', () => {
       document.getElementById('loading').style.display = 'block';
       fetchData();
