@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>CTTT Photo Uploader</title>
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #e8e8e8;
+      --text-dim: #888;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --border: #333;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 20px;
+      background: #111;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    header h1 {
+      font-size: 1.3rem;
+      margin: 10px 0 5px 0;
+    }
+
+    header p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      color: var(--text);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg-dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    input[type="text"]::placeholder {
+      color: var(--text-dim);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--bg-dark);
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .photo-input {
+      display: none;
+    }
+
+    .photo-drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 15px;
+    }
+
+    .photo-drop-zone:hover,
+    .photo-drop-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .photo-drop-zone .icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .photo-drop-zone p {
+      color: var(--text-dim);
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-item .remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 24px;
+      height: 24px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .preview-item .upload-status {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .preview-item .upload-status.success {
+      background: rgba(16, 185, 129, 0.9);
+    }
+
+    .preview-item .upload-status.error {
+      background: rgba(239, 68, 68, 0.9);
+    }
+
+    .preview-item .upload-status.uploading {
+      background: rgba(59, 130, 246, 0.9);
+    }
+
+    .status-message {
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    .status-message.success {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    .status-message.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid var(--error);
+      color: var(--error);
+    }
+
+    .status-message.info {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .session-info {
+      padding: 15px;
+      background: var(--bg-dark);
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .session-info .session-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .session-info .session-id {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      word-break: break-all;
+    }
+
+    .token-hint {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+
+    .token-hint a {
+      color: var(--accent);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress-bar .progress {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 15px; }
+      .card { padding: 15px; }
+      header h1 { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="cttt-2026.html">← Back to Schedule</a>
+    <h1>CTTT Photo Uploader</h1>
+    <p>Upload photos from sessions</p>
+  </header>
+
+  <div class="container">
+    <!-- Step 1: GitHub Token -->
+    <div class="card" id="tokenCard">
+      <h2><span class="step-number">1</span> GitHub Token</h2>
+      <label for="githubToken">Personal Access Token (repo scope)</label>
+      <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+      <p class="token-hint">
+        Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo&description=CTTT%20Photo%20Uploader" target="_blank">Create one here</a> (repo scope required)
+      </p>
+      <button class="btn" id="validateTokenBtn">Validate Token</button>
+      <div id="tokenStatus" class="status-message hidden"></div>
+    </div>
+
+    <!-- Step 2: Session ID -->
+    <div class="card" id="sessionCard">
+      <h2><span class="step-number">2</span> Session ID</h2>
+      <label for="sessionId">Paste session ID from clipboard</label>
+      <input type="text" id="sessionId" placeholder="df26da49-e4aa-f011-bbd2-6045bdf2f545">
+      <button class="btn btn-secondary" id="pasteBtn">Paste from Clipboard</button>
+      <div id="sessionInfo" class="session-info hidden">
+        <div class="session-title" id="sessionTitle"></div>
+        <div class="session-id" id="sessionIdDisplay"></div>
+      </div>
+    </div>
+
+    <!-- Step 3: Upload Photos -->
+    <div class="card" id="uploadCard">
+      <h2><span class="step-number">3</span> Upload Photos</h2>
+
+      <div class="photo-drop-zone" id="dropZone">
+        <div class="icon">📷</div>
+        <p>Tap to select photos or drag & drop</p>
+      </div>
+      <input type="file" id="photoInput" class="photo-input" accept="image/*" multiple>
+
+      <div id="previewGrid" class="preview-grid"></div>
+
+      <div id="uploadProgress" class="progress-bar hidden">
+        <div class="progress" id="progressBar" style="width: 0%"></div>
+      </div>
+
+      <div id="uploadStatus" class="status-message hidden"></div>
+
+      <button class="btn btn-success" id="uploadBtn" disabled>Upload Photos</button>
+    </div>
+  </div>
+
+  <footer>
+    <a href="cttt-2026.html">Back to Schedule</a> |
+    Photos stored in GitHub repo
+  </footer>
+
+  <script>
+    // Configuration
+    const CONFIG = {
+      owner: 'jukkan',
+      repo: 'vibes',
+      branch: 'main',
+      photosBasePath: 'assets/events/cttt',
+      manifestPath: 'assets/events/cttt/photo-manifest.json',
+      sessionsPath: 'data/cttt-sessions.json'
+    };
+
+    // State
+    let state = {
+      token: localStorage.getItem('cttt_github_token') || '',
+      tokenValid: false,
+      sessionId: '',
+      sessionData: null,
+      photos: [], // { file, preview, status }
+      sessions: [],
+      manifest: { photos: {} }
+    };
+
+    // DOM Elements
+    const elements = {
+      githubToken: document.getElementById('githubToken'),
+      validateTokenBtn: document.getElementById('validateTokenBtn'),
+      tokenStatus: document.getElementById('tokenStatus'),
+      sessionId: document.getElementById('sessionId'),
+      pasteBtn: document.getElementById('pasteBtn'),
+      sessionInfo: document.getElementById('sessionInfo'),
+      sessionTitle: document.getElementById('sessionTitle'),
+      sessionIdDisplay: document.getElementById('sessionIdDisplay'),
+      dropZone: document.getElementById('dropZone'),
+      photoInput: document.getElementById('photoInput'),
+      previewGrid: document.getElementById('previewGrid'),
+      uploadProgress: document.getElementById('uploadProgress'),
+      progressBar: document.getElementById('progressBar'),
+      uploadStatus: document.getElementById('uploadStatus'),
+      uploadBtn: document.getElementById('uploadBtn')
+    };
+
+    // Initialize
+    async function init() {
+      // Load saved token
+      if (state.token) {
+        elements.githubToken.value = state.token;
+      }
+
+      // Load sessions data for lookup
+      try {
+        const res = await fetch(CONFIG.sessionsPath);
+        if (res.ok) {
+          state.sessions = await res.json();
+        }
+      } catch (err) {
+        console.warn('Could not load sessions:', err);
+      }
+
+      // Check for session ID in URL params
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionParam = urlParams.get('session');
+      if (sessionParam) {
+        elements.sessionId.value = sessionParam;
+        lookupSession();
+      }
+
+      // Event listeners
+      elements.validateTokenBtn.addEventListener('click', validateToken);
+      elements.pasteBtn.addEventListener('click', pasteSessionId);
+      elements.sessionId.addEventListener('input', lookupSession);
+      elements.dropZone.addEventListener('click', () => elements.photoInput.click());
+      elements.photoInput.addEventListener('change', handleFileSelect);
+      elements.uploadBtn.addEventListener('click', uploadPhotos);
+
+      // Drag and drop
+      elements.dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        elements.dropZone.classList.add('drag-over');
+      });
+      elements.dropZone.addEventListener('dragleave', () => {
+        elements.dropZone.classList.remove('drag-over');
+      });
+      elements.dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        elements.dropZone.classList.remove('drag-over');
+        handleFiles(e.dataTransfer.files);
+      });
+
+      updateUI();
+    }
+
+    // Validate GitHub token
+    async function validateToken() {
+      const token = elements.githubToken.value.trim();
+      if (!token) {
+        showStatus('tokenStatus', 'Please enter a token', 'error');
+        return;
+      }
+
+      showStatus('tokenStatus', 'Validating...', 'info');
+      elements.validateTokenBtn.disabled = true;
+
+      try {
+        const res = await fetch('https://api.github.com/user', {
+          headers: { Authorization: `token ${token}` }
+        });
+
+        if (res.ok) {
+          const user = await res.json();
+          state.token = token;
+          state.tokenValid = true;
+          localStorage.setItem('cttt_github_token', token);
+          showStatus('tokenStatus', `Authenticated as ${user.login}`, 'success');
+
+          // Load existing manifest
+          await loadManifest();
+        } else {
+          state.tokenValid = false;
+          showStatus('tokenStatus', 'Invalid token', 'error');
+        }
+      } catch (err) {
+        state.tokenValid = false;
+        showStatus('tokenStatus', `Error: ${err.message}`, 'error');
+      }
+
+      elements.validateTokenBtn.disabled = false;
+      updateUI();
+    }
+
+    // Load existing photo manifest
+    async function loadManifest() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.manifestPath}`, {
+          headers: { Authorization: `token ${state.token}` }
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const content = atob(data.content);
+          state.manifest = JSON.parse(content);
+          state.manifest.sha = data.sha; // Store SHA for updates
+        }
+      } catch (err) {
+        console.log('No existing manifest or error loading:', err);
+        state.manifest = { photos: {} };
+      }
+    }
+
+    // Paste session ID from clipboard
+    async function pasteSessionId() {
+      try {
+        const text = await navigator.clipboard.readText();
+        // Extract session ID if pasted text contains multiple lines
+        const lines = text.split('\n');
+        let sessionId = '';
+
+        for (const line of lines) {
+          // Look for UUID pattern
+          const uuidMatch = line.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/i);
+          if (uuidMatch) {
+            sessionId = uuidMatch[0];
+            break;
+          }
+        }
+
+        if (sessionId) {
+          elements.sessionId.value = sessionId;
+          lookupSession();
+        } else {
+          showStatus('uploadStatus', 'No session ID found in clipboard', 'error');
+        }
+      } catch (err) {
+        showStatus('uploadStatus', 'Could not read clipboard. Please paste manually.', 'error');
+      }
+    }
+
+    // Look up session info
+    function lookupSession() {
+      const sessionId = elements.sessionId.value.trim();
+      state.sessionId = sessionId;
+
+      if (!sessionId) {
+        elements.sessionInfo.classList.add('hidden');
+        state.sessionData = null;
+        updateUI();
+        return;
+      }
+
+      // Find session in data
+      const session = state.sessions.find(s => s.id === sessionId);
+
+      if (session) {
+        state.sessionData = session;
+        elements.sessionTitle.textContent = session.title;
+        elements.sessionIdDisplay.textContent = sessionId;
+        elements.sessionInfo.classList.remove('hidden');
+      } else {
+        state.sessionData = null;
+        elements.sessionTitle.textContent = 'Unknown session';
+        elements.sessionIdDisplay.textContent = sessionId;
+        elements.sessionInfo.classList.remove('hidden');
+      }
+
+      updateUI();
+    }
+
+    // Handle file selection
+    function handleFileSelect(e) {
+      handleFiles(e.target.files);
+    }
+
+    function handleFiles(files) {
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) continue;
+
+        // Create preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          state.photos.push({
+            file: file,
+            preview: e.target.result,
+            status: 'pending'
+          });
+          renderPreviews();
+          updateUI();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Render photo previews
+    function renderPreviews() {
+      elements.previewGrid.innerHTML = '';
+
+      state.photos.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'preview-item';
+
+        const img = document.createElement('img');
+        img.src = photo.preview;
+        item.appendChild(img);
+
+        if (photo.status === 'pending') {
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'remove-btn';
+          removeBtn.textContent = '×';
+          removeBtn.onclick = () => {
+            state.photos.splice(index, 1);
+            renderPreviews();
+            updateUI();
+          };
+          item.appendChild(removeBtn);
+        }
+
+        if (photo.status !== 'pending') {
+          const status = document.createElement('div');
+          status.className = `upload-status ${photo.status}`;
+          status.textContent = photo.status === 'success' ? 'Done' :
+                              photo.status === 'error' ? 'Error' : 'Uploading...';
+          item.appendChild(status);
+        }
+
+        elements.previewGrid.appendChild(item);
+      });
+    }
+
+    // Upload photos to GitHub
+    async function uploadPhotos() {
+      if (!canUpload()) return;
+
+      elements.uploadBtn.disabled = true;
+      elements.uploadProgress.classList.remove('hidden');
+      showStatus('uploadStatus', 'Uploading photos...', 'info');
+
+      const total = state.photos.length;
+      let completed = 0;
+      let successful = 0;
+
+      for (const photo of state.photos) {
+        if (photo.status === 'success') {
+          completed++;
+          continue;
+        }
+
+        photo.status = 'uploading';
+        renderPreviews();
+
+        try {
+          const result = await uploadPhoto(photo);
+          photo.status = 'success';
+          photo.path = result.path;
+          photo.url = result.url;
+          successful++;
+        } catch (err) {
+          console.error('Upload error:', err);
+          photo.status = 'error';
+          photo.error = err.message;
+        }
+
+        completed++;
+        elements.progressBar.style.width = `${(completed / total) * 100}%`;
+        renderPreviews();
+      }
+
+      // Update manifest
+      if (successful > 0) {
+        await updateManifest();
+      }
+
+      elements.uploadBtn.disabled = false;
+
+      if (successful === total) {
+        showStatus('uploadStatus', `All ${total} photos uploaded successfully!`, 'success');
+      } else if (successful > 0) {
+        showStatus('uploadStatus', `${successful}/${total} photos uploaded`, 'info');
+      } else {
+        showStatus('uploadStatus', 'Upload failed', 'error');
+      }
+
+      updateUI();
+    }
+
+    // Upload single photo to GitHub
+    async function uploadPhoto(photo) {
+      const timestamp = Date.now();
+      const ext = photo.file.name.split('.').pop().toLowerCase();
+      const filename = `${timestamp}-${Math.random().toString(36).substr(2, 6)}.${ext}`;
+      const path = `${CONFIG.photosBasePath}/${state.sessionId}/${filename}`;
+
+      // Convert to base64
+      const base64 = photo.preview.split(',')[1];
+
+      // Check if file exists (get SHA if it does)
+      let sha;
+      try {
+        const checkRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`, {
+          headers: { Authorization: `token ${state.token}` }
+        });
+        if (checkRes.ok) {
+          const existing = await checkRes.json();
+          sha = existing.sha;
+        }
+      } catch (err) {
+        // File doesn't exist, which is fine
+      }
+
+      // Upload to GitHub
+      const body = {
+        message: `Add photo for session ${state.sessionId}`,
+        content: base64,
+        branch: CONFIG.branch
+      };
+      if (sha) body.sha = sha;
+
+      const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${state.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || 'Upload failed');
+      }
+
+      const result = await res.json();
+      return {
+        path: path,
+        url: result.content.download_url
+      };
+    }
+
+    // Update photo manifest
+    async function updateManifest() {
+      // Add new photos to manifest
+      if (!state.manifest.photos[state.sessionId]) {
+        state.manifest.photos[state.sessionId] = [];
+      }
+
+      const successfulPhotos = state.photos.filter(p => p.status === 'success' && p.path);
+      for (const photo of successfulPhotos) {
+        // Check if already in manifest
+        const exists = state.manifest.photos[state.sessionId].some(p => p.path === photo.path);
+        if (!exists) {
+          state.manifest.photos[state.sessionId].push({
+            path: photo.path,
+            url: photo.url,
+            timestamp: Date.now()
+          });
+        }
+      }
+
+      // Update manifest in GitHub
+      const content = btoa(JSON.stringify(state.manifest, null, 2));
+      const body = {
+        message: `Update photo manifest for session ${state.sessionId}`,
+        content: content,
+        branch: CONFIG.branch
+      };
+      if (state.manifest.sha) {
+        body.sha = state.manifest.sha;
+      }
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.manifestPath}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${state.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+
+        if (res.ok) {
+          const result = await res.json();
+          state.manifest.sha = result.content.sha;
+        }
+      } catch (err) {
+        console.error('Failed to update manifest:', err);
+      }
+    }
+
+    // Check if upload is possible
+    function canUpload() {
+      return state.tokenValid &&
+             state.sessionId &&
+             state.photos.length > 0 &&
+             state.photos.some(p => p.status === 'pending');
+    }
+
+    // Update UI state
+    function updateUI() {
+      elements.uploadBtn.disabled = !canUpload();
+    }
+
+    // Show status message
+    function showStatus(elementId, message, type) {
+      const el = document.getElementById(elementId);
+      el.textContent = message;
+      el.className = `status-message ${type}`;
+      el.classList.remove('hidden');
+    }
+
+    // Initialize on load
+    init();
+  </script>
+</body>
+</html>
