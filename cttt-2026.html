@@ -131,6 +131,97 @@
     .session.has-notes {
       border-left: 4px solid var(--success);
     }
+
+    .session.has-photos {
+      border-right: 4px solid var(--accent);
+    }
+
+    .photo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .photo-gallery-item {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .photo-gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .photo-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .photo-lightbox.active {
+      display: flex;
+    }
+
+    .photo-lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .photo-lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .upload-photos-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 15px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .upload-photos-link:hover {
+      text-decoration: underline;
+    }
     
     .session-time {
       color: var(--text-dim);
@@ -356,7 +447,10 @@
 </head>
 <body>
   <header>
-    <a href="/">← vibes</a>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <a href="/">← vibes</a>
+      <a href="photo-uploader.html" style="font-size: 0.85rem;">Upload Photos</a>
+    </div>
     <h1>Cloud Tech Tallinn 2026</h1>
     <p>Jan 29-30 • My Schedule & Notes</p>
   </header>
@@ -383,6 +477,11 @@
     </div>
   </div>
 
+  <div id="photoLightbox" class="photo-lightbox" onclick="closeLightbox()">
+    <button class="photo-lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightboxImage" src="" alt="Photo">
+  </div>
+
   <footer>
     <a href="/">← Back to launcher</a> | 
     <a href="https://github.com/jukkan/vibes">View source</a>
@@ -392,11 +491,13 @@
     const SESSIONS_URL = 'data/cttt-sessions.json';
     const SPEAKERS_URL = 'data/cttt-2026-speakers.json';
     const NOTES_URL = 'data/cttt-2026-notes.json';
-    
+    const PHOTOS_MANIFEST_URL = 'assets/events/cttt/photo-manifest.json';
+
     let allSessions = [];
     let allSpeakers = [];
     let speakersById = {};
     let notes = {};
+    let photoManifest = { photos: {} };
     
     // Initialize
     async function init() {
@@ -410,9 +511,10 @@
           document.getElementById('loading').style.display = 'none';
         }
         
-        // Load notes
+        // Load notes and photos
         await loadNotes();
-        
+        await loadPhotoManifest();
+
         // Fetch fresh data
         await fetchData();
         
@@ -468,6 +570,18 @@
         }
       } catch (err) {
         console.log('No notes file found (expected on first load)');
+      }
+    }
+
+    async function loadPhotoManifest() {
+      try {
+        const res = await fetch(PHOTOS_MANIFEST_URL);
+        if (res.ok) {
+          photoManifest = await res.json();
+          renderSessions();
+        }
+      } catch (err) {
+        console.log('No photo manifest found (expected on first load)');
       }
     }
     
@@ -570,12 +684,18 @@
     function renderSession(session) {
       const div = document.createElement('div');
       div.className = 'session';
-      
+
       const sessionNotes = notes[session.id];
+      const sessionPhotos = photoManifest.photos && photoManifest.photos[session.id];
+      const photoCount = sessionPhotos ? sessionPhotos.length : 0;
+
       if (sessionNotes) {
         div.classList.add('has-notes');
       }
-      
+      if (photoCount > 0) {
+        div.classList.add('has-photos');
+      }
+
       // Header with time, title, and copy button
       const headerDiv = document.createElement('div');
       headerDiv.className = 'session-header';
@@ -628,7 +748,14 @@
         levelSpan.textContent = `📊 Level ${session.level}`;
         metaDiv.appendChild(levelSpan);
       }
-      
+
+      if (photoCount > 0) {
+        const photoBadge = document.createElement('span');
+        photoBadge.className = 'photo-badge';
+        photoBadge.textContent = `📷 ${photoCount}`;
+        metaDiv.appendChild(photoBadge);
+      }
+
       div.appendChild(metaDiv);
       
       // Speakers (from scraped data - comma-separated string)
@@ -757,11 +884,34 @@
         });
         html += '</div>';
       }
-      
+
+      // Photo gallery
+      const sessionPhotos = photoManifest.photos && photoManifest.photos[session.id];
+      if (sessionPhotos && sessionPhotos.length > 0) {
+        html += '<div style="margin-top: 20px;"><strong>Photos:</strong></div>';
+        html += '<div class="photo-gallery">';
+        sessionPhotos.forEach(photo => {
+          const url = photo.url || photo.path;
+          html += `
+            <div class="photo-gallery-item" onclick="openLightbox('${url}')">
+              <img src="${url}" alt="Session photo" loading="lazy">
+            </div>
+          `;
+        });
+        html += '</div>';
+      }
+
+      // Upload photos link
+      html += `
+        <a href="photo-uploader.html?session=${session.id}" class="upload-photos-link">
+          + Add photos for this session
+        </a>
+      `;
+
       body.innerHTML = html;
       modal.classList.add('active');
     }
-    
+
     function showSpeakerModal(speaker) {
       const modal = document.getElementById('modal');
       const body = document.getElementById('modalBody');
@@ -788,6 +938,17 @@
     
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
+    }
+
+    function openLightbox(imageUrl) {
+      const lightbox = document.getElementById('photoLightbox');
+      const img = document.getElementById('lightboxImage');
+      img.src = imageUrl;
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('photoLightbox').classList.remove('active');
     }
 
     function copySessionInfo(session, event) {
