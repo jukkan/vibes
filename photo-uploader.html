@@ -785,8 +785,13 @@
         }
       }
 
-      // Update manifest in GitHub
-      const content = btoa(JSON.stringify(state.manifest, null, 2));
+      // Update manifest in GitHub (exclude sha from persisted data)
+      const manifestToSave = {
+        version: state.manifest.version || '1.0',
+        description: state.manifest.description || 'Photo manifest for Cloud Tech Tallinn 2026 sessions',
+        photos: state.manifest.photos
+      };
+      const content = btoa(JSON.stringify(manifestToSave, null, 2));
       const body = {
         message: `Update photo manifest for session ${state.sessionId}`,
         content: content,

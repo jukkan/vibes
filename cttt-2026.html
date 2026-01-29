@@ -575,7 +575,9 @@
 
     async function loadPhotoManifest() {
       try {
-        const res = await fetch(PHOTOS_MANIFEST_URL);
+        // Add cache-busting to ensure fresh manifest
+        const url = PHOTOS_MANIFEST_URL + '?t=' + Date.now();
+        const res = await fetch(url);
         if (res.ok) {
           photoManifest = await res.json();
           renderSessions();
