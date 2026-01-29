@@ -1235,7 +1235,9 @@ Tap the quick insert buttons above for common note types, or use the format bar 
         html += '<div style="margin-top: 20px;"><strong>Photos:</strong></div>';
         html += '<div class="photo-gallery">';
         sessionPhotos.forEach(photo => {
-          const url = photo.url || photo.path;
+          const baseUrl = photo.url || photo.path;
+          // Add cache-busting using photo timestamp
+          const url = baseUrl + '?t=' + (photo.timestamp || Date.now());
           html += `
             <div class="photo-gallery-item" onclick="openLightbox('${url}')">
               <img src="${url}" alt="Session photo" loading="lazy">
@@ -1559,6 +1561,7 @@ Tap the quick insert buttons above for common note types, or use the format bar 
       document.getElementById('loading').style.display = 'block';
       fetchData();
       loadNotes();
+      loadPhotoManifest();
     });
 
     // Close modal on background click
