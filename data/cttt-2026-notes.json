@@ -43,5 +43,15 @@
     ],
     "rating": 0,
     "follow_up": []
+  },
+  "43120e4b-e4aa-f011-bbd2-7c1e525ddd3f": {
+    "title": "🧠 Model Context Protocol vs. Connectors: Rethinking Integration in the Power Platform 💡",
+    "notes": [
+      "pac.mcp launched in July.",
+      "dnx command.",
+      "MCP server versions co-exist now, GA on by default."
+    ],
+    "rating": 0,
+    "follow_up": []
   }
 }
