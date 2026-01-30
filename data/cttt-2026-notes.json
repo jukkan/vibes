@@ -33,5 +33,15 @@
     ],
     "rating": 0,
     "follow_up": []
+  },
+  "f1a96149-e4aa-f011-bbd2-6045bd8f8f87": {
+    "title": "From Vibe Coding to Agentic Engineering: Building Production-Ready Dataverse Code with AI",
+    "notes": [
+      "Keep everything as local as possible. Don't rely on MCP servers, instead build rules and constraints to keep the agent from trying dangerous things. Build fakes of everything.",
+      "Git Worktree for concurrent agent instances isolation.",
+      "Magnus: \"I'm never going to write a line of code by hand anymore.\""
+    ],
+    "rating": 0,
+    "follow_up": []
   }
 }
