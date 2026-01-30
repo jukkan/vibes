@@ -1,9 +1,35 @@
 {
   "df26da49-e4aa-f011-bbd2-6045bdf2f545": {
-    "title": "Generative Pages - from Tech to Adoption",
+    "title": "🔥Generative Pages - from Tech to Adoption 🚀",
     "notes": [
-      "Example note: AI-powered low-code development",
-      "Example note: Check their GitHub repository"
+      "Still US only, has gone Fluent UI, doesn't fully understand Dataverse metadata."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "fa29d74f-e4aa-f011-bbd2-6045bdf2f545": {
+    "title": "How I Run My Business with 15 Copilot Agents: A Practical Look Into the Future of Solo Work",
+    "notes": [
+      "Don't automate relationship-building work.",
+      "Don't be loyal to one platform."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "f08b292e-44d9-f011-8544-7c1e525ddd3f": {
+    "title": "Why Your Data Isn’t Ready for AI (And How to Fix It)",
+    "notes": [
+      "Copilot only understands Entra ID security, not AD ACL on enterprise file shares.",
+      "Tenant default location determines where the MS Graph index data is stored."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "dda96149-e4aa-f011-bbd2-6045bd8f8f87": {
+    "title": "Agentic Engineering for Azure-Dataverse Integration: AI-Built Functions and APIs That Actually Work",
+    "notes": [
+      "You can ask AI to write static analysis by showing what you don't like and establish new \"laws\".",
+      "Use EBG for generating the Dataverse model for AI."
     ],
     "rating": 0,
     "follow_up": []
