@@ -689,12 +689,193 @@
       border-color: var(--success);
     }
 
+    /* Submit Notes Modal Styles */
+    .submit-notes-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1200;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .submit-notes-modal.active {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .submit-notes-content {
+      max-width: 500px;
+      width: 100%;
+      margin: 40px auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 25px;
+      position: relative;
+    }
+
+    .submit-notes-content h2 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    .submit-notes-content label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    .submit-notes-content input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg-dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .submit-notes-content input[type="password"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .token-hint {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 15px;
+    }
+
+    .token-hint a {
+      color: var(--accent);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px 20px;
+      background: var(--success);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: #0d9668;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .submit-status {
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    .submit-status.success {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    .submit-status.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
+
+    .submit-status.info {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .submit-notes-preview {
+      margin: 15px 0;
+      padding: 15px;
+      background: var(--bg-dark);
+      border-radius: 6px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .submit-notes-preview h3 {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    .submit-notes-preview .note-item {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .submit-notes-preview .note-item:last-child {
+      border-bottom: none;
+    }
+
+    .submit-notes-preview .note-session {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .submit-notes-preview .note-preview {
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 4px;
+    }
+
+    .controls-submit-btn {
+      padding: 8px 12px;
+      background: var(--success);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .controls-submit-btn:hover {
+      background: #0d9668;
+    }
+
+    .controls-submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     @media (max-width: 640px) {
       header h1 { font-size: 1.2rem; }
       .controls { top: 76px; }
       .session { padding: 12px; }
       .session-title { font-size: 1rem; }
       .modal-content { margin: 20px auto; padding: 20px; }
+      .submit-notes-content { margin: 20px auto; padding: 20px; }
 
       .notes-modal-header {
         padding: 12px 15px;
@@ -759,6 +940,7 @@
       <input type="checkbox" id="mySessionsFilter">
       <span>My Sessions</span>
     </label>
+    <button id="submitNotesBtn" class="controls-submit-btn" style="display: none;">📤 Submit Notes</button>
     <button id="refreshBtn">↻ Refresh</button>
   </div>
 
@@ -834,8 +1016,33 @@ Tap the quick insert buttons above for common note types, or use the format bar 
     </div>
   </div>
 
+  <!-- Submit Notes Modal -->
+  <div id="submitNotesModal" class="submit-notes-modal">
+    <div class="submit-notes-content">
+      <button class="modal-close" onclick="closeSubmitNotesModal()">×</button>
+      <h2>📤 Submit Notes to Repository</h2>
+
+      <div id="submitNotesPreview" class="submit-notes-preview">
+        <h3>Notes to submit:</h3>
+        <div id="notesPreviewList"></div>
+      </div>
+
+      <label for="submitGithubToken">GitHub Personal Access Token (repo scope)</label>
+      <input type="password" id="submitGithubToken" placeholder="ghp_xxxxxxxxxxxx">
+      <p class="token-hint">
+        Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo&description=CTTT%20Notes%20Submitter" target="_blank">Create one here</a> (repo scope required)
+      </p>
+
+      <button class="submit-btn" id="doSubmitNotesBtn" onclick="submitNotesToGitHub()">
+        <span>📤</span> Submit Notes
+      </button>
+
+      <div id="submitNotesStatus" class="submit-status" style="display: none;"></div>
+    </div>
+  </div>
+
   <footer>
-    <a href="/">← Back to launcher</a> | 
+    <a href="/">← Back to launcher</a> |
     <a href="https://github.com/jukkan/vibes">View source</a>
   </footer>
 
@@ -1465,6 +1672,7 @@ Tap the quick insert buttons above for common note types, or use the format bar 
       saveLocalNotes();
       closeNotesModal();
       renderSessions();
+      updateSubmitNotesButton();
 
       // Show brief confirmation
       showToast('Notes saved!');
@@ -1558,6 +1766,7 @@ Tap the quick insert buttons above for common note types, or use the format bar 
 
     // Initialize local notes on load
     loadLocalNotes();
+    updateSubmitNotesButton();
     
     function saveCache(data) {
       try {
@@ -1633,6 +1842,219 @@ Tap the quick insert buttons above for common note types, or use the format bar 
       }
     });
     
+    // Submit Notes to GitHub Functions
+    const SUBMIT_CONFIG = {
+      owner: 'jukkan',
+      repo: 'vibes',
+      branch: 'main',
+      notesPath: 'data/cttt-2026-notes.json'
+    };
+
+    function updateSubmitNotesButton() {
+      const btn = document.getElementById('submitNotesBtn');
+      const count = Object.keys(localNotes).length;
+      if (count > 0) {
+        btn.style.display = 'flex';
+        btn.textContent = `📤 Submit Notes (${count})`;
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+
+    function openSubmitNotesModal() {
+      const modal = document.getElementById('submitNotesModal');
+      const previewList = document.getElementById('notesPreviewList');
+      const tokenInput = document.getElementById('submitGithubToken');
+
+      // Load saved token
+      const savedToken = localStorage.getItem('cttt_github_token');
+      if (savedToken) {
+        tokenInput.value = savedToken;
+      }
+
+      // Build preview of notes to submit
+      previewList.innerHTML = '';
+      const sessionIds = Object.keys(localNotes);
+
+      if (sessionIds.length === 0) {
+        previewList.innerHTML = '<p style="color: var(--text-dim);">No local notes to submit.</p>';
+        document.getElementById('doSubmitNotesBtn').disabled = true;
+      } else {
+        sessionIds.forEach(sessionId => {
+          const session = allSessions.find(s => s.id === sessionId);
+          const noteText = localNotes[sessionId];
+
+          const item = document.createElement('div');
+          item.className = 'note-item';
+
+          const title = document.createElement('div');
+          title.className = 'note-session';
+          title.textContent = session ? session.title : sessionId;
+          item.appendChild(title);
+
+          const preview = document.createElement('div');
+          preview.className = 'note-preview';
+          preview.textContent = noteText.substring(0, 100) + (noteText.length > 100 ? '...' : '');
+          item.appendChild(preview);
+
+          previewList.appendChild(item);
+        });
+        document.getElementById('doSubmitNotesBtn').disabled = false;
+      }
+
+      // Reset status
+      document.getElementById('submitNotesStatus').style.display = 'none';
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSubmitNotesModal() {
+      document.getElementById('submitNotesModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    async function submitNotesToGitHub() {
+      const token = document.getElementById('submitGithubToken').value.trim();
+      const statusEl = document.getElementById('submitNotesStatus');
+      const submitBtn = document.getElementById('doSubmitNotesBtn');
+
+      if (!token) {
+        showSubmitStatus('Please enter a GitHub token', 'error');
+        return;
+      }
+
+      if (Object.keys(localNotes).length === 0) {
+        showSubmitStatus('No notes to submit', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      showSubmitStatus('Validating token...', 'info');
+
+      // Validate token
+      try {
+        const userRes = await fetch('https://api.github.com/user', {
+          headers: { Authorization: `token ${token}` }
+        });
+
+        if (!userRes.ok) {
+          showSubmitStatus('Invalid GitHub token', 'error');
+          submitBtn.disabled = false;
+          return;
+        }
+
+        // Save token for future use
+        localStorage.setItem('cttt_github_token', token);
+
+        showSubmitStatus('Loading existing notes...', 'info');
+
+        // Get existing notes file
+        let existingNotes = {};
+        let fileSha = null;
+
+        try {
+          const fileRes = await fetch(`https://api.github.com/repos/${SUBMIT_CONFIG.owner}/${SUBMIT_CONFIG.repo}/contents/${SUBMIT_CONFIG.notesPath}`, {
+            headers: { Authorization: `token ${token}` }
+          });
+
+          if (fileRes.ok) {
+            const fileData = await fileRes.json();
+            fileSha = fileData.sha;
+            const content = atob(fileData.content);
+            existingNotes = JSON.parse(content);
+          }
+        } catch (err) {
+          console.log('No existing notes file or error loading:', err);
+        }
+
+        showSubmitStatus('Merging notes...', 'info');
+
+        // Merge local notes into existing notes
+        Object.keys(localNotes).forEach(sessionId => {
+          const session = allSessions.find(s => s.id === sessionId);
+          const noteText = localNotes[sessionId];
+
+          // Convert text notes to the JSON format (array of lines)
+          const noteLines = noteText.split('\n').filter(line => line.trim());
+
+          existingNotes[sessionId] = {
+            title: session ? session.title : (existingNotes[sessionId]?.title || 'Unknown Session'),
+            notes: noteLines,
+            rating: existingNotes[sessionId]?.rating || 0,
+            follow_up: existingNotes[sessionId]?.follow_up || []
+          };
+        });
+
+        showSubmitStatus('Submitting to GitHub...', 'info');
+
+        // Create commit
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(existingNotes, null, 2))));
+        const commitBody = {
+          message: `Update notes from web interface`,
+          content: content,
+          branch: SUBMIT_CONFIG.branch
+        };
+
+        if (fileSha) {
+          commitBody.sha = fileSha;
+        }
+
+        const commitRes = await fetch(`https://api.github.com/repos/${SUBMIT_CONFIG.owner}/${SUBMIT_CONFIG.repo}/contents/${SUBMIT_CONFIG.notesPath}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(commitBody)
+        });
+
+        if (!commitRes.ok) {
+          const error = await commitRes.json();
+          throw new Error(error.message || 'Failed to commit notes');
+        }
+
+        showSubmitStatus('Notes submitted successfully! Local notes are preserved.', 'success');
+
+        // Reload notes from server to sync
+        await loadNotes();
+        renderSessions();
+
+      } catch (err) {
+        console.error('Submit error:', err);
+        showSubmitStatus(`Error: ${err.message}`, 'error');
+      }
+
+      submitBtn.disabled = false;
+    }
+
+    function showSubmitStatus(message, type) {
+      const statusEl = document.getElementById('submitNotesStatus');
+      statusEl.textContent = message;
+      statusEl.className = `submit-status ${type}`;
+      statusEl.style.display = 'block';
+    }
+
+    // Event listener for submit notes button
+    document.getElementById('submitNotesBtn').addEventListener('click', openSubmitNotesModal);
+
+    // Close submit notes modal on background click
+    document.getElementById('submitNotesModal').addEventListener('click', (e) => {
+      if (e.target.id === 'submitNotesModal') {
+        closeSubmitNotesModal();
+      }
+    });
+
+    // Close submit notes modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const submitModal = document.getElementById('submitNotesModal');
+        if (submitModal.classList.contains('active')) {
+          closeSubmitNotesModal();
+        }
+      }
+    });
+
     // Initialize
     init();
   </script>
