@@ -39,7 +39,7 @@
     "notes": [
       "Keep everything as local as possible. Don't rely on MCP servers, instead build rules and constraints to keep the agent from trying dangerous things. Build fakes of everything.",
       "Git Worktree for concurrent agent instances isolation.",
-      "Magnus: \"I'm never going to write a line of code by hand anymore.\""
+      "Magnus: \"I'm never going to write a line of code by hand again.\""
     ],
     "rating": 0,
     "follow_up": []
@@ -58,7 +58,39 @@
     "title": "The Copilot Control System explained - settings you need to know",
     "notes": [
       "Copilot Chat in Word, Excel, PowerPoint: EU rollout paused, only in Outlook, Q1 target for more.",
-      "Bing search indexs is always in the IS."
+      "Bing search indexs is always in the US."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "7fa9d5e0-69ea-f011-8544-7c1e525ddd3f": {
+    "title": "Closing and raffles",
+    "notes": [
+      "CTTT27 is Feb 4-5.🥳"
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "f6da3351-e4aa-f011-bbd2-7c1e525ddd3f": {
+    "title": "Cybersecurity - from Disabler to Enabler",
+    "notes": [
+      "Never say \"your password needs to be difficult (to guess\", use positive words like \"strong password\" to encourage user action instead of creating resistance with negative words."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "a8665c4f-e4aa-f011-bbd2-6045bd8f8f87": {
+    "title": "Power Platform Pipelines done right!",
+    "notes": [
+      "Maintain consistent solution deployment order via display name prefixes."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "682ad74f-e4aa-f011-bbd2-6045bdf2f545": {
+    "title": "Supercharge Your Copilot-Driven Collaboration with Microsoft 365 Agents SDK",
+    "notes": [
+      "Native actions like create appointment remain unreliable in Copilot, despite Graph endpoints being available for building custom agents."
     ],
     "rating": 0,
     "follow_up": []
