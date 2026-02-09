@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud Tech Tallinn 2026 - My Schedule</title>
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #e8e8e8;
+      --text-dim: #888;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --border: #333;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    header {
+      padding: 20px;
+      background: #111;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    header a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    header h1 {
+      font-size: 1.5rem;
+      margin: 10px 0 5px 0;
+    }
+    
+    header p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    
+    .controls {
+      padding: 15px 20px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 82px;
+      z-index: 99;
+    }
+    
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 8px 12px;
+      background: var(--bg-dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    
+    .controls input {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .controls button {
+      cursor: pointer;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    
+    .controls button:hover {
+      background: var(--accent-hover);
+    }
+
+    .my-sessions-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .my-sessions-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    .my-sessions-toggle:has(input:checked) {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    .my-sessions-toggle input {
+      display: none;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-dim);
+    }
+    
+    .error {
+      background: #991b1b;
+      color: white;
+      padding: 15px 20px;
+      margin: 20px;
+      border-radius: 4px;
+    }
+    
+    .day-section {
+      margin: 20px;
+    }
+    
+    .day-header {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+    }
+    
+    .session {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    
+    .session:hover {
+      border-color: var(--accent);
+    }
+    
+    .session.has-notes {
+      border-left: 4px solid var(--success);
+    }
+
+    .session.has-photos {
+      border-right: 4px solid var(--accent);
+    }
+
+    .photo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .photo-gallery-item {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .photo-gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .photo-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .photo-lightbox.active {
+      display: flex;
+    }
+
+    .photo-lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .photo-lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .upload-photos-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 15px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .upload-photos-link:hover {
+      text-decoration: underline;
+    }
+    
+    .session-time {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+    }
+    
+    .session-time.now {
+      color: var(--success);
+      font-weight: bold;
+    }
+    
+    .session-time.next {
+      color: var(--warning);
+      font-weight: bold;
+    }
+    
+    .session-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .session-meta {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+    
+    .session-speakers {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+    
+    .speaker-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    
+    .speaker-chip:hover {
+      border-color: var(--accent);
+    }
+    
+    .speaker-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .session-notes {
+      margin-top: 12px;
+      padding: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border-left: 3px solid var(--success);
+      border-radius: 4px;
+    }
+    
+    .session-notes-title {
+      font-weight: 600;
+      color: var(--success);
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+    
+    .session-notes ul {
+      margin-left: 20px;
+      color: var(--text);
+    }
+
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .session-header-content {
+      flex: 1;
+    }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 8px;
+      cursor: pointer;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      color: var(--success);
+      border-color: var(--success);
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    .modal.active {
+      display: block;
+    }
+    
+    .modal-content {
+      max-width: 700px;
+      margin: 40px auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 25px;
+      position: relative;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+    
+    .modal-close:hover {
+      color: var(--text);
+    }
+    
+    .speaker-modal-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+    
+    .speaker-modal-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .speaker-modal-tagline {
+      color: var(--text-dim);
+      margin-bottom: 15px;
+    }
+    
+    .speaker-modal-bio {
+      line-height: 1.8;
+      margin: 15px 0;
+    }
+    
+    .speaker-modal-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .speaker-modal-links a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    .speaker-modal-links a:hover {
+      text-decoration: underline;
+    }
+    
+    footer {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+    
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Notes Modal Styles */
+    .notes-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1100;
+      padding: 0;
+    }
+
+    .notes-modal.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notes-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .notes-modal-title {
+      font-size: 1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      margin-right: 15px;
+    }
+
+    .notes-modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .notes-modal-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .notes-modal-btn.cancel {
+      background: var(--bg-dark);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+
+    .notes-modal-btn.cancel:hover {
+      color: var(--text);
+      border-color: var(--text-dim);
+    }
+
+    .notes-modal-btn.save {
+      background: var(--success);
+      color: white;
+    }
+
+    .notes-modal-btn.save:hover {
+      background: #0d9668;
+    }
+
+    .notes-modal-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .notes-quick-insert {
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      flex-shrink: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .notes-quick-insert-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .notes-quick-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .quick-btn {
+      padding: 8px 14px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text);
+      font-size: 0.85rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .quick-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .quick-btn:active {
+      transform: scale(0.95);
+    }
+
+    .notes-format-bar {
+      padding: 10px 20px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .format-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .format-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .format-btn:active {
+      transform: scale(0.9);
+    }
+
+    .format-btn.text-format {
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .notes-textarea-container {
+      flex: 1;
+      padding: 15px 20px;
+      background: var(--bg-dark);
+      overflow: hidden;
+    }
+
+    .notes-textarea {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.7;
+      resize: none;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .notes-textarea::placeholder {
+      color: var(--text-dim);
+    }
+
+    .notes-char-count {
+      padding: 8px 20px;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .add-notes-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .add-notes-btn:hover {
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .add-notes-btn.has-notes {
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    /* Submit Notes Modal Styles */
+    .submit-notes-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1200;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .submit-notes-modal.active {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .submit-notes-content {
+      max-width: 500px;
+      width: 100%;
+      margin: 40px auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 25px;
+      position: relative;
+    }
+
+    .submit-notes-content h2 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    .submit-notes-content label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    .submit-notes-content input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg-dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .submit-notes-content input[type="password"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .token-hint {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 15px;
+    }
+
+    .token-hint a {
+      color: var(--accent);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px 20px;
+      background: var(--success);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: #0d9668;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .submit-status {
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+
+    .submit-status.success {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    .submit-status.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
+
+    .submit-status.info {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .submit-notes-preview {
+      margin: 15px 0;
+      padding: 15px;
+      background: var(--bg-dark);
+      border-radius: 6px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .submit-notes-preview h3 {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    .submit-notes-preview .note-item {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .submit-notes-preview .note-item:last-child {
+      border-bottom: none;
+    }
+
+    .submit-notes-preview .note-session {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .submit-notes-preview .note-preview {
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 4px;
+    }
+
+    .controls-submit-btn {
+      padding: 8px 12px;
+      background: var(--success);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .controls-submit-btn:hover {
+      background: #0d9668;
+    }
+
+    .controls-submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.2rem; }
+      .controls { top: 76px; }
+      .session { padding: 12px; }
+      .session-title { font-size: 1rem; }
+      .modal-content { margin: 20px auto; padding: 20px; }
+      .submit-notes-content { margin: 20px auto; padding: 20px; }
+
+      .notes-modal-header {
+        padding: 12px 15px;
+      }
+
+      .notes-modal-title {
+        font-size: 0.9rem;
+      }
+
+      .notes-modal-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+      }
+
+      .notes-quick-insert {
+        padding: 10px 15px;
+      }
+
+      .quick-btn {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+      }
+
+      .notes-format-bar {
+        padding: 8px 15px;
+      }
+
+      .format-btn {
+        width: 40px;
+        height: 40px;
+      }
+
+      .notes-textarea-container {
+        padding: 12px 15px;
+      }
+
+      .notes-textarea {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <a href="/">← vibes</a>
+      <a href="photo-uploader.html" style="font-size: 0.85rem;">Upload Photos</a>
+    </div>
+    <h1>Cloud Tech Tallinn 2026</h1>
+    <p>Jan 29-30 • My Schedule & Notes</p>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="Search sessions, speakers, topics...">
+    <select id="dayFilter">
+      <option value="">All days</option>
+    </select>
+    <select id="trackFilter">
+      <option value="">All tracks</option>
+    </select>
+    <label class="my-sessions-toggle">
+      <input type="checkbox" id="mySessionsFilter">
+      <span>My Sessions</span>
+    </label>
+    <button id="submitNotesBtn" class="controls-submit-btn" style="display: none;">📤 Submit Notes</button>
+    <button id="refreshBtn">↻ Refresh</button>
+  </div>
+
+  <div id="loading" class="loading">Loading sessions...</div>
+  <div id="error" class="error" style="display: none;"></div>
+  <div id="sessions"></div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="photoLightbox" class="photo-lightbox" onclick="closeLightbox()">
+    <button class="photo-lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightboxImage" src="" alt="Photo">
+  </div>
+
+  <!-- Notes Modal -->
+  <div id="notesModal" class="notes-modal">
+    <div class="notes-modal-header">
+      <div class="notes-modal-title" id="notesModalTitle">Add Notes</div>
+      <div class="notes-modal-actions">
+        <button class="notes-modal-btn cancel" onclick="closeNotesModal()">Cancel</button>
+        <button class="notes-modal-btn save" onclick="saveNotes()">Save</button>
+      </div>
+    </div>
+    <div class="notes-modal-body">
+      <div class="notes-quick-insert">
+        <div class="notes-quick-insert-label">Quick Insert</div>
+        <div class="notes-quick-buttons">
+          <button class="quick-btn" onclick="insertQuickText('takeaway')">
+            <span>💡</span> Key Takeaway
+          </button>
+          <button class="quick-btn" onclick="insertQuickText('question')">
+            <span>❓</span> Question
+          </button>
+          <button class="quick-btn" onclick="insertQuickText('action')">
+            <span>✅</span> Action Item
+          </button>
+          <button class="quick-btn" onclick="insertQuickText('quote')">
+            <span>💬</span> Quote
+          </button>
+          <button class="quick-btn" onclick="insertQuickText('link')">
+            <span>🔗</span> Link/Resource
+          </button>
+          <button class="quick-btn" onclick="insertQuickText('idea')">
+            <span>🚀</span> Idea
+          </button>
+        </div>
+      </div>
+      <div class="notes-format-bar">
+        <button class="format-btn" onclick="insertFormat('bullet')" title="Bullet point">•</button>
+        <button class="format-btn" onclick="insertFormat('numbered')" title="Numbered list">1.</button>
+        <button class="format-btn" onclick="insertFormat('checkbox')" title="Checkbox">☐</button>
+        <button class="format-btn" onclick="insertFormat('arrow')" title="Arrow">→</button>
+        <button class="format-btn" onclick="insertFormat('star')" title="Important">★</button>
+        <button class="format-btn" onclick="insertFormat('dash')" title="Dash">—</button>
+        <button class="format-btn text-format" onclick="insertFormat('h1')" title="Heading">H1</button>
+        <button class="format-btn text-format" onclick="insertFormat('h2')" title="Subheading">H2</button>
+        <button class="format-btn" onclick="insertFormat('divider')" title="Divider">━</button>
+        <button class="format-btn" onclick="insertFormat('timestamp')" title="Add timestamp">🕐</button>
+      </div>
+      <div class="notes-textarea-container">
+        <textarea id="notesTextarea" class="notes-textarea" placeholder="Start typing your notes...
+
+Tap the quick insert buttons above for common note types, or use the format bar for bullets, lists, and more."></textarea>
+      </div>
+      <div class="notes-char-count">
+        <span id="notesCharCount">0</span> characters
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Notes Modal -->
+  <div id="submitNotesModal" class="submit-notes-modal">
+    <div class="submit-notes-content">
+      <button class="modal-close" onclick="closeSubmitNotesModal()">×</button>
+      <h2>📤 Submit Notes to Repository</h2>
+
+      <div id="submitNotesPreview" class="submit-notes-preview">
+        <h3>Notes to submit:</h3>
+        <div id="notesPreviewList"></div>
+      </div>
+
+      <label for="submitGithubToken">GitHub Personal Access Token (repo scope)</label>
+      <input type="password" id="submitGithubToken" placeholder="ghp_xxxxxxxxxxxx">
+      <p class="token-hint">
+        Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo&description=CTTT%20Notes%20Submitter" target="_blank">Create one here</a> (repo scope required)
+      </p>
+
+      <button class="submit-btn" id="doSubmitNotesBtn" onclick="submitNotesToGitHub()">
+        <span>📤</span> Submit Notes
+      </button>
+
+      <div id="submitNotesStatus" class="submit-status" style="display: none;"></div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="/">← Back to launcher</a> |
+    <a href="https://github.com/jukkan/vibes">View source</a>
+  </footer>
+
+  <script>
+    const SESSIONS_URL = 'data/cttt-sessions.json';
+    const SPEAKERS_URL = 'data/cttt-2026-speakers.json';
+    const NOTES_URL = 'data/cttt-2026-notes.json';
+    const PHOTOS_MANIFEST_URL = 'assets/events/cttt/photo-manifest.json';
+
+    let allSessions = [];
+    let allSpeakers = [];
+    let speakersById = {};
+    let notes = {};
+    let photoManifest = { photos: {} };
+    
+    // Initialize
+    async function init() {
+      try {
+        // Try to load from cache first
+        const cached = loadCache();
+        if (cached) {
+          allSessions = cached.sessions;
+          allSpeakers = cached.speakers;
+          renderSessions();
+          document.getElementById('loading').style.display = 'none';
+        }
+        
+        // Load notes and photos
+        await loadNotes();
+        await loadPhotoManifest();
+
+        // Fetch fresh data
+        await fetchData();
+        
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+    
+    async function fetchData() {
+      try {
+        const [sessionsRes, speakersRes] = await Promise.all([
+          fetch(SESSIONS_URL),
+          fetch(SPEAKERS_URL)
+        ]);
+        
+        if (!sessionsRes.ok || !speakersRes.ok) {
+          throw new Error('Failed to fetch data files');
+        }
+        
+        allSessions = await sessionsRes.json();
+        allSpeakers = await speakersRes.json();
+        
+        // Build speaker lookup by name for matching
+        speakersById = {};
+        allSpeakers.forEach(speaker => {
+          speakersById[speaker.name] = speaker;
+        });
+        
+        // Cache for offline use
+        saveCache({ sessions: allSessions, speakers: allSpeakers });
+        
+        // Populate filters
+        populateFilters();
+        
+        // Render
+        renderSessions();
+        document.getElementById('loading').style.display = 'none';
+        
+      } catch (err) {
+        if (allSessions.length === 0) {
+          throw err;
+        }
+        console.warn('Using cached data:', err);
+      }
+    }
+    
+    async function loadNotes() {
+      try {
+        const res = await fetch(NOTES_URL);
+        if (res.ok) {
+          notes = await res.json();
+          renderSessions();
+        }
+      } catch (err) {
+        console.log('No notes file found (expected on first load)');
+      }
+    }
+
+    async function loadPhotoManifest() {
+      try {
+        // Add cache-busting to ensure fresh manifest
+        const url = PHOTOS_MANIFEST_URL + '?t=' + Date.now();
+        const res = await fetch(url);
+        if (res.ok) {
+          photoManifest = await res.json();
+          renderSessions();
+        }
+      } catch (err) {
+        console.log('No photo manifest found (expected on first load)');
+      }
+    }
+    
+    function populateFilters() {
+      // Extract unique days
+      const days = [...new Set(allSessions.map(s => s.day))].filter(Boolean).sort();
+      const dayFilter = document.getElementById('dayFilter');
+      days.forEach(day => {
+        const option = document.createElement('option');
+        // Get dayLabel from first session of that day
+        const session = allSessions.find(s => s.day === day);
+        option.value = day;
+        option.textContent = session.dayLabel;
+        dayFilter.appendChild(option);
+      });
+      
+      // Extract unique topics
+      const topics = [...new Set(allSessions.map(s => s.topic))].filter(Boolean).sort();
+      const trackFilter = document.getElementById('trackFilter');
+      topics.forEach(topic => {
+        const option = document.createElement('option');
+        option.value = topic;
+        option.textContent = topic;
+        trackFilter.appendChild(option);
+      });
+    }
+    
+    function renderSessions() {
+      const container = document.getElementById('sessions');
+      const searchTerm = document.getElementById('search').value.toLowerCase();
+      const dayFilter = document.getElementById('dayFilter').value;
+      const trackFilter = document.getElementById('trackFilter').value;
+      const mySessionsOnly = document.getElementById('mySessionsFilter').checked;
+
+      // Filter sessions
+      let filtered = allSessions.filter(session => {
+        if (dayFilter && session.day !== dayFilter) return false;
+        if (trackFilter && session.topic !== trackFilter) return false;
+
+        // "My Sessions" filter: show only sessions with notes or photos
+        if (mySessionsOnly) {
+          const hasNotes = !!(localNotes[session.id] || notes[session.id]);
+          const hasPhotos = !!(photoManifest.photos && photoManifest.photos[session.id] && photoManifest.photos[session.id].length > 0);
+          if (!hasNotes && !hasPhotos) return false;
+        }
+
+        if (searchTerm) {
+          const searchable = [
+            session.title,
+            session.description,
+            session.speakers,
+            session.topic,
+            session.room
+          ].join(' ').toLowerCase();
+
+          if (!searchable.includes(searchTerm)) return false;
+        }
+
+        return true;
+      });
+      
+      // Group by day
+      const byDay = {};
+      filtered.forEach(session => {
+        const day = session.day || 'unknown';
+        if (!byDay[day]) byDay[day] = [];
+        byDay[day].push(session);
+      });
+      
+      // Sort days
+      const sortedDays = Object.keys(byDay).sort();
+      
+      // Render
+      container.innerHTML = '';
+      
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="loading">No sessions found</div>';
+        return;
+      }
+      
+      sortedDays.forEach(day => {
+        const daySection = document.createElement('div');
+        daySection.className = 'day-section';
+        
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'day-header';
+        // Get day label from first session
+        const dayLabel = byDay[day][0].dayLabel || day;
+        dayHeader.textContent = dayLabel;
+        daySection.appendChild(dayHeader);
+        
+        // Sort sessions by time
+        byDay[day].sort((a, b) => {
+          if (!a.time) return 1;
+          if (!b.time) return -1;
+          return a.time.localeCompare(b.time);
+        });
+        
+        byDay[day].forEach(session => {
+          const sessionEl = renderSession(session);
+          daySection.appendChild(sessionEl);
+        });
+        
+        container.appendChild(daySection);
+      });
+    }
+    
+    function renderSession(session) {
+      const div = document.createElement('div');
+      div.className = 'session';
+
+      const sessionNotes = notes[session.id];
+      const hasLocalNotes = localNotes[session.id];
+      const sessionPhotos = photoManifest.photos && photoManifest.photos[session.id];
+      const photoCount = sessionPhotos ? sessionPhotos.length : 0;
+
+      if (sessionNotes || hasLocalNotes) {
+        div.classList.add('has-notes');
+      }
+      if (photoCount > 0) {
+        div.classList.add('has-photos');
+      }
+
+      // Header with time, title, and action buttons
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'session-header';
+
+      const headerContent = document.createElement('div');
+      headerContent.className = 'session-header-content';
+
+      // Time
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'session-time';
+      timeDiv.textContent = session.time || 'Time TBA';
+      headerContent.appendChild(timeDiv);
+
+      // Title
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'session-title';
+      titleDiv.textContent = session.title;
+      headerContent.appendChild(titleDiv);
+
+      headerDiv.appendChild(headerContent);
+
+      // Action buttons container
+      const actionsDiv = document.createElement('div');
+      actionsDiv.style.cssText = 'display: flex; gap: 6px;';
+
+      // Add Notes button
+      const notesBtn = document.createElement('button');
+      notesBtn.className = 'add-notes-btn' + (hasAnyNotes(session.id) ? ' has-notes' : '');
+      notesBtn.innerHTML = hasAnyNotes(session.id) ? '📝' : '+ 📝';
+      notesBtn.title = hasAnyNotes(session.id) ? 'Edit notes' : 'Add notes';
+      notesBtn.onclick = (e) => openNotesModal(session, e);
+      actionsDiv.appendChild(notesBtn);
+
+      // Copy button
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-btn';
+      copyBtn.textContent = '📋';
+      copyBtn.title = 'Copy session info to clipboard';
+      copyBtn.onclick = (e) => copySessionInfo(session, e);
+      actionsDiv.appendChild(copyBtn);
+
+      headerDiv.appendChild(actionsDiv);
+
+      div.appendChild(headerDiv);
+      
+      // Meta
+      const metaDiv = document.createElement('div');
+      metaDiv.className = 'session-meta';
+      
+      if (session.room) {
+        const roomSpan = document.createElement('span');
+        roomSpan.textContent = `📍 ${session.room}`;
+        metaDiv.appendChild(roomSpan);
+      }
+      
+      if (session.topic) {
+        const topicSpan = document.createElement('span');
+        topicSpan.textContent = `🏷️ ${session.topic}`;
+        metaDiv.appendChild(topicSpan);
+      }
+      
+      if (session.level) {
+        const levelSpan = document.createElement('span');
+        levelSpan.textContent = `📊 Level ${session.level}`;
+        metaDiv.appendChild(levelSpan);
+      }
+
+      if (photoCount > 0) {
+        const photoBadge = document.createElement('span');
+        photoBadge.className = 'photo-badge';
+        photoBadge.textContent = `📷 ${photoCount}`;
+        metaDiv.appendChild(photoBadge);
+      }
+
+      div.appendChild(metaDiv);
+      
+      // Speakers (from scraped data - comma-separated string)
+      if (session.speakers) {
+        const speakersDiv = document.createElement('div');
+        speakersDiv.className = 'session-speakers';
+        
+        const speakerNames = session.speakers.split(',').map(s => s.trim());
+        speakerNames.forEach(speakerName => {
+          const speaker = speakersById[speakerName];
+          if (speaker) {
+            const chip = document.createElement('div');
+            chip.className = 'speaker-chip';
+            chip.onclick = (e) => {
+              e.stopPropagation();
+              showSpeakerModal(speaker);
+            };
+            
+            if (speaker.photo) {
+              const img = document.createElement('img');
+              img.className = 'speaker-avatar';
+              img.src = speaker.photo;
+              img.alt = speaker.name;
+              chip.appendChild(img);
+            }
+            
+            const name = document.createElement('span');
+            name.textContent = speaker.name;
+            chip.appendChild(name);
+            
+            speakersDiv.appendChild(chip);
+          } else {
+            // Speaker not found in our data, show name only
+            const chip = document.createElement('div');
+            chip.className = 'speaker-chip';
+            const name = document.createElement('span');
+            name.textContent = speakerName;
+            chip.appendChild(name);
+            speakersDiv.appendChild(chip);
+          }
+        });
+        
+        div.appendChild(speakersDiv);
+      }
+      
+      // Notes (check both local and JSON notes)
+      const displayNotes = hasLocalNotes || sessionNotes;
+      if (displayNotes) {
+        const notesDiv = document.createElement('div');
+        notesDiv.className = 'session-notes';
+
+        const notesTitle = document.createElement('div');
+        notesTitle.className = 'session-notes-title';
+        notesTitle.textContent = '📝 My notes:';
+        notesDiv.appendChild(notesTitle);
+
+        // Prefer local notes, fall back to JSON notes
+        if (hasLocalNotes) {
+          const p = document.createElement('p');
+          p.style.whiteSpace = 'pre-wrap';
+          p.textContent = localNotes[session.id];
+          notesDiv.appendChild(p);
+        } else if (Array.isArray(sessionNotes.notes) && sessionNotes.notes.length > 0) {
+          const ul = document.createElement('ul');
+          sessionNotes.notes.forEach(note => {
+            const li = document.createElement('li');
+            li.textContent = note;
+            ul.appendChild(li);
+          });
+          notesDiv.appendChild(ul);
+        } else if (typeof sessionNotes.notes === 'string') {
+          const p = document.createElement('p');
+          p.textContent = sessionNotes.notes;
+          notesDiv.appendChild(p);
+        }
+
+        div.appendChild(notesDiv);
+      }
+      
+      div.onclick = () => showSessionModal(session);
+      
+      return div;
+    }
+    
+    function showSessionModal(session) {
+      const modal = document.getElementById('modal');
+      const body = document.getElementById('modalBody');
+      
+      let html = `<h2>${session.title}</h2>`;
+      
+      if (session.time) {
+        html += `<p><strong>⏰ ${session.time}</strong></p>`;
+      }
+      
+      if (session.room) {
+        html += `<p><strong>📍 ${session.room}</strong></p>`;
+      }
+      
+      if (session.topic) {
+        html += `<p><strong>🏷️ ${session.topic}</strong> ${session.level ? `• Level ${session.level}` : ''}</p>`;
+      }
+      
+      if (session.description) {
+        html += `<p style="margin-top: 15px; line-height: 1.8;">${session.description}</p>`;
+      }
+      
+      if (session.speakers) {
+        html += '<div style="margin-top: 20px;"><strong>Speakers:</strong></div>';
+        html += '<div style="display: flex; flex-direction: column; gap: 15px; margin-top: 10px;">';
+        
+        const speakerNames = session.speakers.split(',').map(s => s.trim());
+        speakerNames.forEach(speakerName => {
+          const speaker = speakersById[speakerName];
+          if (speaker) {
+            const speakerJson = JSON.stringify(speaker).replace(/"/g, '&quot;');
+            html += `
+              <div style="display: flex; gap: 15px; align-items: start; cursor: pointer; padding: 10px; background: var(--bg-dark); border-radius: 4px;" 
+                   onclick='showSpeakerModal(${speakerJson})'>
+                ${speaker.photo ? `<img src="${speaker.photo}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">` : ''}
+                <div>
+                  <div style="font-weight: 600;">${speaker.name}</div>
+                  ${speaker.tagline ? `<div style="color: var(--text-dim); font-size: 0.85rem;">${speaker.tagline}</div>` : ''}
+                </div>
+              </div>
+            `;
+          } else {
+            html += `
+              <div style="padding: 10px; background: var(--bg-dark); border-radius: 4px;">
+                <div style="font-weight: 600;">${speakerName}</div>
+              </div>
+            `;
+          }
+        });
+        html += '</div>';
+      }
+
+      // Photo gallery
+      const sessionPhotos = photoManifest.photos && photoManifest.photos[session.id];
+      if (sessionPhotos && sessionPhotos.length > 0) {
+        html += '<div style="margin-top: 20px;"><strong>Photos:</strong></div>';
+        html += '<div class="photo-gallery">';
+        sessionPhotos.forEach(photo => {
+          const baseUrl = photo.url || photo.path;
+          // Add cache-busting using photo timestamp
+          const url = baseUrl + '?t=' + (photo.timestamp || Date.now());
+          html += `
+            <div class="photo-gallery-item" onclick="openLightbox('${url}')">
+              <img src="${url}" alt="Session photo" loading="lazy">
+            </div>
+          `;
+        });
+        html += '</div>';
+      }
+
+      // Action buttons
+      html += `
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+          <button onclick='openNotesModal(${JSON.stringify(session).replace(/'/g, "\\'")}); closeModal();'
+                  style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--success); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">
+            📝 ${hasAnyNotes(session.id) ? 'Edit Notes' : 'Add Notes'}
+          </button>
+          <a href="photo-uploader.html?session=${session.id}" class="upload-photos-link" style="margin-top: 0;">
+            📷 Add photos
+          </a>
+        </div>
+      `;
+
+      body.innerHTML = html;
+      modal.classList.add('active');
+    }
+
+    function showSpeakerModal(speaker) {
+      const modal = document.getElementById('modal');
+      const body = document.getElementById('modalBody');
+      
+      let html = '';
+      
+      if (speaker.photo) {
+        html += `<img src="${speaker.photo}" class="speaker-modal-avatar" alt="${speaker.name}">`;
+      }
+      
+      html += `<div class="speaker-modal-name">${speaker.name}</div>`;
+      
+      if (speaker.tagline) {
+        html += `<div class="speaker-modal-tagline">${speaker.tagline}</div>`;
+      }
+      
+      if (speaker.bio) {
+        html += `<div class="speaker-modal-bio">${speaker.bio}</div>`;
+      }
+      
+      body.innerHTML = html;
+      modal.classList.add('active');
+    }
+    
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    function openLightbox(imageUrl) {
+      const lightbox = document.getElementById('photoLightbox');
+      const img = document.getElementById('lightboxImage');
+      img.src = imageUrl;
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('photoLightbox').classList.remove('active');
+    }
+
+    function copySessionInfo(session, event) {
+      event.stopPropagation();
+
+      const lines = [session.title];
+      if (session.speakers) {
+        lines.push(`Speaker(s): ${session.speakers}`);
+      }
+      lines.push(`Session ID: ${session.id}`);
+
+      const text = lines.join('\n');
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.currentTarget;
+        btn.classList.add('copied');
+        btn.textContent = '✓';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = '📋';
+        }, 1500);
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+      });
+    }
+
+    // Notes Modal Functions
+    let currentNotesSessionId = null;
+    let localNotes = {};
+
+    // Load local notes from localStorage on init
+    function loadLocalNotes() {
+      try {
+        const stored = localStorage.getItem('cttt2026_local_notes');
+        if (stored) {
+          localNotes = JSON.parse(stored);
+        }
+      } catch (err) {
+        console.warn('Failed to load local notes:', err);
+      }
+    }
+
+    function saveLocalNotes() {
+      try {
+        localStorage.setItem('cttt2026_local_notes', JSON.stringify(localNotes));
+      } catch (err) {
+        console.warn('Failed to save local notes:', err);
+      }
+    }
+
+    function getSessionNotes(sessionId) {
+      // Check local notes first, then fall back to loaded notes from JSON
+      if (localNotes[sessionId]) {
+        return localNotes[sessionId];
+      }
+      if (notes[sessionId] && notes[sessionId].notes) {
+        // Convert array format to string if needed
+        const n = notes[sessionId].notes;
+        if (Array.isArray(n)) {
+          return n.join('\n• ');
+        }
+        return n;
+      }
+      return '';
+    }
+
+    function hasAnyNotes(sessionId) {
+      return !!(localNotes[sessionId] || notes[sessionId]);
+    }
+
+    function openNotesModal(session, event) {
+      if (event) {
+        event.stopPropagation();
+      }
+
+      currentNotesSessionId = session.id;
+
+      const modal = document.getElementById('notesModal');
+      const title = document.getElementById('notesModalTitle');
+      const textarea = document.getElementById('notesTextarea');
+
+      // Set title with session name
+      const shortTitle = session.title.length > 40
+        ? session.title.substring(0, 40) + '...'
+        : session.title;
+      title.textContent = `Notes: ${shortTitle}`;
+
+      // Load existing notes
+      textarea.value = getSessionNotes(session.id);
+      updateCharCount();
+
+      modal.classList.add('active');
+
+      // Focus textarea on mobile after a short delay
+      setTimeout(() => {
+        textarea.focus();
+      }, 100);
+
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeNotesModal() {
+      const modal = document.getElementById('notesModal');
+      modal.classList.remove('active');
+      currentNotesSessionId = null;
+      document.body.style.overflow = '';
+    }
+
+    function saveNotes() {
+      if (!currentNotesSessionId) return;
+
+      const textarea = document.getElementById('notesTextarea');
+      const noteText = textarea.value.trim();
+
+      if (noteText) {
+        localNotes[currentNotesSessionId] = noteText;
+      } else {
+        delete localNotes[currentNotesSessionId];
+      }
+
+      saveLocalNotes();
+      closeNotesModal();
+      renderSessions();
+      updateSubmitNotesButton();
+
+      // Show brief confirmation
+      showToast('Notes saved!');
+    }
+
+    function showToast(message) {
+      // Create or reuse toast element
+      let toast = document.getElementById('toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.style.cssText = `
+          position: fixed;
+          bottom: 80px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: var(--success);
+          color: white;
+          padding: 12px 24px;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          z-index: 2000;
+          opacity: 0;
+          transition: opacity 0.3s;
+        `;
+        document.body.appendChild(toast);
+      }
+
+      toast.textContent = message;
+      toast.style.opacity = '1';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 2000);
+    }
+
+    function insertQuickText(type) {
+      const textarea = document.getElementById('notesTextarea');
+      const templates = {
+        takeaway: '\n💡 KEY TAKEAWAY:\n',
+        question: '\n❓ QUESTION:\n',
+        action: '\n✅ ACTION ITEM:\n',
+        quote: '\n💬 QUOTE: ""\n',
+        link: '\n🔗 RESOURCE:\n',
+        idea: '\n🚀 IDEA:\n'
+      };
+
+      insertAtCursor(textarea, templates[type] || '');
+      textarea.focus();
+      updateCharCount();
+    }
+
+    function insertFormat(format) {
+      const textarea = document.getElementById('notesTextarea');
+      const formats = {
+        bullet: '\n• ',
+        numbered: '\n1. ',
+        checkbox: '\n☐ ',
+        arrow: ' → ',
+        star: ' ★ ',
+        dash: ' — ',
+        h1: '\n\n## ',
+        h2: '\n\n### ',
+        divider: '\n━━━━━━━━━━━━━━━━\n',
+        timestamp: ` [${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}] `
+      };
+
+      insertAtCursor(textarea, formats[format] || '');
+      textarea.focus();
+      updateCharCount();
+    }
+
+    function insertAtCursor(textarea, text) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const before = textarea.value.substring(0, start);
+      const after = textarea.value.substring(end);
+
+      textarea.value = before + text + after;
+
+      // Position cursor at end of inserted text
+      const newPos = start + text.length;
+      textarea.setSelectionRange(newPos, newPos);
+    }
+
+    function updateCharCount() {
+      const textarea = document.getElementById('notesTextarea');
+      const count = document.getElementById('notesCharCount');
+      count.textContent = textarea.value.length;
+    }
+
+    // Initialize local notes on load
+    loadLocalNotes();
+    updateSubmitNotesButton();
+    
+    function saveCache(data) {
+      try {
+        localStorage.setItem('cttt2026_cache', JSON.stringify(data));
+        localStorage.setItem('cttt2026_cache_time', Date.now().toString());
+      } catch (err) {
+        console.warn('Failed to cache data:', err);
+      }
+    }
+    
+    function loadCache() {
+      try {
+        const cached = localStorage.getItem('cttt2026_cache');
+        const cacheTime = localStorage.getItem('cttt2026_cache_time');
+        
+        if (cached && cacheTime) {
+          const age = Date.now() - parseInt(cacheTime);
+          // Cache valid for 6 hours
+          if (age < 6 * 60 * 60 * 1000) {
+            return JSON.parse(cached);
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to load cache:', err);
+      }
+      return null;
+    }
+    
+    function showError(message) {
+      const errorDiv = document.getElementById('error');
+      errorDiv.textContent = `Error: ${message}. Using cached data if available.`;
+      errorDiv.style.display = 'block';
+      document.getElementById('loading').style.display = 'none';
+    }
+    
+    // Event listeners
+    document.getElementById('search').addEventListener('input', renderSessions);
+    document.getElementById('dayFilter').addEventListener('change', renderSessions);
+    document.getElementById('trackFilter').addEventListener('change', renderSessions);
+    document.getElementById('mySessionsFilter').addEventListener('change', renderSessions);
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      document.getElementById('loading').style.display = 'block';
+      fetchData();
+      loadNotes();
+      loadPhotoManifest();
+    });
+
+    // Close modal on background click
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if (e.target.id === 'modal') {
+        closeModal();
+      }
+    });
+
+    // Notes textarea character count
+    document.getElementById('notesTextarea').addEventListener('input', updateCharCount);
+
+    // Close notes modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const notesModal = document.getElementById('notesModal');
+        if (notesModal.classList.contains('active')) {
+          closeNotesModal();
+        }
+      }
+    });
+
+    // Ctrl+S / Cmd+S to save notes
+    document.getElementById('notesTextarea').addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveNotes();
+      }
+    });
+    
+    // Submit Notes to GitHub Functions
+    const SUBMIT_CONFIG = {
+      owner: 'jukkan',
+      repo: 'vibes',
+      branch: 'main',
+      notesPath: 'data/cttt-2026-notes.json'
+    };
+
+    function updateSubmitNotesButton() {
+      const btn = document.getElementById('submitNotesBtn');
+      const count = Object.keys(localNotes).length;
+      if (count > 0) {
+        btn.style.display = 'flex';
+        btn.textContent = `📤 Submit Notes (${count})`;
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+
+    function openSubmitNotesModal() {
+      const modal = document.getElementById('submitNotesModal');
+      const previewList = document.getElementById('notesPreviewList');
+      const tokenInput = document.getElementById('submitGithubToken');
+
+      // Load saved token
+      const savedToken = localStorage.getItem('cttt_github_token');
+      if (savedToken) {
+        tokenInput.value = savedToken;
+      }
+
+      // Build preview of notes to submit
+      previewList.innerHTML = '';
+      const sessionIds = Object.keys(localNotes);
+
+      if (sessionIds.length === 0) {
+        previewList.innerHTML = '<p style="color: var(--text-dim);">No local notes to submit.</p>';
+        document.getElementById('doSubmitNotesBtn').disabled = true;
+      } else {
+        sessionIds.forEach(sessionId => {
+          const session = allSessions.find(s => s.id === sessionId);
+          const noteText = localNotes[sessionId];
+
+          const item = document.createElement('div');
+          item.className = 'note-item';
+
+          const title = document.createElement('div');
+          title.className = 'note-session';
+          title.textContent = session ? session.title : sessionId;
+          item.appendChild(title);
+
+          const preview = document.createElement('div');
+          preview.className = 'note-preview';
+          preview.textContent = noteText.substring(0, 100) + (noteText.length > 100 ? '...' : '');
+          item.appendChild(preview);
+
+          previewList.appendChild(item);
+        });
+        document.getElementById('doSubmitNotesBtn').disabled = false;
+      }
+
+      // Reset status
+      document.getElementById('submitNotesStatus').style.display = 'none';
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSubmitNotesModal() {
+      document.getElementById('submitNotesModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    async function submitNotesToGitHub() {
+      const token = document.getElementById('submitGithubToken').value.trim();
+      const statusEl = document.getElementById('submitNotesStatus');
+      const submitBtn = document.getElementById('doSubmitNotesBtn');
+
+      if (!token) {
+        showSubmitStatus('Please enter a GitHub token', 'error');
+        return;
+      }
+
+      if (Object.keys(localNotes).length === 0) {
+        showSubmitStatus('No notes to submit', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      showSubmitStatus('Validating token...', 'info');
+
+      // Validate token
+      try {
+        const userRes = await fetch('https://api.github.com/user', {
+          headers: { Authorization: `token ${token}` }
+        });
+
+        if (!userRes.ok) {
+          showSubmitStatus('Invalid GitHub token', 'error');
+          submitBtn.disabled = false;
+          return;
+        }
+
+        // Save token for future use
+        localStorage.setItem('cttt_github_token', token);
+
+        showSubmitStatus('Loading existing notes...', 'info');
+
+        // Get existing notes file
+        let existingNotes = {};
+        let fileSha = null;
+
+        try {
+          const fileRes = await fetch(`https://api.github.com/repos/${SUBMIT_CONFIG.owner}/${SUBMIT_CONFIG.repo}/contents/${SUBMIT_CONFIG.notesPath}`, {
+            headers: { Authorization: `token ${token}` }
+          });
+
+          if (fileRes.ok) {
+            const fileData = await fileRes.json();
+            fileSha = fileData.sha;
+            const content = atob(fileData.content);
+            existingNotes = JSON.parse(content);
+          }
+        } catch (err) {
+          console.log('No existing notes file or error loading:', err);
+        }
+
+        showSubmitStatus('Merging notes...', 'info');
+
+        // Merge local notes into existing notes
+        Object.keys(localNotes).forEach(sessionId => {
+          const session = allSessions.find(s => s.id === sessionId);
+          const noteText = localNotes[sessionId];
+
+          // Convert text notes to the JSON format (array of lines)
+          const noteLines = noteText.split('\n').filter(line => line.trim());
+
+          existingNotes[sessionId] = {
+            title: session ? session.title : (existingNotes[sessionId]?.title || 'Unknown Session'),
+            notes: noteLines,
+            rating: existingNotes[sessionId]?.rating || 0,
+            follow_up: existingNotes[sessionId]?.follow_up || []
+          };
+        });
+
+        showSubmitStatus('Submitting to GitHub...', 'info');
+
+        // Create commit
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(existingNotes, null, 2))));
+        const commitBody = {
+          message: `Update notes from web interface`,
+          content: content,
+          branch: SUBMIT_CONFIG.branch
+        };
+
+        if (fileSha) {
+          commitBody.sha = fileSha;
+        }
+
+        const commitRes = await fetch(`https://api.github.com/repos/${SUBMIT_CONFIG.owner}/${SUBMIT_CONFIG.repo}/contents/${SUBMIT_CONFIG.notesPath}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(commitBody)
+        });
+
+        if (!commitRes.ok) {
+          const error = await commitRes.json();
+          throw new Error(error.message || 'Failed to commit notes');
+        }
+
+        showSubmitStatus('Notes submitted successfully! Local notes are preserved.', 'success');
+
+        // Reload notes from server to sync
+        await loadNotes();
+        renderSessions();
+
+      } catch (err) {
+        console.error('Submit error:', err);
+        showSubmitStatus(`Error: ${err.message}`, 'error');
+      }
+
+      submitBtn.disabled = false;
+    }
+
+    function showSubmitStatus(message, type) {
+      const statusEl = document.getElementById('submitNotesStatus');
+      statusEl.textContent = message;
+      statusEl.className = `submit-status ${type}`;
+      statusEl.style.display = 'block';
+    }
+
+    // Event listener for submit notes button
+    document.getElementById('submitNotesBtn').addEventListener('click', openSubmitNotesModal);
+
+    // Close submit notes modal on background click
+    document.getElementById('submitNotesModal').addEventListener('click', (e) => {
+      if (e.target.id === 'submitNotesModal') {
+        closeSubmitNotesModal();
+      }
+    });
+
+    // Close submit notes modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const submitModal = document.getElementById('submitNotesModal');
+        if (submitModal.classList.contains('active')) {
+          closeSubmitNotesModal();
+        }
+      }
+    });
+
+    // Initialize
+    init();
+  </script>
+</body>
+</html>

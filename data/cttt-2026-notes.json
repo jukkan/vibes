@@ -1,0 +1,98 @@
+{
+  "df26da49-e4aa-f011-bbd2-6045bdf2f545": {
+    "title": "🔥Generative Pages - from Tech to Adoption 🚀",
+    "notes": [
+      "Still US only, has gone Fluent UI, doesn't fully understand Dataverse metadata."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "fa29d74f-e4aa-f011-bbd2-6045bdf2f545": {
+    "title": "How I Run My Business with 15 Copilot Agents: A Practical Look Into the Future of Solo Work",
+    "notes": [
+      "Don't automate relationship-building work.",
+      "Don't be loyal to one platform."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "f08b292e-44d9-f011-8544-7c1e525ddd3f": {
+    "title": "Why Your Data Isn’t Ready for AI (And How to Fix It)",
+    "notes": [
+      "Copilot only understands Entra ID security, not AD ACL on enterprise file shares.",
+      "Tenant default location determines where the MS Graph index data is stored."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "dda96149-e4aa-f011-bbd2-6045bd8f8f87": {
+    "title": "Agentic Engineering for Azure-Dataverse Integration: AI-Built Functions and APIs That Actually Work",
+    "notes": [
+      "You can ask AI to write static analysis by showing what you don't like and establish new \"laws\".",
+      "Use EBG for generating the Dataverse model for AI."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "f1a96149-e4aa-f011-bbd2-6045bd8f8f87": {
+    "title": "From Vibe Coding to Agentic Engineering: Building Production-Ready Dataverse Code with AI",
+    "notes": [
+      "Keep everything as local as possible. Don't rely on MCP servers, instead build rules and constraints to keep the agent from trying dangerous things. Build fakes of everything.",
+      "Git Worktree for concurrent agent instances isolation.",
+      "Magnus: \"I'm never going to write a line of code by hand again.\""
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "43120e4b-e4aa-f011-bbd2-7c1e525ddd3f": {
+    "title": "🧠 Model Context Protocol vs. Connectors: Rethinking Integration in the Power Platform 💡",
+    "notes": [
+      "pac.mcp launched in July.",
+      "dnx command.",
+      "MCP server versions co-exist now, GA on by default."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "9c665c4f-e4aa-f011-bbd2-6045bd8f8f87": {
+    "title": "The Copilot Control System explained - settings you need to know",
+    "notes": [
+      "Copilot Chat in Word, Excel, PowerPoint: EU rollout paused, only in Outlook, Q1 target for more.",
+      "Bing search indexs is always in the US."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "7fa9d5e0-69ea-f011-8544-7c1e525ddd3f": {
+    "title": "Closing and raffles",
+    "notes": [
+      "CTTT27 is Feb 4-5.🥳"
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "f6da3351-e4aa-f011-bbd2-7c1e525ddd3f": {
+    "title": "Cybersecurity - from Disabler to Enabler",
+    "notes": [
+      "Never say \"your password needs to be difficult (to guess\", use positive words like \"strong password\" to encourage user action instead of creating resistance with negative words."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "a8665c4f-e4aa-f011-bbd2-6045bd8f8f87": {
+    "title": "Power Platform Pipelines done right!",
+    "notes": [
+      "Maintain consistent solution deployment order via display name prefixes."
+    ],
+    "rating": 0,
+    "follow_up": []
+  },
+  "682ad74f-e4aa-f011-bbd2-6045bdf2f545": {
+    "title": "Supercharge Your Copilot-Driven Collaboration with Microsoft 365 Agents SDK",
+    "notes": [
+      "Native actions like create appointment remain unreliable in Copilot, despite Graph endpoints being available for building custom agents."
+    ],
+    "rating": 0,
+    "follow_up": []
+  }
+}

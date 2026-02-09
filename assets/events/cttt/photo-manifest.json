@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "description": "Photo manifest for Cloud Tech Tallinn 2026 sessions",
+  "photos": {
+    "8e665c4f-e4aa-f011-bbd2-6045bd8f8f87": [
+      {
+        "path": "assets/events/cttt/8e665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769677628171-bp6zqy.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/8e665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769677628171-bp6zqy.jpg",
+        "timestamp": 1769677631678
+      }
+    ],
+    "df26da49-e4aa-f011-bbd2-6045bdf2f545": [
+      {
+        "path": "assets/events/cttt/df26da49-e4aa-f011-bbd2-6045bdf2f545/1769677711500-x9jo3a.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/df26da49-e4aa-f011-bbd2-6045bdf2f545/1769677711500-x9jo3a.jpg",
+        "timestamp": 1769677717011
+      },
+      {
+        "path": "assets/events/cttt/df26da49-e4aa-f011-bbd2-6045bdf2f545/1769677714539-xcncnr.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/df26da49-e4aa-f011-bbd2-6045bdf2f545/1769677714539-xcncnr.jpg",
+        "timestamp": 1769677717011
+      }
+    ],
+    "fa29d74f-e4aa-f011-bbd2-6045bdf2f545": [
+      {
+        "path": "assets/events/cttt/fa29d74f-e4aa-f011-bbd2-6045bdf2f545/1769681767352-yplwda.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/fa29d74f-e4aa-f011-bbd2-6045bdf2f545/1769681767352-yplwda.jpg",
+        "timestamp": 1769681769514
+      }
+    ],
+    "f08b292e-44d9-f011-8544-7c1e525ddd3f": [
+      {
+        "path": "assets/events/cttt/f08b292e-44d9-f011-8544-7c1e525ddd3f/1769688822407-43ejh9.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/f08b292e-44d9-f011-8544-7c1e525ddd3f/1769688822407-43ejh9.jpg",
+        "timestamp": 1769688825070
+      }
+    ],
+    "562f3a84-1eb7-f011-bbd3-7c1e525ddd3f": [
+      {
+        "path": "assets/events/cttt/562f3a84-1eb7-f011-bbd3-7c1e525ddd3f/1769691155876-j867ms.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/562f3a84-1eb7-f011-bbd3-7c1e525ddd3f/1769691155876-j867ms.jpg",
+        "timestamp": 1769691157910
+      }
+    ],
+    "dda96149-e4aa-f011-bbd2-6045bd8f8f87": [
+      {
+        "path": "assets/events/cttt/dda96149-e4aa-f011-bbd2-6045bd8f8f87/1769695796379-djzdc2.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/dda96149-e4aa-f011-bbd2-6045bd8f8f87/1769695796379-djzdc2.jpg",
+        "timestamp": 1769695798518
+      }
+    ],
+    "f1a96149-e4aa-f011-bbd2-6045bd8f8f87": [
+      {
+        "path": "assets/events/cttt/f1a96149-e4aa-f011-bbd2-6045bd8f8f87/1769760520610-vivj1z.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/f1a96149-e4aa-f011-bbd2-6045bd8f8f87/1769760520610-vivj1z.jpg",
+        "timestamp": 1769760525119
+      },
+      {
+        "path": "assets/events/cttt/f1a96149-e4aa-f011-bbd2-6045bd8f8f87/1769760522739-uibyma.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/f1a96149-e4aa-f011-bbd2-6045bd8f8f87/1769760522739-uibyma.jpg",
+        "timestamp": 1769760525119
+      }
+    ],
+    "43120e4b-e4aa-f011-bbd2-7c1e525ddd3f": [
+      {
+        "path": "assets/events/cttt/43120e4b-e4aa-f011-bbd2-7c1e525ddd3f/1769764627029-7ua9o1.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/43120e4b-e4aa-f011-bbd2-7c1e525ddd3f/1769764627029-7ua9o1.jpg",
+        "timestamp": 1769764632295
+      },
+      {
+        "path": "assets/events/cttt/43120e4b-e4aa-f011-bbd2-7c1e525ddd3f/1769764629890-zw9ohj.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/43120e4b-e4aa-f011-bbd2-7c1e525ddd3f/1769764629890-zw9ohj.jpg",
+        "timestamp": 1769764632295
+      }
+    ],
+    "682ad74f-e4aa-f011-bbd2-6045bdf2f545": [
+      {
+        "path": "assets/events/cttt/682ad74f-e4aa-f011-bbd2-6045bdf2f545/1769768634052-5ikxww.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/682ad74f-e4aa-f011-bbd2-6045bdf2f545/1769768634052-5ikxww.jpg",
+        "timestamp": 1769768638675
+      },
+      {
+        "path": "assets/events/cttt/682ad74f-e4aa-f011-bbd2-6045bdf2f545/1769768635908-x1w30w.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/682ad74f-e4aa-f011-bbd2-6045bdf2f545/1769768635908-x1w30w.jpg",
+        "timestamp": 1769768638675
+      }
+    ],
+    "9c665c4f-e4aa-f011-bbd2-6045bd8f8f87": [
+      {
+        "path": "assets/events/cttt/9c665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769777298639-29n3gq.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/9c665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769777298639-29n3gq.jpg",
+        "timestamp": 1769777300757
+      }
+    ],
+    "a8665c4f-e4aa-f011-bbd2-6045bd8f8f87": [
+      {
+        "path": "assets/events/cttt/a8665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769782513915-9zoxtp.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/a8665c4f-e4aa-f011-bbd2-6045bd8f8f87/1769782513915-9zoxtp.jpg",
+        "timestamp": 1769782516247
+      }
+    ],
+    "f6da3351-e4aa-f011-bbd2-7c1e525ddd3f": [
+      {
+        "path": "assets/events/cttt/f6da3351-e4aa-f011-bbd2-7c1e525ddd3f/1769847061412-ng0ufu.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/f6da3351-e4aa-f011-bbd2-7c1e525ddd3f/1769847061412-ng0ufu.jpg",
+        "timestamp": 1769847064102
+      }
+    ],
+    "7fa9d5e0-69ea-f011-8544-7c1e525ddd3f": [
+      {
+        "path": "assets/events/cttt/7fa9d5e0-69ea-f011-8544-7c1e525ddd3f/1769847096054-hkk0x3.jpg",
+        "url": "https://raw.githubusercontent.com/jukkan/vibes/main/assets/events/cttt/7fa9d5e0-69ea-f011-8544-7c1e525ddd3f/1769847096054-hkk0x3.jpg",
+        "timestamp": 1769847099988
+      }
+    ]
+  }
+}
