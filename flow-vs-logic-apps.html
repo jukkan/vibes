@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Power Automate vs Azure Logic Apps: the 2025 split</title>
+
+  <!-- Social sharing -->
+  <meta name="description" content="Technical evidence that Power Automate cloud flows are diverging from Azure Logic Apps: runtime architecture, endpoint changes, release cadence signals, and community observations." />
+  <meta property="og:title" content="Power Automate vs Azure Logic Apps: the 2025 split" />
+  <meta property="og:description" content="A visual, source-linked summary of the runtime and platform divergence between Power Automate cloud flows and Azure Logic Apps." />
+  <meta property="og:type" content="article" />
+  <!-- Optional: set og:image once you add a social card image to your repo -->
+  <!-- <meta property="og:image" content="https://<your-domain>/assets/pa-vs-la-social.png" /> -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root{
+      --bg: #f0f2f8;
+      --bg2: #ffffff;
+      --text: #0f1a2e;
+      --text2:#2d3a52;
+      --muted:#6b7d94;
+      --border: rgba(150,170,200,0.25);
+      --shadow: 0 16px 48px rgba(0,0,0,.10);
+      --brand:#0060df;
+      --brand2:#7c3aed;
+      --accent:#f43f5e;
+      --chip:#dfe8ff;
+      --chipText:#1a4daa;
+      --warn:#dc2626;
+      --ok:#059669;
+      --spec:#8b5cf6;
+      --glow: rgba(0,96,223,0.10);
+      --glow2: rgba(124,58,237,0.08);
+
+      --header: linear-gradient(135deg, #0f172a 0%, #1e3a5f 45%, #0c4a6e 75%, #134e4a 100%);
+      --card: rgba(255,255,255,0.75);
+      --card2: rgba(248,250,255,0.85);
+      --grad: linear-gradient(135deg, #0060df, #7c3aed, #f43f5e);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#080c18;
+        --bg2: rgba(12,18,35,0.95);
+        --text:#e4eaf4;
+        --text2:#a8bacd;
+        --muted:#6b7f96;
+        --border: rgba(80,120,180,0.18);
+        --shadow: 0 16px 48px rgba(0,0,0,.55);
+        --brand:#4d9eff;
+        --brand2:#a78bfa;
+        --accent:#fb7185;
+        --chip: rgba(25,45,75,0.7);
+        --chipText:#93c5fd;
+        --warn:#f87171;
+        --ok:#34d399;
+        --spec:#c084fc;
+        --glow: rgba(77,158,255,0.08);
+        --glow2: rgba(167,139,250,0.06);
+
+        --header: linear-gradient(135deg, #050810 0%, #0f1f3d 45%, #0c2d4a 75%, #0a2f2a 100%);
+        --card: rgba(15,22,42,0.75);
+        --card2: rgba(12,18,36,0.85);
+        --grad: linear-gradient(135deg, #4d9eff, #a78bfa, #fb7185);
+      }
+    }
+
+    *{box-sizing:border-box}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.4}}
+    @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(15px,-20px) scale(1.05)}}
+    @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,15px) scale(1.08)}}
+
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 15% 30%, var(--glow) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 70%, var(--glow2) 0%, transparent 60%);
+      background-attachment:fixed;
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .wrap{
+      max-width: 1120px;
+      margin: 28px auto 64px;
+      padding: 0 18px;
+    }
+
+    header{
+      background: var(--header);
+      border-radius: 32px;
+      color: #fff;
+      padding: 52px 34px 38px;
+      box-shadow: var(--shadow), 0 0 80px rgba(0,96,223,0.06);
+      overflow:hidden;
+      position:relative;
+    }
+    header::before{
+      content:'';position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+      background-size:28px 28px;pointer-events:none;
+    }
+    header::after{
+      content:'';position:absolute;top:-80px;right:-60px;
+      width:340px;height:340px;border-radius:50%;
+      background:radial-gradient(circle,rgba(124,58,237,.25),transparent 70%);
+      filter:blur(50px);animation:float1 8s ease-in-out infinite;pointer-events:none;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+      align-items:center;
+    }
+    @media (min-width: 900px){
+      .hero-grid{
+        grid-template-columns: 1fr 320px;
+      }
+    }
+
+    .kicker{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom: 14px;
+    }
+    .chip{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      backdrop-filter:blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .04em;
+      text-transform:uppercase;
+    }
+    .chip strong{font-weight:800}
+
+    h1{
+      margin:0 0 14px;
+      font-size: clamp(36px, 5.5vw, 60px);
+      line-height:1.05;
+      letter-spacing:-.02em;
+      font-weight:900;
+      text-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+    .sub{
+      font-size: clamp(17px, 2.2vw, 21px);
+      opacity:.88;
+      max-width: 56ch;
+      margin: 0 0 22px;
+      line-height:1.55;
+    }
+
+    .cta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top: 10px;
+    }
+    a.btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 11px 18px;
+      border-radius: 14px;
+      text-decoration:none;
+      font-weight: 750;
+      font-size:14px;
+      border: 1px solid rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.08);
+      color:#fff;
+      transition: all .2s ease;
+      backdrop-filter:blur(8px);
+    }
+    a.btn:hover{transform: translateY(-2px); background: rgba(255,255,255,0.16); box-shadow:0 8px 24px rgba(0,0,0,.18);}
+    a.btn.primary{
+      background: linear-gradient(135deg, rgba(0,96,223,0.6), rgba(124,58,237,0.5));
+      border-color: rgba(255,255,255,0.25);
+      box-shadow:0 4px 16px rgba(0,96,223,0.25);
+    }
+    a.btn.primary:hover{box-shadow:0 8px 28px rgba(0,96,223,0.35);}
+
+    .logos{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,0.15);
+      backdrop-filter:blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 26px;
+      padding: 28px 22px;
+      min-height: 160px;
+      position:relative;
+    }
+    .logos img{
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,.3));
+      transition: transform .3s ease;
+    }
+    .logos img:hover{transform:scale(1.12) rotate(-3deg);}
+    .split{
+      width: 3px;
+      height: 80px;
+      background: linear-gradient(180deg, rgba(244,63,94,0.8), rgba(124,58,237,0.8), rgba(0,96,223,0.8));
+      border-radius:999px;
+      position:relative;
+      box-shadow: 0 0 14px rgba(244,63,94,0.3);
+    }
+    .heart{
+      position:absolute;
+      top: 10px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      opacity:.92;
+    }
+
+    main{
+      margin-top: 22px;
+    }
+
+    section{
+      margin-top: 24px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.06);
+      backdrop-filter:blur(10px);
+      animation: fadeUp .5s ease both;
+    }
+    section h2{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-.01em;
+      position:relative;
+      display:inline-block;
+      padding-bottom:10px;
+    }
+    section h2::after{
+      content:'';position:absolute;bottom:0;left:0;
+      width:100%;height:3px;border-radius:3px;
+      background:var(--grad);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 850px){
+      .grid.two{grid-template-columns: 1fr 1fr;}
+      .grid.three{grid-template-columns: 1fr 1fr 1fr;}
+    }
+
+    .card{
+      background: var(--card);
+      backdrop-filter:blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 12px 36px rgba(0,0,0,.08);
+    }
+    .card::before{
+      content:'';position:absolute;top:0;left:0;right:0;
+      height:4px;
+      background:var(--grad);
+      opacity:.85;
+    }
+    .card h3{
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--brand);
+      letter-spacing:.01em;
+      font-weight:800;
+    }
+    .card p{margin:0; color: var(--text2);}
+    .card ul{margin:10px 0 0; padding-left: 18px; color: var(--text2);}
+    .card li{margin: 8px 0;}
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 12px;
+      font-weight: 750;
+      padding: 4px 10px;
+      border-radius:999px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: var(--text2);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .status .dot{
+      width:8px;height:8px;border-radius:99px;background: var(--muted);
+      animation:pulse 2s ease-in-out infinite;
+    }
+    .status.ok .dot{background: var(--ok);box-shadow:0 0 8px var(--ok);}
+    .status.warn .dot{background: var(--warn);box-shadow:0 0 8px var(--warn);}
+    .status.spec .dot{background: var(--spec);box-shadow:0 0 8px var(--spec);}
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+    @media (min-width: 900px){
+      .stats{grid-template-columns: repeat(5, minmax(0,1fr));}
+    }
+    .stat{
+      background: var(--card2);
+      backdrop-filter:blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px 14px;
+      text-align:center;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .stat:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 28px rgba(0,0,0,.08);
+    }
+    .stat .label{
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .stat .value{
+      font-weight: 900;
+      font-size: 26px;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      line-height:1.1;
+    }
+    .stat .note{
+      color: var(--text2);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .stat a{color: var(--brand); text-decoration:none;}
+    .stat a:hover{text-decoration:underline;}
+
+    .timeline{
+      position:relative;
+      padding-left: 32px;
+      margin: 16px 0 0;
+    }
+    .timeline::before{
+      content:'';position:absolute;left:7px;top:0;bottom:0;
+      width:3px;border-radius:3px;
+      background:var(--grad);
+    }
+    .titem{margin: 22px 0; position:relative;}
+    .titem::before{
+      content:'';position:absolute;left:-32px;top:4px;
+      width:16px;height:16px;border-radius:50%;
+      background:var(--grad);
+      border:3px solid var(--bg2);
+      box-shadow:0 0 12px rgba(0,96,223,0.25);
+    }
+    .titem .when{
+      font-weight: 900;
+      font-size:15px;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .titem .what{color: var(--text2); margin-top:3px;}
+
+    blockquote{
+      margin: 0;
+      padding: 24px 18px 16px 24px;
+      background: rgba(0,0,0,0.03);
+      border-left: 4px solid var(--brand);
+      border-image:var(--grad) 1;
+      border-radius: 0 14px 14px 0;
+      color: var(--text2);
+      font-size:15px;
+      font-style:italic;
+      position:relative;
+    }
+    blockquote::before{
+      content:'\201C';
+      position:absolute;top:-8px;left:10px;
+      font-size:52px;font-style:normal;font-weight:900;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;opacity:.4;line-height:1;
+    }
+    @media (prefers-color-scheme: dark){
+      blockquote{background: rgba(255,255,255,0.03);}
+    }
+    .quote-meta{
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .quote-meta a{color: var(--brand); text-decoration:none;}
+    .quote-meta a:hover{text-decoration:underline;}
+
+    figure{
+      margin: 0;
+    }
+    figure img{
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 26px rgba(0,0,0,.08);
+      background: var(--bg2);
+    }
+    figcaption{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .callout{
+      display:flex;
+      gap: 16px;
+      align-items:flex-start;
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      backdrop-filter:blur(10px);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .callout:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 28px rgba(0,0,0,.06);
+    }
+    .callout .icon{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--grad);
+      color: #fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size:11px;
+      flex: 0 0 auto;
+      border: none;
+      box-shadow: 0 4px 14px rgba(0,96,223,0.2);
+    }
+    .callout h3{
+      margin: 0 0 8px;
+      font-size: 19px;
+      font-weight:800;
+      color: var(--text);
+    }
+    .callout p{margin:0; color: var(--text2); line-height:1.6;}
+    .callout small{color: var(--muted);}
+
+    .sources ul{margin: 10px 0 0; padding-left: 18px;}
+    .sources li{margin: 8px 0; color: var(--text2);}
+
+    .article-box{
+      background: var(--card2);
+      backdrop-filter:blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .article-box:hover{
+      transform:translateY(-4px);
+      box-shadow:0 12px 36px rgba(0,0,0,.08);
+    }
+    .article-box::before{
+      content:'';position:absolute;top:0;left:0;right:0;
+      height:4px;background:var(--grad);
+    }
+    .article-box h3{margin:0; color: var(--brand); font-size: 19px; font-weight:800;}
+    .article-box p{margin:0; color: var(--text2); line-height:1.6;}
+    .article-box a{
+      margin-top: 8px;
+      display:inline-flex;
+      width: fit-content;
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: var(--grad);
+      color: #fff;
+      text-decoration:none;
+      font-weight: 800;
+      border: none;
+      box-shadow: 0 4px 16px rgba(0,96,223,0.2);
+      transition: all .2s ease;
+    }
+    .article-box a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,96,223,0.3);}
+    footer{
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align:center;
+      padding-top:22px;
+      border-top:1px solid var(--border);
+    }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.88em;
+      background: var(--chip);
+      color: var(--chipText);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    /* Accent color variation per card group */
+    #evidence .card:nth-child(1)::before{background:linear-gradient(135deg,#0060df,#4d9eff);}
+    #evidence .card:nth-child(2)::before{background:linear-gradient(135deg,#7c3aed,#a78bfa);}
+    #evidence .card:nth-child(3)::before{background:linear-gradient(135deg,#f43f5e,#fb7185);}
+    #community .card:nth-child(1)::before{background:linear-gradient(135deg,#0060df,#4d9eff);}
+    #community .card:nth-child(2)::before{background:linear-gradient(135deg,#7c3aed,#a78bfa);}
+    #community .card:nth-child(3)::before{background:linear-gradient(135deg,#f43f5e,#fb7185);}
+    #interpretation .card:nth-child(1)::before{background:linear-gradient(135deg,#059669,#34d399);}
+    #interpretation .card:nth-child(2)::before{background:linear-gradient(135deg,#8b5cf6,#c084fc);}
+
+    .sources a{
+      color: var(--brand); text-decoration:none;
+      transition: color .15s ease;
+      border-bottom: 1px solid transparent;
+    }
+    .sources a:hover{
+      border-bottom-color: var(--brand);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="orb2" style="position:absolute;bottom:-60px;left:10%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(244,63,94,.18),transparent 70%);filter:blur(50px);animation:float2 10s ease-in-out infinite;pointer-events:none" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div>
+          <div class="kicker">
+            <span class="chip"><strong>Updated</strong> Feb 2026</span>
+          </div>
+
+          <h1>Power Automate vs Azure Logic Apps: the 2025 split</h1>
+          <p class="sub">
+            Runtime and platform divergence between Power Automate cloud flows and Azure Logic Apps: linked evidence plus thoughts on what it means for the future of workflows on Microsoft’s stack.
+          </p>
+
+          <div class="cta">
+            <a class="btn primary" href="#evidence">Jump to evidence</a>
+            <a class="btn" href="#community">Community pulse</a>
+            <a class="btn" href="#readmore">Read the full Plus articles</a>
+          </div>
+        </div>
+
+        <div class="logos" aria-label="Product logos">
+          <!-- Use raw GitHub URLs for SVGs (works on GitHub Pages) -->
+          <img
+            src="https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Power%20Platform/Power%20Automate/PowerAutomate_scalable.svg"
+            alt="Power Automate logo" loading="lazy" />
+          <div class="split" aria-hidden="true"></div>
+          <img
+            src="https://raw.githubusercontent.com/loryanstrant/MicrosoftCloudLogos/main/Azure/iot/02631-icon-service-Logic-Apps.svg"
+            alt="Azure Logic Apps logo" loading="lazy" />
+
+          <!-- simple broken heart -->
+          <svg class="heart" viewBox="0 0 64 64" aria-hidden="true">
+            <path fill="rgba(255,255,255,0.92)" d="M46.6,8c-5.1,0-9.4,3.1-12.6,7.1C30.8,11.1,26.5,8,21.4,8
+              C13.1,8,6.5,14.6,6.5,22.9c0,14.9,17.2,22.9,27.5,33.1c10.3-10.2,27.5-18.2,27.5-33.1C61.5,14.6,54.9,8,46.6,8z"/>
+            <path fill="rgba(0,0,0,0.22)" d="M34.6 20.5l-6.3 9.8 6.7 7.2-4.7 8.1 8.4 9.2" />
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="summary">
+        <div class="grid two">
+          <div class="callout">
+            <div class="icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+            </div>
+            <div>
+              <h3>What has changed?</h3>
+              <p>
+                Microsoft’s own documentation now distinguishes two cloud flow “environment architectures”: an older <code>LogicApps</code>-based one, and a newer <code>SelfHostMultiTenant</code> runtime. That is the cleanest technical signal that cloud flows are no longer just “Power Automate on top of Logic Apps”.
+              </p>
+
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3a6 6 0 0 1 3.75 10.693 2.49 2.49 0 0 0-1.127 1.52l-.223.89a1 1 0 0 1-.97.764h-2.86a1 1 0 0 1-.97-.765l-.223-.889a2.49 2.49 0 0 0-1.127-1.52A6 6 0 0 1 12 3z"/></svg>
+            </div>
+            <div>
+              <h3>Why this matters to builders</h3>
+              <p>
+                If cloud flows stop inheriting platform changes from Logic Apps, you should expect differences to accumulate over time: connector behavior, retry semantics, triggers/webhooks, performance characteristics, and eventually developer tooling/ALM patterns.
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="evidence">
+        <h2 style="margin:0 0 10px;">Evidence checklist</h2>
+        <div class="grid three">
+          <div class="card">
+            <h3>1) Runtime architecture split <span class="status ok"><span class="dot"></span>Verified</span></h3>
+            <p>
+              Microsoft documents that environments are being upgraded to a new <strong>SelfHost Multitenant</strong> architecture, with a debug flag <code>environmentFlowHostingType</code> showing either <code>SelfHostMultiTenant</code> or <code>LogicApps</code>.
+            </p>
+            <ul>
+              <li>New features like <strong>express mode</strong> require SelfHost Multitenant.</li>
+              <li>The old architecture is explicitly labeled <code>LogicApps</code>.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              <a href="https://learn.microsoft.com/en-us/power-automate/environment-architecture" rel="noopener noreferrer">Source: Power Automate environments move to new architecture</a>
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>2) Endpoint + trigger URL migration <span class="status ok"><span class="dot"></span>Verified</span></h3>
+            <p>
+              Microsoft warns that flows with HTTP/Teams webhook triggers using <code>logic.azure.com</code> will move to a new URL, and the old URLs stop working on <strong>Nov 30, 2025</strong>.
+            </p>
+            <ul>
+              <li>Affects only flows in the <strong>Logic Apps</strong> environment architecture.</li>
+              <li>Explicitly tied to an “infrastructure upgrade” to “improve execution speed and provide new features”.</li>
+              <li>Microsoft Q&A discussion (accepted answer) describes a migration to the <code>api.powerplatform.com</code> domain.</li>
+            </ul>
+            <p style="margin-top:10px;">
+              <a href="https://learn.microsoft.com/en-us/troubleshoot/power-platform/power-automate/flow-run-issues/triggers-troubleshoot?tabs=new-designer" rel="noopener noreferrer">Source: Troubleshoot triggers (HTTP / Teams webhook)</a>
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>3) Release-cadence divergence <span class="status warn"><span class="dot"></span>Observed</span></h3>
+            <p>
+              The “Service Updates for Power Automate” page shows its <em>latest listed update</em> as <strong>2508.2 (Aug 2025)</strong>, and is last updated <strong>2025‑09‑02</strong>.
+            </p>
+            <ul>
+              <li>That does <strong>not</strong> prove “no changes shipped”, but it does show “no public service-update transparency” since Aug 2025.</li>
+              <li>Meanwhile, Azure Logic Apps Standard continues its own versioned releases (see sources below).</li>
+            </ul>
+            <p style="margin-top:10px;">
+              <a href="https://learn.microsoft.com/en-us/power-platform/released-versions/power-automate" rel="noopener noreferrer">Source: Service Updates for Power Automate</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="timeline">
+        <h2 style="margin:0 0 10px;">Timeline</h2>
+        <div class="timeline">
+          <div class="titem">
+            <div class="when">Aug 2025</div>
+            <div class="what">Latest listed Power Automate “Service Updates” entry is 2508.2 (Aug 25/28).</div>
+          </div>
+          <div class="titem">
+            <div class="when">Oct 2025</div>
+            <div class="what">Microsoft documents SelfHost Multitenant architecture and the <code>environmentFlowHostingType</code> flag.</div>
+          </div>
+          <div class="titem">
+            <div class="when">Nov 30, 2025</div>
+            <div class="what">Old <code>logic.azure.com</code> trigger URLs stop working for affected HTTP/Teams webhook flows.</div>
+          </div>
+          <div class="titem">
+            <div class="when">Jan 2026</div>
+            <div class="what">Trigger troubleshooting guidance updated (shows ongoing infrastructure migration work).</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="community">
+        <h2 style="margin:0 0 10px;">Community pulse (selected quotes)</h2>
+        <div class="grid three">
+          <div class="card">
+            <blockquote>“Maybe all resources have been moved onto AI / Agents dev.”</blockquote>
+            <div class="quote-meta">r/MicrosoftFlow (comment). <a href="https://www.reddit.com/r/MicrosoftFlow/comments/1obn0kf/comment/nkhcu08/" rel="noopener noreferrer">Source</a></div>
+          </div>
+          <div class="card">
+            <blockquote>“Yes, Microsoft is prioritizing Agent Flows in the UI. But you can still use Power Automate flows instead if you want.”</blockquote>
+            <div class="quote-meta">r/CopilotStudio (comment). <a href="https://www.reddit.com/r/copilotstudio/comments/1m1c4ue/comment/n3ga066/" rel="noopener noreferrer">Source</a></div>
+          </div>
+          <div class="card">
+            <blockquote>“It is January and we are still being spammed by these emails.”</blockquote>
+            <div class="quote-meta">Microsoft Q&A (trigger URL migration thread). <a href="https://learn.microsoft.com/en-us/answers/questions/2206337/logic-azure-com-endpoint-url-retiring-11-30-2025" rel="noopener noreferrer">Source</a></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="interpretation">
+        <h2 style="margin:0 0 10px;">Interpretation and speculation</h2>
+        <div class="grid two">
+          <div class="card">
+            <h3>What's happening <span class="status ok"><span class="dot"></span>Evidence</span></h3>
+            <ul>
+              <li><strong>Cloud flows are being “pulled inward” under Power Platform</strong> (SelfHost runtime, non-<code>logic.azure.com</code> URLs, Power Platform admin tooling).</li>
+              <li><strong>Logic Apps Standard stays Azure-native</strong> (repo-based releases, Azure-first positioning, agent/workflow improvements landing there independently).</li>
+              <li><strong>Parity is no longer a safe assumption</strong>: even if some components remain shared, divergent constraints and release vehicles will create drift.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Where this might be heading <span class="status spec"><span class="dot"></span>Speculation</span></h3>
+            <ul>
+              <li><strong>Power Automate maker UX becomes “agent-first”</strong> (Workflows/Flow Builder, prompt-to-flow, guardrails, governance).</li>
+              <li><strong>Cloud flows become a backend capability</strong> powering Copilot Studio “agent flows” and other products, with less emphasis on manual authoring.</li>
+              <li><strong>Logic Apps keeps the pro-dev lane</strong>: IaC/GitOps, Azure-native integration patterns, advanced workflow hosting models.</li>
+            </ul>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="readmore">
+        <h2 style="margin:0 0 10px;">Read more perspectives(.plus)</h2>
+        <div class="grid two">
+          <div class="article-box">
+            <h3>What next for Power Automate?</h3>
+            <p>Cloud flows as a “legacy feature” in the agentic AI era, and why the lack of a roadmap is itself a data point.</p>
+            <a href="https://www.perspectives.plus/p/what-next-for-power-automate" rel="noopener noreferrer">Open article</a>
+          </div>
+          <div class="article-box">
+            <h3>Can Workflows replace Power Automate?</h3>
+            <p>A test drive of Microsoft’s Flow Builder/Workflows in Microsoft 365 Copilot (Frontier), with builder errors, governance gaps, logic pitfalls, and licensing messiness.</p>
+            <a href="https://www.perspectives.plus/p/can-flow-builder-replace-power-automate" rel="noopener noreferrer">Open article</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sources" id="sources">
+        <h2 style="margin:0 0 10px;">Sources</h2>
+        <div class="grid two">
+          <div class="card">
+            <h3>Microsoft documentation</h3>
+            <ul>
+              <li><a href="https://learn.microsoft.com/en-us/power-automate/environment-architecture" rel="noopener noreferrer">Power Automate environments move to new architecture</a></li>
+              <li><a href="https://learn.microsoft.com/en-us/troubleshoot/power-platform/power-automate/flow-run-issues/triggers-troubleshoot?tabs=new-designer" rel="noopener noreferrer">Troubleshoot Power Automate triggers (HTTP / Teams webhook)</a></li>
+              <li><a href="https://learn.microsoft.com/en-us/power-platform/released-versions/power-automate" rel="noopener noreferrer">Service Updates for Power Automate</a></li>
+              <li><a href="https://learn.microsoft.com/en-us/answers/questions/2206337/logic-azure-com-endpoint-url-retiring-11-30-2025" rel="noopener noreferrer">Microsoft Q&A: logic.azure.com endpoint retiring</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Public repos & third-party summaries</h3>
+            <ul>
+              <li><a href="https://github.com/Azure/logicapps" rel="noopener noreferrer">Azure Logic Apps (GitHub repo)</a></li>
+              <li><a href="https://compass365.com/power-platform-2025-release-wave-2-highlights/" rel="noopener noreferrer">Power Platform 2025 release wave 2 highlights (Compass365)</a></li>
+              <li><a href="https://github.com/MicrosoftDocs/power-automate-docs/tree/main/articles" rel="noopener noreferrer">Power Automate docs repository (articles)</a></li>
+              <li><a href="https://www.reddit.com/r/MicrosoftFlow/comments/1jb0tdq/is_power_automate_development_stalled/" rel="noopener noreferrer">Reddit: “Is Power Automate development stalled?”</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </section>
+
+      <footer>
+        Built by Jukka Niiranen with Claude. Visit <a href="https://jukkan.com/" rel="noopener noreferrer" style="color:var(--brand);text-decoration:none;border-bottom:1px solid var(--brand);">JukkaNet</a> to enter my world.
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
