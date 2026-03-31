@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Five Ways to Make PowerPoint with Copilot — Jukka Niiranen</title>
+<style>
+  :root {
+    /* Method colors — used everywhere */
+    --c1: #498205;   /* Create with Copilot       — green  */
+    --c2: #6b6b6b;   /* Copilot Chat desktop       — gray   */
+    --c3: #038387;   /* Edit in Copilot            — teal   */
+    --c4: #0067b8;   /* PowerPoint Agent           — blue   */
+    --c5: #5c2d91;   /* Copilot Cowork             — purple */
+
+    --c1-bg: #eef5e0;
+    --c2-bg: #f0f0f0;
+    --c3-bg: #dff6f6;
+    --c4-bg: #eff6fc;
+    --c5-bg: #f3eefa;
+
+    --blue:       #0067b8;
+    --blue-dark:  #004e8c;
+    --text:       #1b1b1b;
+    --text-sec:   #3d3d3d;
+    --text-muted: #616161;
+    --border:     #d2d2d2;
+    --border-lt:  #ebebeb;
+    --bg:         #ffffff;
+    --bg-soft:    #f5f5f5;
+    --bg-softer:  #fafafa;
+    --green:      #107c10;
+    --green-bg:   #dff0df;
+    --red:        #a4262c;
+    --red-bg:     #fde7e9;
+    --amber:      #7a5a00;
+    --amber-bg:   #fff4ce;
+    --tag-bg:     #f0f0f0;
+    --shadow-sm:  0 1px 4px rgba(0,0,0,.08);
+    --shadow-md:  0 2px 8px rgba(0,0,0,.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+
+  /* ── SITE BAND ── */
+  .site-band {
+    background: #000;
+    padding: 7px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .site-band-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+  }
+
+  .avatar-sm {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,.2);
+    flex-shrink: 0;
+  }
+
+  .site-band-name { font-size: 14px; color: #fff; font-weight: 400; }
+  .site-band-sep  { color: #555; font-size: 18px; font-weight: 200; margin: 0 2px; }
+  .site-band-section { font-size: 14px; color: #bbb; }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: linear-gradient(135deg,#0a1628 0%,#0e2b52 40%,#1a3a6b 70%,#0f2240 100%);
+    padding: 52px 0 44px;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: rgba(255,255,255,.5);
+    margin-bottom: 18px;
+  }
+
+  .breadcrumb a { color: rgba(255,255,255,.65); }
+  .breadcrumb a:hover { color: #fff; }
+  .breadcrumb .sep { margin: 0 6px; color: rgba(255,255,255,.25); }
+
+  h1 {
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-weight: 600;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 14px;
+    max-width: 720px;
+  }
+
+  .header-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,.72);
+    max-width: 620px;
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: rgba(255,255,255,.45);
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 14px;
+  }
+
+  .meta-row b { color: rgba(255,255,255,.75); font-weight: 600; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 40px 0; }
+  .section + .section { border-top: 1px solid var(--border-lt); }
+  .section-soft   { background: var(--bg-soft); }
+  .section-softer { background: var(--bg-softer); }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 20px;
+    line-height: 1.25;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--c4-bg);
+    border-left: 4px solid var(--c4);
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.65;
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* ── METHOD COLOR CHIP — inline use ── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .chip::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chip-1 { color: var(--c1); } .chip-1::before { background: var(--c1); }
+  .chip-2 { color: var(--c2); } .chip-2::before { background: var(--c2); }
+  .chip-3 { color: var(--c3); } .chip-3::before { background: var(--c3); }
+  .chip-4 { color: var(--c4); } .chip-4::before { background: var(--c4); }
+  .chip-5 { color: var(--c5); } .chip-5::before { background: var(--c5); }
+
+  /* ── FIVE METHODS GRID ── */
+  .methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .method-card {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    padding: 18px 18px 20px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .15s, border-color .15s;
+    position: relative;
+  }
+
+  .method-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .mc-1::before { background: var(--c1); }
+  .mc-2::before { background: var(--c2); }
+  .mc-3::before { background: var(--c3); }
+  .mc-4::before { background: var(--c4); }
+  .mc-5::before { background: var(--c5); }
+
+  .method-card:hover { box-shadow: var(--shadow-md); }
+  .mc-1:hover { border-color: var(--c1); }
+  .mc-2:hover { border-color: var(--c2); }
+  .mc-3:hover { border-color: var(--c3); }
+  .mc-4:hover { border-color: var(--c4); }
+  .mc-5:hover { border-color: var(--c5); }
+
+  .method-num {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .method-num::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .mc-1 .method-num { color: var(--c1); } .mc-1 .method-num::before { background: var(--c1); }
+  .mc-2 .method-num { color: var(--c2); } .mc-2 .method-num::before { background: var(--c2); }
+  .mc-3 .method-num { color: var(--c3); } .mc-3 .method-num::before { background: var(--c3); }
+  .mc-4 .method-num { color: var(--c4); } .mc-4 .method-num::before { background: var(--c4); }
+  .mc-5 .method-num { color: var(--c5); } .mc-5 .method-num::before { background: var(--c5); }
+
+  .method-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .method-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 2px;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .mc-1 .method-tag { background: var(--c1-bg); color: var(--c1); }
+  .mc-2 .method-tag { background: var(--c2-bg); color: var(--c2); }
+  .mc-3 .method-tag { background: var(--c3-bg); color: var(--c3); }
+  .mc-4 .method-tag { background: var(--c4-bg); color: var(--c4); }
+  .mc-5 .method-tag { background: var(--c5-bg); color: var(--c5); }
+
+  .method-frontier {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 1px 5px;
+    border-radius: 2px;
+    background: #fef5e5;
+    color: #9a6700;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .method-desc {
+    font-size: 13px;
+    color: var(--text-sec);
+    line-height: 1.55;
+    margin-top: 2px;
+  }
+
+  /* ── FINDINGS ── */
+  .findings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 14px;
+  }
+
+  .finding-card {
+    border: 1px solid var(--border-lt);
+    background: var(--bg);
+    padding: 18px;
+    border-radius: 4px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  .finding-card:hover { border-color: var(--blue); box-shadow: var(--shadow-md); }
+
+  .fc-num {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  .fc-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 7px;
+    line-height: 1.3;
+  }
+
+  .fc-body {
+    font-size: 13px;
+    color: var(--text-sec);
+    line-height: 1.6;
+  }
+
+  .fc-body code {
+    font-family: "Cascadia Mono","Consolas",monospace;
+    font-size: 11.5px;
+    background: var(--tag-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #004e8c;
+  }
+
+  /* ── TABLE — compact, no h-scroll on wide screens ── */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    table-layout: fixed;
+  }
+
+  /* Column widths: label col fixed, method cols equal share */
+  col.col-label { width: 148px; }
+  col.col-method { width: auto; } /* share remaining equally */
+
+  thead { background: var(--bg-soft); }
+
+  th {
+    padding: 10px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text);
+    border-right: 1px solid var(--border-lt);
+    border-bottom: 2px solid var(--border);
+    vertical-align: bottom;
+    line-height: 1.3;
+  }
+
+  th:first-child {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--text-muted);
+  }
+
+  .th-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+    position: relative; top: -1px;
+    flex-shrink: 0;
+  }
+
+  .th-method-name { display: block; white-space: normal; word-break: break-word; }
+  .th-access {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 3px;
+    white-space: normal;
+    line-height: 1.35;
+  }
+
+  tbody tr { border-bottom: 1px solid var(--border-lt); }
+  tbody tr:hover { background: var(--bg-softer); }
+
+  .row-group td {
+    background: var(--bg-soft);
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 8px 10px;
+    color: var(--text-sec);
+    vertical-align: middle;
+    border-right: 1px solid var(--border-lt);
+    word-break: break-word;
+  }
+
+  td:first-child { font-weight: 500; color: var(--text); font-size: 12.5px; }
+  td:last-child, th:last-child { border-right: none; }
+
+  .yes, .no, .partial, .tag {
+    display: inline;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 11.5px;
+    font-weight: 500;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .yes     { background: var(--green-bg); color: var(--green); }
+  .no      { background: var(--red-bg);   color: var(--red); }
+  .partial { background: var(--amber-bg); color: var(--amber); }
+  .tag     { background: var(--tag-bg);   color: #333; font-weight: 400; }
+  .tag-b   { background: var(--c4-bg);    color: var(--blue-dark); font-weight: 500; }
+  .mono    { font-family: "Cascadia Mono","Consolas",monospace; font-size: 11px; }
+  .val     { font-family: "Cascadia Mono","Consolas",monospace; font-size: 11.5px; color: var(--text); }
+  .muted   { font-size: 11.5px; color: var(--text-muted); }
+
+  /* ── QUADRANT ── */
+  .quad-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 560px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .quad-cell {
+    padding: 18px;
+    border: 1px solid var(--border-lt);
+    background: var(--bg);
+  }
+
+  .quad-cell.empty { opacity: .42; }
+  .quad-cell:hover:not(.empty) { background: var(--bg-softer); }
+
+  .quad-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 10px;
+  }
+
+  .quad-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--text-sec);
+    margin-bottom: 5px;
+  }
+
+  .qdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  .quad-axis-v {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .quad-axis-h {
+    display: flex;
+    justify-content: space-between;
+    max-width: 560px;
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ── SOURCES ── */
+  .sources-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .src-link {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 9px 13px;
+    border: 1px solid var(--border-lt);
+    background: var(--bg);
+    border-radius: 3px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .12s;
+  }
+
+  .src-link:hover { border-color: var(--blue); }
+
+  .src-type {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--text-muted);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .src-title { font-size: 13px; color: var(--blue); line-height: 1.4; }
+
+  .src-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1b1b1b;
+    border-top: 3px solid var(--blue);
+    padding: 26px 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #888;
+  }
+
+  .footer-inner a { color: #7ab8e8; }
+  .footer-by { font-weight: 600; color: #ccc; white-space: nowrap; }
+
+  @media (max-width: 640px) {
+    .container { padding: 0 14px; }
+    h1 { font-size: 22px; }
+    .methods-grid { grid-template-columns: 1fr 1fr; }
+    .quad-grid, .quad-axis-h { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SITE BAND -->
+<div class="site-band">
+  <a class="site-band-logo" href="https://niiranenadvisory.com/">
+    <img class="avatar-sm" src="https://niiranenadvisory.com/wp-content/uploads/sites/3/2025/12/Jukka-Niiranen-Advisory-close-up.png" alt="Jukka Niiranen" loading="lazy">
+    <span class="site-band-name">Niiranen Advisory</span>
+  </a>
+  <span class="site-band-sep">|</span>
+  <span class="site-band-section">Perspectives on Power Platform</span>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="https://niiranenadvisory.com/">Home</a>
+      <span class="sep">›</span>
+      <a href="https://niiranenadvisory.com/">Technical analysis</a>
+      <span class="sep">›</span>
+      Five ways to make a PowerPoint with Copilot
+    </div>
+    <h1>Five Ways to Make a PowerPoint with Copilot</h1>
+    <p class="header-sub">A comparison of every method Microsoft offers for AI-generated presentations — based on direct file inspection, not marketing material.</p>
+    <div class="meta-row">
+      <span>By <b>Jukka Niiranen</b></span>
+      <span>Method: <b>PPTX file inspection + agent trace analysis</b></span>
+      <span><b>March 2026</b></span>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO + FIVE METHODS -->
+<div class="section">
+  <div class="container">
+
+    <div class="callout">
+      Microsoft's flagship tool — the <span class="chip chip-4">PowerPoint Agent</span> — generates HTML first, then converts it to PPTX. The output looks like a PowerPoint file. It does not behave like one: no placeholders, no live theme tokens, incompatible with PowerPoint Designer. Meanwhile, the least-prominent tool — <span class="chip chip-2">Copilot Chat in the PowerPoint desktop app</span>, which runs a Python script — produced the most structurally correct file of all five.
+    </div>
+
+    <div class="section-eyebrow">The five ways</div>
+    <div class="methods-grid">
+
+      <div class="method-card mc-1">
+        <div class="method-num">Method 1</div>
+        <div class="method-name">Create with Copilot</div>
+        <div class="method-tag">PowerPoint startup dialog</div>
+        <div class="method-desc">The oldest experience. Launch the PowerPoint desktop app and select "Create with Copilot" on the start screen. OpenAI-powered. Picks a theme and image style, then generates a full deck — with no working slide count control. Structurally the richest output: multiple real layouts, proper placeholders, and speaker notes populated from the source.</div>
+      </div>
+
+      <div class="method-card mc-2">
+        <div class="method-num">Method 2</div>
+        <div class="method-name">Copilot Chat (desktop)</div>
+        <div class="method-tag">PowerPoint app, Copilot pane</div>
+        <div class="method-desc">Open a file in the PowerPoint desktop app and activate the Copilot pane. Not to be confused with Edit in Copilot — this is the standard chat interface, which generates a PPTX by executing python-pptx code directly. No design, no images, but the cleanest OOXML structure of all five: zero hardcoded colors, full placeholder bindings.</div>
+      </div>
+
+      <div class="method-card mc-3">
+        <div class="method-num">Method 3</div>
+        <div class="method-name">Edit in Copilot</div>
+        <div class="method-tag">PowerPoint web, Copilot pane</div>
+        <div class="method-tag" style="margin-top:2px">Formerly Agent Mode</div>
+        <div class="method-frontier">Frontier</div>
+        <div class="method-desc">Open a blank presentation in PowerPoint for the web and select "Edit with Copilot" (formerly Agent Mode) in the Copilot pane. Asks clarifying questions, offers a template picker. Generates through the live PowerPoint Online editing stack — the only experience with real revision tracking. PDF input only.</div>
+      </div>
+
+      <div class="method-card mc-4">
+        <div class="method-num">Method 4</div>
+        <div class="method-name">PowerPoint Agent</div>
+        <div class="method-tag">M365 Copilot Chat</div>
+        <div class="method-frontier">Frontier</div>
+        <div class="method-desc">Select PowerPoint from the tools menu in Copilot Chat, or attach a file inside a Copilot Notebook. The most capable input parser and the most visually designed output. Runs an HTML-first pipeline with per-slide validation loops, then converts to PPTX via a headless Office engine. Accepts MD, DOCX, and PDF.</div>
+      </div>
+
+      <div class="method-card mc-5">
+        <div class="method-num">Method 5</div>
+        <div class="method-name">Copilot Cowork</div>
+        <div class="method-tag">Copilot desktop app</div>
+        <div class="method-frontier">Frontier</div>
+        <div class="method-desc">Open the Copilot desktop app and describe the task. Microsoft's branded version of the Cowork experience, powered by Anthropic's Claude technology. Generates PPTX via PptxGenJS — the same library as Claude Desktop's own Cowork. Medium visual design, flat OOXML structure, no theme inheritance.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- KEY FINDINGS -->
+<div class="section section-soft">
+  <div class="container">
+    <div class="section-eyebrow">What the files show</div>
+    <h2>Eight findings from opening the PPTX files</h2>
+    <div class="findings-grid">
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 1</div>
+        <div class="fc-title">PowerPoint Agent is HTML-first</div>
+        <div class="fc-body">The <span class="chip chip-4">PowerPoint Agent</span> pipeline uses an intermediate HTML representation — agent thinking traces expose internal schemas named <code>botspeak</code> and <code>css_guidelines</code>. Content is designed in CSS terms. A headless Office converter produces the final PPTX. Microsoft's launch blog acknowledges the intermediate step and then calls the output "real Office generation." Both statements are true — about different pipeline stages.</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 2</div>
+        <div class="fc-title">The validation loop is a real render cycle</div>
+        <div class="fc-body">Each <span class="chip chip-4">PowerPoint Agent</span> slide runs up to three render-validate-fix cycles (~200 seconds for complex layouts). A Python script checks rendered output for overflow and layout failures. Slides were observed changing between passes. This is the most defensible part of Microsoft's "headless Office" claim — the validation runs against the real rendering engine, not a browser canvas.</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 3</div>
+        <div class="fc-title">The tier pyramid is not SmartArt</div>
+        <div class="fc-body">What looks like a SmartArt pyramid in the <span class="chip chip-4">PowerPoint Agent</span> output is seven individually positioned <code>roundRect</code> shapes plus 12 text boxes. No <code>dgm:</code> XML namespace. Not editable as SmartArt in PowerPoint. The agent reads a resource called <code>smartart</code> during generation — but uses it to calculate positions, not to emit SmartArt XML.</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 4</div>
+        <div class="fc-title">Both Coworks share a library fingerprint</div>
+        <div class="fc-body">Microsoft's <span class="chip chip-5">Copilot Cowork</span> and the Claude Desktop version both embed <code>dc:subject="PptxGenJS Presentation"</code> in their output metadata. Microsoft overwrote the creator field; the subject tag remained. This is the "XML stitching" approach Microsoft's own blog describes as inferior to its headless Office pipeline.</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 5</div>
+        <div class="fc-title">Create with Copilot is structurally the richest</div>
+        <div class="fc-body"><span class="chip chip-1">Create with Copilot</span> produces files with 9 different slide layouts, full placeholder bindings, speaker notes populated from source text, and one real SmartArt object. It also generates 32 slides from a 3,000-word article. The structure is correct; the editorial judgment is not.</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 6</div>
+        <div class="fc-title">Edit in Copilot is the only genuinely native experience</div>
+        <div class="fc-body"><span class="chip chip-3">Edit in Copilot</span> produces files with a <code>changesInfo</code> revision log — proof the content went through the live Office editing stack. It is the only output with change tracking tied to the authenticated user identity. The only one that names the editing session in revision metadata.</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 7</div>
+        <div class="fc-title">Anthropic is in the stack — undisclosed</div>
+        <div class="fc-body">A Q&amp;A from Microsoft's February 2026 M365 Champions call states: "Anthropic enablement is required for Frontier access." The <span class="chip chip-5">Copilot Cowork</span> blog post from March 30, 2026 confirms this explicitly, describing Cowork as built on "the technology platform that powers Claude Cowork." Not mentioned in product marketing for <span class="chip chip-4">PowerPoint Agent</span> or <span class="chip chip-3">Edit in Copilot</span>.</div>
+      </div>
+
+      <div class="finding-card">
+        <div class="fc-num">Finding 8</div>
+        <div class="fc-title">The "generate then refine" workflow has a structural gap</div>
+        <div class="fc-body">Microsoft positions the <span class="chip chip-4">PowerPoint Agent</span> (create) with <span class="chip chip-3">Edit in Copilot</span> (refine) as a natural two-step workflow. The Agent produces all-Blank-layout, zero-placeholder, hardcoded-color files. Edit in Copilot works best on properly-authored OOXML. The handoff requires structural remediation — not light editing.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Side by side</div>
+    <h2>Method comparison</h2>
+    <div class="table-scroll">
+      <table>
+        <colgroup>
+          <col class="col-label">
+          <col class="col-method">
+          <col class="col-method">
+          <col class="col-method">
+          <col class="col-method">
+          <col class="col-method">
+        </colgroup>
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              <span class="th-dot" style="background:var(--c1)"></span>
+              <span class="th-method-name">Create with Copilot</span>
+              <span class="th-access">PowerPoint startup dialog</span>
+            </th>
+            <th>
+              <span class="th-dot" style="background:var(--c2)"></span>
+              <span class="th-method-name">Copilot Chat (desktop)</span>
+              <span class="th-access">PowerPoint app, Copilot pane</span>
+            </th>
+            <th>
+              <span class="th-dot" style="background:var(--c3)"></span>
+              <span class="th-method-name">Edit in Copilot</span>
+              <span class="th-access">PowerPoint web · formerly Agent Mode</span>
+            </th>
+            <th>
+              <span class="th-dot" style="background:var(--c4)"></span>
+              <span class="th-method-name">PowerPoint Agent</span>
+              <span class="th-access">M365 Copilot Chat · Frontier</span>
+            </th>
+            <th>
+              <span class="th-dot" style="background:var(--c5)"></span>
+              <span class="th-method-name">Copilot Cowork</span>
+              <span class="th-access">Copilot desktop app · Frontier</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr class="row-group"><td colspan="6">Generation</td></tr>
+          <tr>
+            <td>Engine / library</td>
+            <td><span class="tag">In-app OpenAI pipeline</span></td>
+            <td><span class="tag mono">python-pptx</span></td>
+            <td><span class="tag">PowerPoint Online native</span></td>
+            <td><span class="tag tag-b">HTML → headless Office</span></td>
+            <td><span class="tag mono">PptxGenJS</span></td>
+          </tr>
+          <tr>
+            <td>Intermediate format</td>
+            <td><span class="muted">Unknown (native)</span></td>
+            <td><span class="tag">Python object model</span></td>
+            <td><span class="tag">Direct OOXML edits</span></td>
+            <td><span class="tag">HTML / CSS</span></td>
+            <td><span class="tag">JSON → Open XML</span></td>
+          </tr>
+          <tr>
+            <td>Generator fingerprint</td>
+            <td><span class="muted">User name</span></td>
+            <td><span class="muted">Empty creator</span></td>
+            <td><span class="tag">changesInfo log</span></td>
+            <td><span class="muted">None visible</span></td>
+            <td><span class="tag mono">"PptxGenJS" in metadata</span></td>
+          </tr>
+
+          <tr class="row-group"><td colspan="6">Output</td></tr>
+          <tr>
+            <td>Slide count (same source)</td>
+            <td><span class="val">32</span></td>
+            <td><span class="val">9</span></td>
+            <td><span class="val">10</span></td>
+            <td><span class="val">13</span></td>
+            <td><span class="val">12</span></td>
+          </tr>
+          <tr>
+            <td>File size</td>
+            <td><span class="val">5.4 MB</span></td>
+            <td><span class="val" style="color:var(--green);font-weight:600">35 KB</span></td>
+            <td><span class="val">1.5 MB</span></td>
+            <td><span class="val">7.8 MB</span></td>
+            <td><span class="val">325 KB</span></td>
+          </tr>
+          <tr>
+            <td>AI images</td>
+            <td><span class="partial">27 JPEGs</span></td>
+            <td><span class="no">None</span></td>
+            <td><span class="partial">9 JPEGs</span></td>
+            <td><span class="partial">3 PNGs + 3 SVGs</span></td>
+            <td><span class="no">None</span></td>
+          </tr>
+          <tr>
+            <td>Slide count control</td>
+            <td><span class="no">Broken — estimate only</span></td>
+            <td><span class="partial">Via Python code</span></td>
+            <td><span class="yes">Confirmed upfront</span></td>
+            <td><span class="partial">Via prompt (rough)</span></td>
+            <td><span class="partial">Via prompt</span></td>
+          </tr>
+          <tr>
+            <td>Speaker notes</td>
+            <td><span class="yes">Populated with quotes</span></td>
+            <td><span class="no">None</span></td>
+            <td><span class="yes">Populated — paraphrased</span></td>
+            <td><span class="no">Missing entirely</span></td>
+            <td><span class="no">Empty scaffolds</span></td>
+          </tr>
+
+          <tr class="row-group"><td colspan="6">Structural integrity (OOXML)</td></tr>
+          <tr>
+            <td>Layouts used</td>
+            <td><span class="yes">9 different layouts</span></td>
+            <td><span class="yes">2 — Title + T&amp;C</span></td>
+            <td><span class="partial">1 — Two Content</span></td>
+            <td><span class="no">1 — Blank only</span></td>
+            <td><span class="no">1 — Layout 1 only</span></td>
+          </tr>
+          <tr>
+            <td>Placeholders</td>
+            <td><span class="yes">Full — all slides</span></td>
+            <td><span class="yes">Full — title + body</span></td>
+            <td><span class="partial">Body only — no title</span></td>
+            <td><span class="no">Zero across all slides</span></td>
+            <td><span class="no">Zero across all slides</span></td>
+          </tr>
+          <tr>
+            <td>Hardcoded hex colors</td>
+            <td><span class="yes">Zero</span></td>
+            <td><span class="yes">Zero</span></td>
+            <td><span class="partial">~50 (accents only)</span></td>
+            <td><span class="no">36 unique values</span></td>
+            <td><span class="no">490+ references</span></td>
+          </tr>
+          <tr>
+            <td>Theme recolorable</td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+          <tr>
+            <td>Real SmartArt</td>
+            <td><span class="yes">Yes — one object</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No — faked shapes</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+          <tr>
+            <td>Designer compatible</td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="partial">Partial — no title ph</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+          <tr>
+            <td>Change tracking</td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="yes">Yes — changesInfo XML</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+
+          <tr class="row-group"><td colspan="6">Branding</td></tr>
+          <tr>
+            <td>Named theme</td>
+            <td><span class="muted">Galaxy — live tokens</span></td>
+            <td><span class="muted">Office Theme — live tokens</span></td>
+            <td><span class="muted">ModernSerenity — live tokens</span></td>
+            <td><span class="muted">Atelier — baked hex</span></td>
+            <td><span class="muted">Agent's choice — baked hex</span></td>
+          </tr>
+          <tr>
+            <td>Org template (.potx)</td>
+            <td><span class="no">Not yet — roadmap</span></td>
+            <td><span class="no">No</span></td>
+            <td><span class="partial">In progress</span></td>
+            <td><span class="no">Not yet — roadmap</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- QUADRANT -->
+<div class="section section-softer">
+  <div class="container">
+    <div class="section-eyebrow">The gap</div>
+    <h2>Design quality vs. structural integrity</h2>
+    <p style="font-size:14px;color:var(--text-sec);margin-bottom:20px;max-width:520px">No tool occupies the top-right cell. High visual design and correct PowerPoint structure have not arrived in the same product.</p>
+
+    <div class="quad-axis-v">↑ Higher design quality</div>
+    <div class="quad-grid">
+      <div class="quad-cell" style="border-top:3px solid #a4262c;">
+        <div class="quad-label" style="color:#a4262c">High design · Low structure</div>
+        <div class="quad-item"><span class="qdot" style="background:var(--c4)"></span>PowerPoint Agent</div>
+        <div class="quad-item"><span class="qdot" style="background:var(--c5)"></span>Copilot Cowork</div>
+      </div>
+      <div class="quad-cell empty" style="border-top:3px solid #498205;">
+        <div class="quad-label" style="color:#498205">High design · High structure</div>
+        <div class="quad-item" style="color:var(--text-muted);font-style:italic;font-size:13px">Not yet available</div>
+      </div>
+      <div class="quad-cell" style="border-top:3px solid #a4262c;">
+        <div class="quad-label" style="color:#a4262c">Low design · Low structure</div>
+        <div class="quad-item"><span class="qdot" style="background:var(--c2)"></span>Copilot Chat (desktop)</div>
+      </div>
+      <div class="quad-cell" style="border-top:3px solid #498205;">
+        <div class="quad-label" style="color:#498205">Low design · High structure</div>
+        <div class="quad-item"><span class="qdot" style="background:var(--c1)"></span>Create with Copilot</div>
+        <div class="quad-item"><span class="qdot" style="background:var(--c3)"></span>Edit in Copilot</div>
+      </div>
+    </div>
+    <div class="quad-axis-h">
+      <span>← Less structurally correct</span>
+      <span>More structurally correct →</span>
+    </div>
+  </div>
+</div>
+
+<!-- SOURCES -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow" style="margin-bottom:14px">Sources</div>
+    <div class="sources-list">
+      <a class="src-link" href="https://techcommunity.microsoft.com/blog/microsoft365copilotblog/introducing-word-excel-and-powerpoint-agents-in-microsoft-365-copilot/4470604" target="_blank" rel="noopener">
+        <span class="src-type">MS Blog</span>
+        <span class="src-title">Introducing Word, Excel, and PowerPoint Agents in Microsoft 365 Copilot</span>
+        <span class="src-date">Nov 2025</span>
+      </a>
+      <a class="src-link" href="https://techcommunity.microsoft.com/blog/drivingadoptionblog/word-excel-and-powerpoint-agents-in-microsoft-365-copilot-overview--live-demo--f/4497690" target="_blank" rel="noopener">
+        <span class="src-type">MS Blog</span>
+        <span class="src-title">Word, Excel and PowerPoint Agents — M365 Champions Q&amp;A (Anthropic enablement detail)</span>
+        <span class="src-date">Feb 2026</span>
+      </a>
+      <a class="src-link" href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/30/copilot-cowork-now-available-in-frontier/" target="_blank" rel="noopener">
+        <span class="src-type">MS Blog</span>
+        <span class="src-title">Copilot Cowork: Now available in Frontier — confirms Claude / Anthropic technology platform</span>
+        <span class="src-date">Mar 2026</span>
+      </a>
+      <a class="src-link" href="https://support.microsoft.com/en-us/topic/edit-with-copilot-in-powerpoint-frontier-008f17aa-8e5f-4cda-ba6c-0588000bdad7" target="_blank" rel="noopener">
+        <span class="src-type">MS Support</span>
+        <span class="src-title">Edit with Copilot in PowerPoint (Frontier) — formerly Agent Mode</span>
+        <span class="src-date">2026</span>
+      </a>
+      <a class="src-link" href="https://support.microsoft.com/en-us/office/create-a-new-presentation-with-copilot-in-powerpoint-3222ee03-f5a4-4d27-8642-9c387ab4854d" target="_blank" rel="noopener">
+        <span class="src-type">MS Support</span>
+        <span class="src-title">Create a new presentation with Copilot in PowerPoint</span>
+        <span class="src-date">2026</span>
+      </a>
+      <a class="src-link" href="https://learn.microsoft.com/en-us/copilot/microsoft-365/faq-wordexcelppt-agents" target="_blank" rel="noopener">
+        <span class="src-type">MS Learn</span>
+        <span class="src-title">Word, Excel, and PowerPoint Agents — Responsible AI FAQ</span>
+        <span class="src-date">2026</span>
+      </a>
+      <a class="src-link" href="https://github.com/Ziv-Barber/officegen" target="_blank" rel="noopener">
+        <span class="src-type">GitHub</span>
+        <span class="src-title">officegen / PptxGenJS — Open XML generator identified in both Cowork implementations via metadata</span>
+        <span class="src-date">library</span>
+      </a>
+      <a class="src-link" href="https://python-pptx.readthedocs.io/" target="_blank" rel="noopener">
+        <span class="src-type">Docs</span>
+        <span class="src-title">python-pptx — library used by M365 Copilot Chat in the PowerPoint desktop client</span>
+        <span class="src-date">library</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span>Findings based on PPTX file inspection of five outputs generated from the same source in March 2026. Agent thinking traces and creation dialog screenshots also reviewed. Technical details may change as Microsoft updates these features.</span>
+      <span class="footer-by"><a href="https://niiranenadvisory.com/">Jukka Niiranen</a> · Niiranen Advisory</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
