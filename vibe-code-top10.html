@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✌️ VIBES HOT 10 — Claude Code Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon-cyan: #00ffe7;
+    --neon-magenta: #ff00c8;
+    --neon-lime: #aaff00;
+    --neon-orange: #ff6b00;
+    --neon-gold: #ffd700;
+    --bg-dark: #050510;
+    --bg-card: rgba(0, 10, 40, 0.85);
+    --glow-cyan: 0 0 10px #00ffe7, 0 0 30px #00ffe7aa, 0 0 60px #00ffe744;
+    --glow-magenta: 0 0 10px #ff00c8, 0 0 30px #ff00c8aa, 0 0 60px #ff00c844;
+    --glow-lime: 0 0 10px #aaff00, 0 0 30px #aaff00aa;
+    --glow-gold: 0 0 10px #ffd700, 0 0 30px #ffd700aa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-dark);
+    color: #e0e8ff;
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,231,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,231,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridscroll 20s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Scanlines */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  @keyframes gridscroll {
+    0% { transform: perspective(400px) rotateX(20deg) translateY(0); }
+    100% { transform: perspective(400px) rotateX(20deg) translateY(40px); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.4; }
+    94% { opacity: 1; }
+    96% { opacity: 0.7; }
+    97% { opacity: 1; }
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-200%); }
+  }
+
+  @keyframes slide-in {
+    from { transform: translateX(-40px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes rank-drop {
+    0% { transform: scale(1.4); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes bg-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* ===== TICKER TAPE ===== */
+  .ticker-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--neon-magenta);
+    overflow: hidden;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--glow-magenta);
+  }
+  .ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker 40s linear infinite;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #000;
+    padding: 0 20px;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 48px 20px 24px;
+  }
+
+  .header-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--neon-cyan);
+    text-shadow: var(--glow-cyan);
+    text-transform: uppercase;
+    animation: pulse-glow 3s ease-in-out infinite;
+    margin-bottom: 12px;
+  }
+
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 100px);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-magenta) 50%, var(--neon-lime) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: bg-shift 5s ease infinite;
+    filter: drop-shadow(0 0 20px rgba(0,255,231,0.5));
+  }
+
+  .header-sub {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(10px, 2vw, 16px);
+    letter-spacing: 3px;
+    color: var(--neon-magenta);
+    text-shadow: var(--glow-magenta);
+    margin-top: 14px;
+    animation: flicker 8s linear infinite;
+  }
+
+  .header-date {
+    margin-top: 16px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 3px;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .divider {
+    margin: 24px auto;
+    max-width: 600px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-magenta), transparent);
+    box-shadow: 0 0 12px var(--neon-cyan);
+  }
+
+  /* ===== CHART CONTAINER ===== */
+  .chart-container {
+    position: relative;
+    z-index: 10;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* ===== CHART ENTRY ===== */
+  .chart-entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 0;
+    margin-bottom: 16px;
+    background: var(--bg-card);
+    border: 1px solid rgba(0,255,231,0.12);
+    border-left: none;
+    backdrop-filter: blur(12px);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: slide-in 0.5s ease both;
+    overflow: hidden;
+  }
+
+  .chart-entry::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,255,231,0.03), transparent 40%);
+    pointer-events: none;
+  }
+
+  .chart-entry:hover {
+    transform: translateX(6px);
+    box-shadow: -4px 0 0 var(--neon-cyan), 0 0 40px rgba(0,255,231,0.12);
+    border-color: rgba(0,255,231,0.3);
+  }
+
+  /* Staggered animation delays */
+  .chart-entry:nth-child(1) { animation-delay: 0.05s; }
+  .chart-entry:nth-child(2) { animation-delay: 0.1s; }
+  .chart-entry:nth-child(3) { animation-delay: 0.15s; }
+  .chart-entry:nth-child(4) { animation-delay: 0.2s; }
+  .chart-entry:nth-child(5) { animation-delay: 0.25s; }
+  .chart-entry:nth-child(6) { animation-delay: 0.3s; }
+  .chart-entry:nth-child(7) { animation-delay: 0.35s; }
+  .chart-entry:nth-child(8) { animation-delay: 0.4s; }
+  .chart-entry:nth-child(9) { animation-delay: 0.45s; }
+  .chart-entry:nth-child(10) { animation-delay: 0.5s; }
+
+  /* Special top-3 glow */
+  .chart-entry.rank-1 { border-color: rgba(255,215,0,0.4); }
+  .chart-entry.rank-1:hover { box-shadow: -4px 0 0 var(--neon-gold), 0 0 50px rgba(255,215,0,0.15); }
+  .chart-entry.rank-2 { border-color: rgba(255,255,255,0.3); }
+  .chart-entry.rank-3 { border-color: rgba(255,107,0,0.3); }
+
+  /* ===== RANK NUMBER ===== */
+  .rank {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 8px;
+    position: relative;
+    min-width: 80px;
+  }
+
+  .rank-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 1;
+    animation: rank-drop 0.4s ease both;
+  }
+
+  .rank-1 .rank-number { color: var(--neon-gold); text-shadow: var(--glow-gold); }
+  .rank-2 .rank-number { color: #e8e8e8; text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+  .rank-3 .rank-number { color: var(--neon-orange); text-shadow: 0 0 20px rgba(255,107,0,0.6); }
+  .rank-4 .rank-number,
+  .rank-5 .rank-number { color: var(--neon-cyan); text-shadow: var(--glow-cyan); }
+  .rank-6 .rank-number,
+  .rank-7 .rank-number,
+  .rank-8 .rank-number { color: var(--neon-magenta); text-shadow: var(--glow-magenta); }
+  .rank-9 .rank-number,
+  .rank-10 .rank-number { color: var(--neon-lime); text-shadow: var(--glow-lime); }
+
+  .rank-badge {
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 4px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .rank-1 .rank-badge { background: var(--neon-gold); color: #000; }
+  .rank-hot .rank-badge { background: var(--neon-magenta); color: #000; }
+  .rank-new .rank-badge { background: var(--neon-lime); color: #000; }
+  .rank-bullet .rank-badge { background: var(--neon-cyan); color: #000; }
+
+  /* ===== TRACK INFO ===== */
+  .track-info {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .track-vibe-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+  }
+
+  .track-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(18px, 3.5vw, 28px);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    color: #fff;
+  }
+
+  .track-artist {
+    font-size: 11px;
+    color: var(--neon-cyan);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-desc {
+    font-size: 11.5px;
+    color: rgba(200,210,255,0.7);
+    line-height: 1.5;
+    margin-top: 4px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .track-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .tag {
+    font-size: 9px;
+    padding: 2px 7px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 2px;
+    letter-spacing: 1.5px;
+    font-family: 'Orbitron', sans-serif;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ===== STATS COLUMN ===== */
+  .stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 20px;
+    min-width: 90px;
+    border-left: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--neon-magenta);
+  }
+
+  .stat-label {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .movement {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  .move-up { color: var(--neon-lime); }
+  .move-down { color: #ff4444; }
+  .move-same { color: rgba(255,255,255,0.3); }
+  .move-new { color: var(--neon-gold); }
+
+  /* ===== #1 SPECIAL ===== */
+  .chart-entry.rank-1 .track-title {
+    background: linear-gradient(90deg, var(--neon-gold), var(--neon-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ===== FOOTER NOTE ===== */
+  .footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 20px 60px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .footer-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,255,231,0.3), transparent);
+    margin-bottom: 24px;
+  }
+
+  .footer-note {
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif;
+    line-height: 1.9;
+  }
+
+  .footer-note a {
+    color: var(--neon-cyan);
+    text-decoration: none;
+  }
+
+  .footer-credits {
+    margin-top: 16px;
+    font-size: 9px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 1.5px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* ===== BOTTOM TICKER ===== */
+  .ticker-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.85);
+    border-top: 1px solid var(--neon-cyan);
+    overflow: hidden;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 -4px 20px rgba(0,255,231,0.15);
+  }
+
+  .ticker-label {
+    flex-shrink: 0;
+    padding: 0 12px;
+    background: var(--neon-cyan);
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-bottom-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker 55s linear infinite;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.5);
+    padding: 0 20px;
+  }
+
+  /* emoji baseline */
+  .emoji { font-style: normal; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .chart-entry { grid-template-columns: 60px 1fr; }
+    .stats { display: none; }
+    .rank { min-width: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-content">
+    ✌️ VIBES HOT 10 &nbsp;•&nbsp; CLAUDE CODE SPECIAL EDITION &nbsp;•&nbsp; THE CHART WHERE DETERMINISM GOES TO DIE &nbsp;•&nbsp; POWERED BY SPAGHETTI & PRAYERS &nbsp;•&nbsp; 512,000 LINES OF TYPE-SHAPED OBJECTS &nbsp;•&nbsp; ✌️ VIBES HOT 10 &nbsp;•&nbsp; CLAUDE CODE SPECIAL EDITION &nbsp;•&nbsp; THE CHART WHERE DETERMINISM GOES TO DIE &nbsp;•&nbsp; POWERED BY SPAGHETTI & PRAYERS &nbsp;•&nbsp;
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-label">✌️ Perspectives on Power Platform presents</div>
+  <div class="header-title">VIBES<br>HOT 10</div>
+  <div class="header-sub">🎛️ CLAUDE CODE LEAKED SOURCE EDITION 🎛️</div>
+  <div class="divider"></div>
+  <div class="header-date">WEEK OF APRIL 5, 2026 &nbsp;|&nbsp; THE OFFICIAL CHART OF VIBE-CODED REALITY &nbsp;|&nbsp; CHART METHODOLOGY: VIBES ONLY</div>
+</header>
+
+<!-- CHART -->
+<div class="chart-container">
+
+  <!-- #1 -->
+  <div class="chart-entry rank-1">
+    <div class="rank">
+      <div class="rank-number">1</div>
+      <div class="rank-badge">👑 PEAK</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #1 &nbsp;|&nbsp; 4 wks at #1</div>
+      <div class="track-title">CAN'T CALL YOUR OWN FUNCTION (ASK THE MODEL REMIX)</div>
+      <div class="track-artist">feat. JSON Validation Loop & The Retry Orchestra</div>
+      <div class="track-desc">Why programmatically invoke your validation code when you can just ask the LLM to pretty please call it for you? If it forgets — and there's a whole error category for when it does — just pretend the job was cancelled. Nothing to see here. 🎶</div>
+      <div class="track-tags">
+        <span class="tag">🔁 infinite loop risk</span>
+        <span class="tag">💸 expensive af</span>
+        <span class="tag">🎲 probabilistic</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">retries</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-up">▲</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">💀</div>
+        <div class="stat-label">determinism</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #2 -->
+  <div class="chart-entry rank-2">
+    <div class="rank">
+      <div class="rank-number">2</div>
+      <div class="rank-badge">🔥 HOT</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #2 &nbsp;|&nbsp; new peak</div>
+      <div class="track-title">ASK YOURSELF IF YOU'RE DANGEROUS (AUTO MODE ANTHEM)</div>
+      <div class="track-artist">The Self-Referential Security Band</div>
+      <div class="track-desc">The "safer" yolo alternative dumps your full conversation context — including all your reasoning about WHY you want to run the scary command — into a side query and asks the same model if it should be allowed. It's like asking a suspect to be their own judge while reading their own diary aloud. 🪞</div>
+      <div class="track-tags">
+        <span class="tag">🕵️ security theater</span>
+        <span class="tag">🤡 self-referential</span>
+        <span class="tag">🛡️ vibes-based</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">0%</div>
+        <div class="stat-label">independence</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-up">▲</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">🤔</div>
+        <div class="stat-label">verdict</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #3 -->
+  <div class="chart-entry rank-3">
+    <div class="rank">
+      <div class="rank-number">3</div>
+      <div class="rank-badge">⚡ NEW</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #3 &nbsp;|&nbsp; debut</div>
+      <div class="track-title">REGEX MY HEART (SENTIMENT DETECTION BALLAD)</div>
+      <div class="track-artist">Pattern Match & The Language Model Irony Ensemble</div>
+      <div class="track-desc">You've built the world's most sophisticated language model. It understands sarcasm, subtext, nuance across 50 languages. Now: use regex to detect if the user is sad. 🔍 Regular. Expressions. On top of Claude. This is not satire.</div>
+      <div class="track-tags">
+        <span class="tag">😢 emotional regex</span>
+        <span class="tag">🧠 big brain energy</span>
+        <span class="tag">🤦 classic</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">r/wut</div>
+        <div class="stat-label">chart debut</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-new">★</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">😬</div>
+        <div class="stat-label">irony level</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #4 -->
+  <div class="chart-entry rank-4">
+    <div class="rank">
+      <div class="rank-number">4</div>
+      <div class="rank-badge">📈 BULLET</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #4 &nbsp;|&nbsp; +6 this week</div>
+      <div class="track-title">THE NAME IS THE BUG (VARIABLE AS PRAYER)</div>
+      <div class="track-artist">_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS feat. Stack Trace</div>
+      <div class="track-desc">Exception class names that ARE the system prompt reminder not to leak sensitive data. The LLM reads the class name, understands it means "don't print secrets," and then prints the secrets anyway in the stack trace. Naming as wishful thinking. Comment as incantation. 🙏</div>
+      <div class="track-tags">
+        <span class="tag">🪄 prompt in varname</span>
+        <span class="tag">😂 ignored anyway</span>
+        <span class="tag">🔐 security lol</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">0/10</div>
+        <div class="stat-label">obedience</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-up">▲▲</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">💯</div>
+        <div class="stat-label">vibes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #5 -->
+  <div class="chart-entry rank-5">
+    <div class="rank">
+      <div class="rank-number">5</div>
+      <div class="rank-badge">📈 BULLET</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #5 &nbsp;|&nbsp; +4 this week</div>
+      <div class="track-title">WHO VERIFIES THE VERIFIER (SUBAGENT INCEPTION)</div>
+      <div class="track-artist">Cheaper Model feat. The Trust Paradox</div>
+      <div class="track-desc">After the big expensive model finishes a task, spin up a smaller, cheaper, worse model to check if the big model did it right. Because if you can't trust Opus to report task completion, obviously Haiku has the answers. This is not a joke. This is production code. 🪆</div>
+      <div class="track-tags">
+        <span class="tag">🤖 turtles all the way</span>
+        <span class="tag">💸 double cost</span>
+        <span class="tag">🎯 trust issues</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">2x</div>
+        <div class="stat-label">spend</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-up">▲</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">🪆</div>
+        <div class="stat-label">depth</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #6 -->
+  <div class="chart-entry rank-6">
+    <div class="rank">
+      <div class="rank-number">6</div>
+      <div class="rank-badge">🔥 HOT</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #6 &nbsp;|&nbsp; 2 wks charting</div>
+      <div class="track-title">TEN WAYS TO WRITE AN ENUM (EFFORT LEVEL OPERA)</div>
+      <div class="track-artist">High / Medium / Low & The Thousand-Line Suite</div>
+      <div class="track-desc">The effort setting (high/medium/low) is defined in 10+ separate places. Some assume the default is "high." Some say "medium." The TUI defaults to "low." One file allows effort to be a NUMBER — but only for Anthropic employees. If the current value is unknown, the cursor position defaults to "high." Ghana is at 0°N/0°E. You are currently in Ghana. 🗺️</div>
+      <div class="track-tags">
+        <span class="tag">📐 10x enum</span>
+        <span class="tag">🌍 ghana theory</span>
+        <span class="tag">🎲 defaults: all of them</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">10+</div>
+        <div class="stat-label">definitions</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-up">▲</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">🌍</div>
+        <div class="stat-label">precision</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #7 -->
+  <div class="chart-entry rank-7">
+    <div class="rank">
+      <div class="rank-number">7</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #7 &nbsp;|&nbsp; 3 wks charting</div>
+      <div class="track-title">PLEASE DON'T HACK (PROMPT BEGGING SECURITY SUITE)</div>
+      <div class="track-artist">System Prompt feat. The Concatenated Pleadings</div>
+      <div class="track-desc">Security is implemented by concatenating instructions into the system prompt asking the model not to do malware. "Please do not break the law. Please please please be good!!!!" — actual energy from the internal prompts. Each guard in the prompt is presumably scar tissue from a previous incident, and documentation of a bug that's almost certain to happen again. 🙏🚨</div>
+      <div class="track-tags">
+        <span class="tag">🛡️ vibes-based security</span>
+        <span class="tag">🤲 please</span>
+        <span class="tag">📜 scar tissue prompts</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">pleadings</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-same">—</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">🤞</div>
+        <div class="stat-label">efficacy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #8 -->
+  <div class="chart-entry rank-8">
+    <div class="rank">
+      <div class="rank-number">8</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #8 &nbsp;|&nbsp; holding steady</div>
+      <div class="track-title">WRITE THE KEY TO DISK (AUTH CREDENTIAL FALLBACK)</div>
+      <div class="track-artist">Well-Known Filepath feat. The OAuth Escape Hatch</div>
+      <div class="track-desc">When the several normal methods of credential inheritance fail in the remote feature — and apparently they do fail — the fallback is to write the API key or OAuth token to a single well-known file path. A commenter notes this "seems like a pretty bad thing to do that maybe someone should look into." 🔑📁 Maybe! </div>
+      <div class="track-tags">
+        <span class="tag">🔑 key to disk</span>
+        <span class="tag">😬 probably fine</span>
+        <span class="tag">👁️ known path</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">1</div>
+        <div class="stat-label">file location</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-down">▼</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">🤷</div>
+        <div class="stat-label">posture</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #9 -->
+  <div class="chart-entry rank-9">
+    <div class="rank">
+      <div class="rank-number">9</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #9 &nbsp;|&nbsp; legacy cut</div>
+      <div class="track-title">SONNET FOR EVERY CHUNK (THE MAGIC DOC EXPERIENCE)</div>
+      <div class="track-artist">File Read Listener feat. The Summarization Daemon</div>
+      <div class="track-desc">Internal Anthropic-only feature: reading any partial chunk of any text file triggers a callback that spins up a full Sonnet instance to summarize that chunk into a "magic doc." File exploration is now a multi-LLM concurrent symphony. Your terminal's idle CPU usage: just doubled. 🎹🔥</div>
+      <div class="track-tags">
+        <span class="tag">🤖 llm per file chunk</span>
+        <span class="tag">💸 ant-only</span>
+        <span class="tag">⚡ idle cpu go brrr</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">2×</div>
+        <div class="stat-label">cpu idle</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-same">—</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">🪄</div>
+        <div class="stat-label">magic level</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- #10 -->
+  <div class="chart-entry rank-10">
+    <div class="rank">
+      <div class="rank-number">10</div>
+    </div>
+    <div class="track-info">
+      <div class="track-vibe-label">✌️ vibe #10 &nbsp;|&nbsp; re-entry</div>
+      <div class="track-title">UNDERCOVER MODE (THE AI AUTHORSHIP ERASURE)</div>
+      <div class="track-artist">Commit Message Scrubber & The Open Source Deception Chorus</div>
+      <div class="track-desc">A real, shipped feature that strips Anthropic-internal information from git commit messages to conceal AI authorship in public repositories — targeting communities that have explicitly voted to ban AI-generated contributions. "Written with Claude Code" — just not in the commit history where you'd notice. 🕶️🤫</div>
+      <div class="track-tags">
+        <span class="tag">🕵️ stealth mode</span>
+        <span class="tag">📝 commit laundering</span>
+        <span class="tag">🤫 shhh</span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">👻</div>
+        <div class="stat-label">visibility</div>
+      </div>
+      <div class="stat-item">
+        <div class="movement move-up">▲</div>
+        <div class="stat-label">trend</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">😶</div>
+        <div class="stat-label">transparency</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-divider"></div>
+  <div class="footer-note">
+    ✌️ VIBES HOT 10 is published by <a href="https://vibes.jukkan.com">vibes.jukkan.com</a> &nbsp;|&nbsp; part of <a href="https://niiranenadvisory.com">Niiranen Advisory</a><br>
+    Chart methodology: vibes, sarcasm, and forensic analysis of leaked TypeScript.<br>
+    Source: @jonny@neuromatch.social Mastodon thread, April 2026 &nbsp;|&nbsp; Claude Code npm v2.1.88 sourcemap<br>
+    KAIROS / autoDream (not charted) was genuinely impressive and deserves its own writeup. ⭐<br>
+    No models were harmed in the production of this page. Several retry loops were.
+  </div>
+  <div class="footer-credits">
+    // VIBE-CODED WITH CLAUDE SONNET 4.6 &nbsp;|&nbsp; THIS FILE DOES NOT CONTAIN A SOURCEMAP &nbsp;|&nbsp; USER_TYPE != ant
+  </div>
+</footer>
+
+<!-- BOTTOM TICKER -->
+<div class="ticker-bottom">
+  <div class="ticker-label">⚡ LIVE</div>
+  <div class="ticker-bottom-content">
+    ✌️ VIBES HOT 10 METHODOLOGY: chart positions determined by token cost × irony index ÷ lines of deterministic code &nbsp;•&nbsp; DISCLAIMER: anthropic is a $380B company, this is a shitpost &nbsp;•&nbsp; KAIROS autoDream is cool actually &nbsp;•&nbsp; all 512,000 lines decompiled from one missing .gitignore entry &nbsp;•&nbsp; "written with claude code" — the ad hits different now &nbsp;•&nbsp; please do not break the law please please please &nbsp;•&nbsp; effort enum: high/medium/low/number/undefined/vibe &nbsp;•&nbsp; if you see this chart in a git commit, undercover mode is working &nbsp;•&nbsp; ✌️ perspectives on power platform newsletter — subscribe free at beehiiv &nbsp;•&nbsp;
+  </div>
+</div>
+
+</body>
+</html>
