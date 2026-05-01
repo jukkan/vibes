@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local-first AI research stack - Jukka Niiranen</title>
+<meta name="description" content="How a Nextcloud-synced Markdown archive, Obsidian, local CLI agents, and Slidev can form a practical AI-assisted research and presentation workflow.">
+<meta property="og:title" content="Local-first AI research stack">
+<meta property="og:description" content="Nextcloud for the archive, Obsidian for the human UI, CLI agents for research work, and Slidev for presentations without isolating deck creation from the thinking.">
+<meta property="og:type" content="article">
+<style>
+  :root {
+    --ink: #171717;
+    --ink-soft: #3f3f46;
+    --muted: #6b7280;
+    --line: #d9dee7;
+    --line-soft: #eceff4;
+    --paper: #ffffff;
+    --wash: #f6f7f9;
+    --wash-2: #fbfbfc;
+    --black: #050505;
+    --blue: #2563eb;
+    --blue-dark: #1e3a8a;
+    --blue-wash: #eaf1ff;
+    --green: #087f5b;
+    --green-wash: #e7f6ef;
+    --amber: #a16207;
+    --amber-wash: #fff4d8;
+    --red: #b42318;
+    --red-wash: #ffebe8;
+    --violet: #6d28d9;
+    --violet-wash: #f1e9ff;
+    --shadow: 0 18px 48px rgba(15, 23, 42, .10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .site-band {
+    background: var(--black);
+    padding: 7px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .site-band a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .site-band-section {
+    color: #b8bec7;
+    font-size: 14px;
+  }
+
+  .site-band-sep {
+    color: #555;
+    font-size: 18px;
+    font-weight: 200;
+  }
+
+  .page-header {
+    background:
+      linear-gradient(135deg, rgba(37, 99, 235, .12), rgba(8, 127, 91, .10) 45%, rgba(161, 98, 7, .10)),
+      var(--wash-2);
+    border-bottom: 1px solid var(--line);
+    padding: 54px 0 44px;
+  }
+
+  .breadcrumb {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+
+  .breadcrumb span { color: #a1a1aa; margin: 0 7px; }
+
+  h1 {
+    font-size: clamp(31px, 5vw, 58px);
+    line-height: 1.02;
+    letter-spacing: 0;
+    font-weight: 650;
+    max-width: 900px;
+    margin-bottom: 18px;
+  }
+
+  .lead {
+    max-width: 760px;
+    color: var(--ink-soft);
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.55;
+    margin-bottom: 26px;
+  }
+
+  .header-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, .76);
+    border-radius: 999px;
+    padding: 6px 11px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex: 0 0 auto;
+  }
+
+  .dot.green { background: var(--green); }
+  .dot.amber { background: var(--amber); }
+  .dot.violet { background: var(--violet); }
+
+  .section {
+    padding: 46px 0;
+  }
+
+  .section + .section {
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .section-soft { background: var(--wash); }
+  .section-eyebrow {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: 12px;
+    font-weight: 750;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.2;
+    font-weight: 650;
+    margin-bottom: 20px;
+    max-width: 760px;
+  }
+
+  h3 {
+    font-size: 18px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: var(--ink-soft);
+    margin-bottom: 15px;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  .pull {
+    font-size: 24px;
+    line-height: 1.35;
+    font-weight: 650;
+    color: var(--blue-dark);
+    border-left: 5px solid var(--blue);
+    padding-left: 18px;
+    margin-top: 6px;
+  }
+
+  .workflow-map {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(132px, 1fr));
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, #fff, #f9fafb);
+    box-shadow: var(--shadow);
+  }
+
+  .workflow-node {
+    min-height: 168px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 6px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .workflow-node::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -13px;
+    width: 13px;
+    height: 2px;
+    background: var(--line);
+  }
+
+  .workflow-node:last-child::after { display: none; }
+
+  .node-label {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .node-title {
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 750;
+    margin-bottom: 8px;
+  }
+
+  .node-text {
+    color: var(--ink-soft);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .node-glyph {
+    margin-top: 14px;
+    height: 42px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+
+  .glyph-file, .glyph-terminal, .glyph-slide, .glyph-note {
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    background: color-mix(in srgb, currentColor 10%, white);
+  }
+
+  .glyph-file { color: var(--blue); }
+  .glyph-note { color: var(--green); }
+  .glyph-terminal { color: var(--ink-soft); grid-column: span 3; position: relative; }
+  .glyph-terminal::before {
+    content: ">_";
+    position: absolute;
+    left: 9px;
+    top: 8px;
+    color: var(--ink);
+    font-family: Consolas, "Courier New", monospace;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .glyph-slide { color: var(--violet); }
+
+  .node-archive { border-top: 4px solid var(--blue); }
+  .node-ui { border-top: 4px solid var(--green); }
+  .node-agent { border-top: 4px solid var(--ink-soft); }
+  .node-research { border-top: 4px solid var(--amber); }
+  .node-deck { border-top: 4px solid var(--violet); }
+
+  .loop-band {
+    margin-top: 16px;
+    border: 1px dashed #b7c2d0;
+    background: #fff;
+    padding: 12px 14px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .loop-band strong { color: var(--ink); }
+
+  .loop-chip {
+    background: var(--blue-wash);
+    color: var(--blue-dark);
+    border: 1px solid #c7d7ff;
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .layer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .layer-card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--paper);
+    padding: 18px;
+  }
+
+  .layer-card p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .layer-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .layer-kicker::before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  .layer-card:nth-child(2) .layer-kicker::before { background: var(--green); }
+  .layer-card:nth-child(3) .layer-kicker::before { background: var(--ink-soft); }
+  .layer-card:nth-child(4) .layer-kicker::before { background: var(--amber); }
+  .layer-card:nth-child(5) .layer-kicker::before { background: var(--violet); }
+  .layer-card:nth-child(6) .layer-kicker::before { background: var(--red); }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .compare-panel {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--paper);
+    overflow: hidden;
+  }
+
+  .compare-panel h3 {
+    padding: 16px 18px;
+    margin: 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--wash-2);
+  }
+
+  .compare-panel.ai h3 {
+    border-top: 4px solid var(--red);
+  }
+
+  .compare-panel.source h3 {
+    border-top: 4px solid var(--green);
+  }
+
+  .compare-panel ul {
+    list-style: none;
+    padding: 16px 18px 20px;
+  }
+
+  .compare-panel li {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 8px;
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .compare-panel li:last-child { margin-bottom: 0; }
+
+  .mark {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    margin-top: 2px;
+  }
+
+  .bad { color: var(--red); background: var(--red-wash); }
+  .good { color: var(--green); background: var(--green-wash); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .step-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px;
+    position: relative;
+    min-height: 180px;
+  }
+
+  .step-no {
+    color: var(--blue);
+    font-size: 34px;
+    line-height: 1;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+
+  .step-card p {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  .blueprint {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(340px, 1.05fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .codebox {
+    background: #111827;
+    color: #d1d5db;
+    border-radius: 6px;
+    padding: 18px;
+    overflow-x: auto;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.55;
+    box-shadow: var(--shadow);
+  }
+
+  .codebox .dim { color: #8b93a3; }
+  .codebox .folder { color: #93c5fd; }
+  .codebox .file { color: #facc15; }
+  .codebox .deck { color: #c4b5fd; }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  .principle {
+    border-left: 4px solid var(--blue);
+    background: var(--blue-wash);
+    padding: 14px 16px;
+  }
+
+  .principle:nth-child(2) { border-left-color: var(--green); background: var(--green-wash); }
+  .principle:nth-child(3) { border-left-color: var(--amber); background: var(--amber-wash); }
+  .principle:nth-child(4) { border-left-color: var(--violet); background: var(--violet-wash); }
+
+  .principle strong {
+    color: var(--ink);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .principle span {
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  .closing {
+    background: #101828;
+    color: #f8fafc;
+    padding: 44px 0;
+  }
+
+  .closing h2 {
+    color: #fff;
+    max-width: 860px;
+  }
+
+  .closing p {
+    color: #cbd5e1;
+    max-width: 780px;
+    font-size: 18px;
+  }
+
+  .closing a { color: #93c5fd; }
+
+  footer {
+    border-top: 1px solid #223048;
+    background: #101828;
+    padding: 18px 0 34px;
+    color: #94a3b8;
+    font-size: 13px;
+  }
+
+  footer .container {
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  footer a { color: #cbd5e1; }
+
+  @supports not (background: color-mix(in srgb, red 10%, white)) {
+    .glyph-file, .glyph-terminal, .glyph-slide, .glyph-note { background: #f8fafc; }
+  }
+
+  @media (max-width: 980px) {
+    .intro-grid,
+    .blueprint,
+    .comparison {
+      grid-template-columns: 1fr;
+    }
+
+    .workflow-map {
+      grid-template-columns: 1fr;
+    }
+
+    .workflow-node {
+      min-height: 132px;
+    }
+
+    .workflow-node::after {
+      top: auto;
+      right: auto;
+      bottom: -13px;
+      left: 50%;
+      width: 2px;
+      height: 13px;
+    }
+
+    .layer-grid,
+    .steps,
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 0 18px; }
+    .site-band { padding: 7px 18px; }
+    .page-header { padding: 38px 0 34px; }
+    .section { padding: 34px 0; }
+    .lead { font-size: 18px; }
+    .pull { font-size: 20px; }
+    .layer-grid,
+    .steps,
+    .principles {
+      grid-template-columns: 1fr;
+    }
+    .workflow-map { padding: 12px; }
+    .codebox { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+  <div class="site-band">
+    <a href="index.html">vibes</a>
+    <span class="site-band-sep">/</span>
+    <span class="site-band-section">local AI research stack</span>
+  </div>
+
+  <header class="page-header">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">vibes</a><span>/</span>workflow</div>
+      <h1>Local-first AI research stack</h1>
+      <p class="lead">A practical pattern for using a Nextcloud-synced Markdown archive as the durable workspace, Obsidian as the human-readable UI, CLI agents as research collaborators, and Slidev as the presentation layer.</p>
+      <div class="header-tags">
+        <span class="tag"><span class="dot"></span>Markdown archive</span>
+        <span class="tag"><span class="dot green"></span>Obsidian UI</span>
+        <span class="tag"><span class="dot amber"></span>CLI agents</span>
+        <span class="tag"><span class="dot violet"></span>Slidev decks</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container intro-grid">
+        <div>
+          <div class="section-eyebrow">The working idea</div>
+          <h2>The deck is not a separate phase. It is another view over the research.</h2>
+          <p>Most AI presentation workflows ask you to leave the research environment, prompt a deck generator, then clean up the result in an isolated app. That can be useful for a first draft, but it is a weak place to do serious iteration.</p>
+          <p>This setup keeps the source material, source links, outlines, speaker notes, visual ideas, and deck source in the same archive. The AI agent can read it. The human can browse it. The deck can be rebuilt without losing the trail of why each slide exists.</p>
+        </div>
+        <div class="pull">PPTX may still be the delivery artifact. It does not have to be where the thinking lives.</div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-eyebrow">Infrastructure map</div>
+        <h2>One archive, multiple interfaces</h2>
+        <div class="workflow-map" aria-label="Workflow from Nextcloud archive to Slidev deck">
+          <div class="workflow-node node-archive">
+            <div>
+              <div class="node-label">Sync layer</div>
+              <div class="node-title">Nextcloud archive</div>
+              <div class="node-text">Markdown files, images, source extracts, project folders, daily notes, and reusable context files.</div>
+            </div>
+            <div class="node-glyph" aria-hidden="true">
+              <span class="glyph-file"></span><span class="glyph-file"></span><span class="glyph-file"></span>
+            </div>
+          </div>
+
+          <div class="workflow-node node-ui">
+            <div>
+              <div class="node-label">Human UI</div>
+              <div class="node-title">Obsidian</div>
+              <div class="node-text">Readable notes, backlinks, search, quick editing, and enough structure without turning the archive into a database.</div>
+            </div>
+            <div class="node-glyph" aria-hidden="true">
+              <span class="glyph-note"></span><span class="glyph-note"></span><span class="glyph-note"></span>
+            </div>
+          </div>
+
+          <div class="workflow-node node-agent">
+            <div>
+              <div class="node-label">Agent bench</div>
+              <div class="node-title">CLI agents</div>
+              <div class="node-text">Claude Code, Codex, Gemini, and similar tools can search, edit, summarize, compare, and assemble drafts from local files.</div>
+            </div>
+            <div class="node-glyph" aria-hidden="true">
+              <span class="glyph-terminal"></span>
+            </div>
+          </div>
+
+          <div class="workflow-node node-research">
+            <div>
+              <div class="node-label">Working output</div>
+              <div class="node-title">Research pack</div>
+              <div class="node-text">Source notes become synthesis, decision logs, slide outlines, critique, speaker notes, and reusable fragments.</div>
+            </div>
+            <div class="node-glyph" aria-hidden="true">
+              <span class="glyph-file"></span><span class="glyph-note"></span><span class="glyph-file"></span>
+            </div>
+          </div>
+
+          <div class="workflow-node node-deck">
+            <div>
+              <div class="node-label">Presentation layer</div>
+              <div class="node-title">Slidev</div>
+              <div class="node-text">Markdown slides, local theme, assets, browser preview, static build, and optional PDF or PPTX export.</div>
+            </div>
+            <div class="node-glyph" aria-hidden="true">
+              <span class="glyph-slide"></span><span class="glyph-slide"></span><span class="glyph-slide"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="loop-band">
+          <strong>Iteration loop:</strong>
+          <span class="loop-chip">research</span>
+          <span>-></span>
+          <span class="loop-chip">outline</span>
+          <span>-></span>
+          <span class="loop-chip">deck source</span>
+          <span>-></span>
+          <span class="loop-chip">browser review</span>
+          <span>-></span>
+          <span class="loop-chip">agent edits</span>
+          <span>-></span>
+          <span class="loop-chip">human judgment</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-eyebrow">System layers</div>
+        <h2>What each layer is responsible for</h2>
+        <div class="layer-grid">
+          <article class="layer-card">
+            <div class="layer-kicker">Archive</div>
+            <h3>Stores the thinking</h3>
+            <p>The archive is plain files: notes, links, drafts, exported snippets, diagrams, and source images. It survives tool churn because it is not locked inside one AI product.</p>
+          </article>
+          <article class="layer-card">
+            <div class="layer-kicker">Obsidian</div>
+            <h3>Keeps it readable</h3>
+            <p>Obsidian is the human interface, not the system of record. It makes the archive navigable without forcing every artifact into a publishing format too early.</p>
+          </article>
+          <article class="layer-card">
+            <div class="layer-kicker">CLI agents</div>
+            <h3>Do the heavy lifting</h3>
+            <p>Agents can inspect the same folders the human uses, update notes, compare versions, draft sections, extract arguments, and keep context close to the work.</p>
+          </article>
+          <article class="layer-card">
+            <div class="layer-kicker">Research pack</div>
+            <h3>Turns files into judgment</h3>
+            <p>The useful artifact is not a pile of links. It is a structured pack: what was found, what it means, what remains uncertain, and what deserves a slide.</p>
+          </article>
+          <article class="layer-card">
+            <div class="layer-kicker">Slidev</div>
+            <h3>Compiles the story</h3>
+            <p>Slidev keeps the deck source as Markdown. Layouts, theme, visuals, and speaker notes can evolve together with the research instead of being rebuilt in a binary editor.</p>
+          </article>
+          <article class="layer-card">
+            <div class="layer-kicker">Review</div>
+            <h3>Closes the loop</h3>
+            <p>The browser preview, screenshots, layout checks, and exports make the deck testable. The result can still end up as a PDF or PPTX when distribution requires it.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container">
+        <div class="section-eyebrow">Why not just prompt a deck generator?</div>
+        <h2>The point is not avoiding presentation tools. It is avoiding a broken handoff.</h2>
+        <div class="comparison">
+          <div class="compare-panel ai">
+            <h3>AI deck generator first</h3>
+            <ul>
+              <li><span class="mark bad">x</span><span>Research and deck generation happen in a separate tool session, often with weak memory of the source material.</span></li>
+              <li><span class="mark bad">x</span><span>The output is usually a binary or semi-opaque artifact that agents cannot inspect and revise cleanly.</span></li>
+              <li><span class="mark bad">x</span><span>Iteration becomes prompt, export, fix, repeat. The reasoning trail fades while the slide polish gets louder.</span></li>
+              <li><span class="mark bad">x</span><span>The deck looks finished before the argument is finished, which is exactly backwards for research-heavy content.</span></li>
+            </ul>
+          </div>
+          <div class="compare-panel source">
+            <h3>Archive and Slidev first</h3>
+            <ul>
+              <li><span class="mark good">+</span><span>Research notes, source links, outline, visuals, and deck source live in the same project folder.</span></li>
+              <li><span class="mark good">+</span><span>Agents work on plain text and assets they can search, diff, summarize, and rewrite with much less ceremony.</span></li>
+              <li><span class="mark good">+</span><span>Obsidian remains the review surface for thinking, while Slidev becomes the review surface for presentation.</span></li>
+              <li><span class="mark good">+</span><span>The story can move from memo to talk to article without throwing away the intermediate work.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-eyebrow">Operating pattern</div>
+        <h2>A repeatable four-step loop</h2>
+        <div class="steps">
+          <article class="step-card">
+            <div class="step-no">01</div>
+            <h3>Collect</h3>
+            <p>Save sources, transcripts, screenshots, rough thoughts, and prompts into the project folder as Markdown and assets.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-no">02</div>
+            <h3>Synthesize</h3>
+            <p>Use agents to compress the raw material into claims, tensions, evidence, gaps, and reusable narrative blocks.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-no">03</div>
+            <h3>Author</h3>
+            <p>Turn the outline into Slidev Markdown, with speaker notes and visuals still close to the research files that created them.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-no">04</div>
+            <h3>Review</h3>
+            <p>Preview in the browser, check layout, adjust the argument, then export only when the content has stopped moving.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft">
+      <div class="container blueprint">
+        <div>
+          <div class="section-eyebrow">Folder blueprint</div>
+          <h2>Make the file system carry the workflow</h2>
+          <p>The important move is boring: keep related materials together. A project folder should be readable by a human in Obsidian and workable by an agent in the terminal.</p>
+          <div class="principles">
+            <div class="principle">
+              <strong>Context before commands</strong>
+              <span>Put goals, audience, constraints, and working style into notes that agents can read before producing output.</span>
+            </div>
+            <div class="principle">
+              <strong>Plain files over tool memory</strong>
+              <span>Do not rely on one chat session remembering the project. Persist the useful state as Markdown.</span>
+            </div>
+            <div class="principle">
+              <strong>Assets next to source</strong>
+              <span>Images, screenshots, exports, and deck files should be close enough that references stay obvious.</span>
+            </div>
+            <div class="principle">
+              <strong>Presentation as code</strong>
+              <span>Decks become reviewable source files instead of opaque final artifacts.</span>
+            </div>
+          </div>
+        </div>
+        <pre class="codebox" aria-label="Example project folder structure"><code><span class="folder">project-topic/</span>
+  <span class="file">context.md</span>              <span class="dim"># goal, audience, constraints</span>
+  <span class="file">source-notes.md</span>         <span class="dim"># links, quotes, extracts</span>
+  <span class="file">research-pack.md</span>       <span class="dim"># synthesis and uncertainty</span>
+  <span class="file">outline.md</span>             <span class="dim"># story structure</span>
+  <span class="folder">images/</span>                  <span class="dim"># screenshots and visual assets</span>
+  <span class="folder">slidev/</span>
+    <span class="deck">slides.md</span>             <span class="dim"># presentation source</span>
+    <span class="folder">theme/</span>                <span class="dim"># reusable layouts</span>
+    <span class="folder">public/</span>               <span class="dim"># deck assets</span>
+    <span class="folder">screens/</span>              <span class="dim"># review screenshots</span>
+    <span class="folder">dist/</span>                 <span class="dim"># static build output</span></code></pre>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="container">
+        <div class="section-eyebrow">The useful part</div>
+        <h2>This is less about Slidev and more about keeping the content supply chain intact.</h2>
+        <p>The same infrastructure can produce notes, articles, newsletter sections, advisory analysis, demos, or presentations. The advantage is not that Markdown is fashionable. It is that the research remains inspectable, portable, and reusable while AI agents are helping to shape it.</p>
+        <p><a href="index.html">Back to vibes</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>Created by Jukka Niiranen.</span>
+      <span><a href="https://github.com/jukkan/vibes">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>
