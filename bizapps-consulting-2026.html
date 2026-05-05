@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizApps Consulting in 2026 — Niiranen Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0b0b12;
+    --surface:   #11111c;
+    --surface2:  #18182a;
+    --border:    #1f1f35;
+    --border-hi: #2a2a48;
+    --text:      #dcdcf0;
+    --muted:     #6868a0;
+    --faint:     #2e2e50;
+    --gold:      #e8b558;
+    --gold-dim:  #8a6a28;
+    --claude:    #d4665a;
+    --claude-bg: #2a1414;
+    --claude-bd: #5a2020;
+    --gpt:       #5a9fd4;
+    --gpt-bg:    #0e1e2e;
+    --gpt-bd:    #1e4060;
+    --green:     #4caf7a;
+    --red:       #c45858;
+    --ff-display: 'Syne', sans-serif;
+    --ff-body:    'Nunito Sans', sans-serif;
+    --ff-mono:    'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--ff-body);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── Grain overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px;
+  }
+
+  /* ── Layout ── */
+  .page { max-width: 880px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── Top bar ── */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 64px;
+  }
+  .topbar-site {
+    font-family: var(--ff-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .topbar-date {
+    font-family: var(--ff-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .06em;
+  }
+
+  /* ── Hero ── */
+  .hero { margin-bottom: 64px; }
+  .hero-kicker {
+    font-family: var(--ff-mono);
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-kicker::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .hero-title {
+    font-family: var(--ff-display);
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -.02em;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.7;
+    border-left: 2px solid var(--border-hi);
+    padding-left: 16px;
+    margin-top: 24px;
+  }
+
+  /* ── Section headers ── */
+  .section { margin-bottom: 56px; }
+  .section-label {
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-title {
+    font-family: var(--ff-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  /* ── Question grid ── */
+  .q-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 700px) {
+    .q-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 440px) {
+    .q-grid { grid-template-columns: 1fr; }
+  }
+
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    position: relative;
+    transition: border-color .2s, background .2s;
+  }
+  .q-card:hover {
+    border-color: var(--border-hi);
+    background: var(--surface2);
+  }
+  .q-num {
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--gold-dim);
+    letter-spacing: .08em;
+    margin-bottom: 6px;
+  }
+  .q-topic {
+    font-family: var(--ff-display);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .q-tension {
+    font-size: 10.5px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.45;
+  }
+
+  /* ── Stat cards ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 500px) {
+    .stat-grid { grid-template-columns: 1fr; }
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 20px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .stat-value {
+    font-family: var(--ff-display);
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-family: var(--ff-display);
+  }
+  .stat-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── Model council split ── */
+  .council-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 580px) {
+    .council-split { grid-template-columns: 1fr; }
+  }
+  .council-card {
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid;
+  }
+  .council-card.claude {
+    background: var(--claude-bg);
+    border-color: var(--claude-bd);
+  }
+  .council-card.gpt {
+    background: var(--gpt-bg);
+    border-color: var(--gpt-bd);
+  }
+  .council-model {
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .council-card.claude .council-model { color: var(--claude); }
+  .council-card.gpt .council-model { color: var(--gpt); }
+
+  .council-headline {
+    font-family: var(--ff-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .council-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .council-card ul li {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+  }
+  .council-card ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+    top: 1px;
+  }
+  .council-card.claude ul li::before { color: var(--claude); }
+  .council-card.gpt ul li::before { color: var(--gpt); }
+  .council-card ul li strong { color: var(--text); font-weight: 600; }
+
+  /* ── Comparison table ── */
+  .comp-table { width: 100%; border-collapse: collapse; }
+  .comp-table thead tr {
+    background: var(--surface2);
+  }
+  .comp-table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .comp-table th:first-child { color: var(--muted); }
+  .comp-table th:nth-child(2) { color: var(--claude); }
+  .comp-table th:nth-child(3) { color: var(--gpt); }
+
+  .comp-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background .15s;
+  }
+  .comp-table tbody tr:hover { background: var(--surface2); }
+  .comp-table tbody tr:last-child { border-bottom: none; }
+
+  .comp-table td {
+    padding: 12px 14px;
+    vertical-align: top;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .comp-table td:first-child {
+    font-family: var(--ff-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    width: 20%;
+  }
+  .comp-table td:nth-child(2) strong,
+  .comp-table td:nth-child(3) strong { color: var(--text); }
+
+  .agree-table tbody td:first-child { color: var(--text); }
+  .agree-table tbody tr td:nth-child(2),
+  .agree-table tbody tr td:nth-child(3) {
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,.01));
+  }
+
+  /* ── Verdict ── */
+  .verdict-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 560px) {
+    .verdict-cols { grid-template-columns: 1fr; }
+  }
+  .verdict-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .verdict-col.win { border-color: #2a4a35; background: #0d1a11; }
+  .verdict-col.lose { border-color: #4a2a2a; background: #180d0d; }
+  .verdict-col h3 {
+    font-family: var(--ff-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .verdict-col.win h3 { color: var(--green); }
+  .verdict-col.lose h3 { color: var(--red); }
+  .verdict-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .verdict-col ul li {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-left: 18px;
+    position: relative;
+  }
+  .verdict-col.win ul li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .verdict-col.lose ul li::before { content: '✗'; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+  .verdict-col ul li strong { color: var(--text); font-weight: 600; }
+
+  /* ── Bifurcation callout ── */
+  .callout {
+    background: var(--surface2);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .callout strong { color: var(--text); }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .footer-note {
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    color: var(--faint);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+  .footer-note a { color: var(--muted); text-decoration: none; }
+  .footer-note a:hover { color: var(--text); }
+  .footer-sig {
+    font-family: var(--ff-display);
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* ── Spacer ── */
+  .divider { height: 1px; background: var(--border); margin: 48px 0; }
+
+  /* ── Animate in ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero, .section { animation: fadeUp .5s ease both; }
+  .section:nth-child(2) { animation-delay: .05s; }
+  .section:nth-child(3) { animation-delay: .1s; }
+  .section:nth-child(4) { animation-delay: .15s; }
+  .section:nth-child(5) { animation-delay: .2s; }
+  .section:nth-child(6) { animation-delay: .25s; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <span class="topbar-site">vibes.jukkan.com</span>
+    <span class="topbar-date">May 2026</span>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-kicker">Intelligence Briefing — Model Council Analysis</div>
+    <h1 class="hero-title">BizApps Consulting<br>in <em>2026</em>:<br>What the AI Oracles Said</h1>
+    <p class="hero-sub">
+      A Finnish Microsoft business applications practice had a strategy session. Eight uncomfortable questions went up on the wall. We fed the image to Copilot Researcher's model council — Claude and GPT each went off, did independent research, and came back with answers. This is what they found. And where they disagreed.
+    </p>
+  </section>
+
+  <!-- THE 8 QUESTIONS -->
+  <section class="section">
+    <div class="section-label">The Setup</div>
+    <h2 class="section-title">8 Questions. Two models. One uncomfortable afternoon.</h2>
+    <div class="q-grid">
+      <div class="q-card">
+        <div class="q-num">01 — MARKET & ECONOMY</div>
+        <div class="q-topic">Growth vs. prolonged uncertainty</div>
+        <div class="q-tension">Will IT investments grow or will caution persist? When does AI spend become visible business benefit?</div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">02 — GEOPOLITICS</div>
+        <div class="q-topic">Decoupling: real or marginal?</div>
+        <div class="q-tension">Will decoupling from US tech gain real momentum? How does this affect Microsoft's position with Nordic buyers?</div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">03 — LOW-CODE</div>
+        <div class="q-topic">Accelerator or threat?</div>
+        <div class="q-tension">As AI drives down custom dev costs, does low-code become the safe agentic platform — or does it become irrelevant?</div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">04 — SPEED OF AI</div>
+        <div class="q-topic">Slow evolution vs. breakthrough</div>
+        <div class="q-tension">Will value come slowly or within the next 12–18 months? When does AI show as real business benefit?</div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">05 — BUSINESS MODEL</div>
+        <div class="q-topic">T&amp;M survives vs. models shift</div>
+        <div class="q-tension">Will T&amp;M pricing break, and on what timeline? Do customers want predictability, outcomes, or still resources?</div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">06 — EXPECTATIONS</div>
+        <div class="q-topic">Reality vs. hype</div>
+        <div class="q-tension">Do customers understand what AI actually delivers? Is AI a magic button, or a capability that requires work?</div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">07 — SKILLS</div>
+        <div class="q-topic">Evolution or disruption?</div>
+        <div class="q-tension">Does AI make current skillsets more valuable — or does it make parts of them obsolete? What endures?</div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">08 — MICROSOFT</div>
+        <div class="q-topic">Winning or losing the AI race?</div>
+        <div class="q-tension">Will Microsoft's AI bet pay off for BizApps — or are we building on a weakening foundation?</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSENSUS FINDINGS -->
+  <section class="section">
+    <div class="section-label">Where Both Models Agreed</div>
+    <h2 class="section-title">The numbers neither model disputed</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-value">95%</div>
+        <div class="stat-label">AI Projects Deliver No ROI</div>
+        <div class="stat-desc">MIT research confirms: despite $40B+ in enterprise GenAI spend, most companies report zero returns. 2026 is the year CIOs get heat for this.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">47%</div>
+        <div class="stat-label">IT Leaders Cite Security Risk</div>
+        <div class="stat-desc">Gartner Jan 2025: nearly half of IT leaders worry about M365 Copilot security risks — data oversharing, prompt injection, compliance exposure.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">15–22%</div>
+        <div class="stat-label">Salary Inflation Since 2023</div>
+        <div class="stat-desc">Power Platform + D365 specialists command the highest-paying combination in the ecosystem. Senior combos hit $160K–$190K USD. No plateau in sight.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Obelisk</div>
+        <div class="stat-label">Consulting Pyramid Is Collapsing</div>
+        <div class="stat-desc">The traditional junior-heavy pyramid is becoming a tall, narrow obelisk. PwC cut junior hiring 30%. EY deployed 150 AI agents for 80K tax staff.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODEL COUNCIL -->
+  <section class="section">
+    <div class="section-label">Model Council Meta-Analysis</div>
+    <h2 class="section-title">What each model brought to the table</h2>
+    <div class="council-split">
+      <div class="council-card claude">
+        <div class="council-model">Claude — Anthropic</div>
+        <div class="council-headline">"Urgent, data-driven disruption narrative"</div>
+        <ul>
+          <li><strong>Pyramid → obelisk:</strong> Consulting firms are structurally transforming. Fewer layers. More leverage per person.</li>
+          <li><strong>Specific metrics:</strong> 15M paid Copilot seats vs. 33M active users — a significant adoption gap that matters for licensing strategy.</li>
+          <li><strong>Concrete restructuring evidence:</strong> Big Four named, numbers cited. PwC, EY, Deloitte, KPMG all moving now.</li>
+          <li><strong>Multi-agent orchestration</strong> positioned as the frontier — limited supply, growing demand, early mover advantage.</li>
+          <li><strong>Failure rate emphasis:</strong> Led with 95% GenAI ROI failure to set realistic client expectations as a differentiator.</li>
+        </ul>
+      </div>
+      <div class="council-card gpt">
+        <div class="council-model">GPT — OpenAI</div>
+        <div class="council-headline">"Steady embrace-and-guide stance"</div>
+        <ul>
+          <li><strong>Citizen dev as expansion:</strong> Where Claude saw commoditization, GPT saw growth — businesses need governance, fusion teams, CoE setup.</li>
+          <li><strong>Partnership framing:</strong> Focus on co-creating with clients in fusion teams rather than replacing junior work with AI.</li>
+          <li><strong>Pragmatic value focus:</strong> Stressed asking "why?" before "how?" — validate business cases, not just deploy features.</li>
+          <li><strong>Specialization over breadth:</strong> Double down on Power Platform/D365 CRM strengths; partner for adjacent capabilities.</li>
+          <li><strong>Tone:</strong> Technology as enabler requiring guidance. Strengthen long-term client relationships over disruption fears.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGREEMENTS TABLE -->
+  <section class="section">
+    <div class="section-label">Convergence</div>
+    <h2 class="section-title">Where they landed in the same place</h2>
+    <table class="comp-table agree-table">
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th style="color: var(--claude)">Claude</th>
+          <th style="color: var(--gpt)">GPT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AI Integration</td>
+          <td>Copilot adoption is real but measured; governance concerns slow enterprise rollout</td>
+          <td>AI is a paradigm shift requiring thoughtful integration — not a magic button</td>
+        </tr>
+        <tr>
+          <td>Governance Opportunity</td>
+          <td>Data &amp; AI governance addresses the primary adoption blocker; premium positioning available</td>
+          <td>Strong governance is critical — emerging high-demand service area with limited competition</td>
+        </tr>
+        <tr>
+          <td>Talent &amp; Skills</td>
+          <td>Power Platform + D365 combo is highest-paying skillset; retention crisis is real</td>
+          <td>Low-code expands consultant role in architecture, governance, and delivery</td>
+        </tr>
+        <tr>
+          <td>Value Focus</td>
+          <td>2026 demands measurable outcomes; outcome-based pricing models are emerging</td>
+          <td>Stay outcome-focused; validate business case before feature deployment</td>
+        </tr>
+        <tr>
+          <td>Specialization</td>
+          <td>Deep domain + technical fluency wins; generalists face compression</td>
+          <td>Focus on Power Platform/D365 CRM strengths; partner for complementary coverage</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- DISAGREEMENTS TABLE -->
+  <section class="section">
+    <div class="section-label">Divergence — The Interesting Part</div>
+    <h2 class="section-title">Where they saw the same data differently</h2>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th style="color: var(--claude)">Claude</th>
+          <th style="color: var(--gpt)">GPT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Low-Code Impact</td>
+          <td>AI commoditizes junior consulting tasks; fewer delivery layers needed going forward</td>
+          <td>Citizen development <em>expands</em> consulting opportunity via coaching, governance, and CoE setup</td>
+        </tr>
+        <tr>
+          <td>Market Urgency</td>
+          <td>95% AI failure rate signals urgent need to differentiate now or face commoditization</td>
+          <td>Embrace trends as enablers; balanced approach with partnerships and client enablement</td>
+        </tr>
+        <tr>
+          <td>Disruption Tone</td>
+          <td>Structural transformation: consulting pyramid is collapsing into an obelisk — act accordingly</td>
+          <td>Technology requires guidance; focus on strengthening client relationships, not disruption</td>
+        </tr>
+        <tr>
+          <td>Implementation Focus</td>
+          <td>Lead with governance readiness <em>before</em> deployment; senior expertise commands premiums</td>
+          <td>Help clients do more safely on their own; co-create in fusion teams alongside client staff</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- VERDICT -->
+  <section class="section">
+    <div class="section-label">Bottom Line</div>
+    <h2 class="section-title">The practice that thrives vs. the one that struggles</h2>
+    <div class="verdict-cols">
+      <div class="verdict-col win">
+        <h3>Thrives in 2026</h3>
+        <ul>
+          <li><strong>Invests in senior talent</strong> — Power Platform + D365 + AI combo, not junior headcount</li>
+          <li><strong>Leads with governance &amp; data readiness</strong> — not shiny AI demos</li>
+          <li><strong>Builds repeatable agent solutions</strong> for common business processes</li>
+          <li><strong>Offers outcome-based engagements</strong> that prove ROI with clear KPIs</li>
+          <li><strong>Specializes deeply</strong> in 2–3 industries or solution areas</li>
+          <li><strong>Treats Copilot/agents as a platform ecosystem</strong>, not a feature</li>
+        </ul>
+      </div>
+      <div class="verdict-col lose">
+        <h3>Struggles in 2026</h3>
+        <ul>
+          <li><strong>Competes on price</strong> for commodity implementation work</li>
+          <li><strong>Lacks governance expertise</strong> as clients increasingly demand it</li>
+          <li><strong>Can't retain talent</strong> in a 15–22% annual salary inflation market</li>
+          <li><strong>Sells "AI strategy"</strong> without delivery proof or measurable outcomes</li>
+          <li><strong>Operates as a generalist</strong> with no defensible differentiation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>The market is bifurcating.</strong> High-value strategic work — governance, architecture, outcome delivery — commands growing premiums. Routine configuration work faces AI commoditization and pricing pressure. There is no comfortable middle ground. The interesting disagreement between the models: Claude says <strong>act urgently</strong>, GPT says <strong>guide steadily</strong>. Both are probably right at the same time, depending on which client you're talking to.
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-note">
+      Analysis synthesized from Copilot Researcher model council output, May 2026. Sources include Microsoft Q1 FY2026 earnings, Nigel Frank 2026 salary analysis, d365.careers salary guide, HBR consulting restructuring research, Microsoft FY26 partner priorities (msdynamicsworld.com), Gartner M365 Copilot governance data, and McKinsey Global AI Survey 2025.<br><br>
+      Prompt, raw model outputs, and source links: ask <a href="https://x.com/jukkan">@jukkan</a>.<br>
+      Part of the <a href="https://niiranen.substack.com">Perspectives on Power Platform</a> research stream.
+    </div>
+    <div class="footer-sig">Niiranen Advisory</div>
+  </footer>
+
+</div>
+</body>
+</html>
