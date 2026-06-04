@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4 Hours, Zero Results: The Canvas App AI Authoring Reality Check</title>
+<meta name="description" content="Microsoft shipped an MCP server for AI-assisted canvas app development. Here's what happened when a Power Platform consultant tried to use it on a real production app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0e;
+    --surface: #141418;
+    --surface-raised: #1c1c22;
+    --border: #2a2a33;
+    --text: #d4d4d8;
+    --text-muted: #71717a;
+    --text-bright: #fafafa;
+    --accent: #ef4444;
+    --accent-dim: #7f1d1d;
+    --green: #22c55e;
+    --green-dim: #14532d;
+    --amber: #f59e0b;
+    --amber-dim: #78350f;
+    --blue: #3b82f6;
+    --blue-dim: #1e3a5f;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Source Sans 3', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Hero ─────────────────────────────────────── */
+  .hero {
+    padding: 80px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.15;
+    color: var(--text-bright);
+    margin-bottom: 24px;
+  }
+
+  h1 span.hours {
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 20px;
+    color: var(--text-muted);
+    max-width: 640px;
+    line-height: 1.6;
+  }
+
+  .hero-meta {
+    margin-top: 32px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ── Article body ─────────────────────────────── */
+  article {
+    padding: 56px 0 80px;
+  }
+
+  article h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--text-bright);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  article h2:first-child {
+    margin-top: 0;
+  }
+
+  article p {
+    margin-bottom: 20px;
+  }
+
+  article a {
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── Promise vs Reality boxes ─────────────────── */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 32px 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+  }
+
+  .comparison .col {
+    padding: 24px;
+  }
+
+  .col.promise {
+    background: var(--green-dim);
+    border-left: 3px solid var(--green);
+  }
+
+  .col.reality {
+    background: var(--accent-dim);
+    border-left: 3px solid var(--accent);
+  }
+
+  .col-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
+
+  .col.promise .col-label { color: var(--green); }
+  .col.reality .col-label { color: var(--accent); }
+
+  .col p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  /* ── Terminal blocks ──────────────────────────── */
+  .terminal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 28px 0;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    background: var(--surface-raised);
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .terminal-bar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot.red { background: #ef4444; }
+  .dot.yellow { background: #f59e0b; }
+
+  .terminal pre {
+    padding: 16px 18px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .terminal .err { color: var(--accent); }
+  .terminal .ok { color: var(--green); }
+  .terminal .warn { color: var(--amber); }
+  .terminal .dim { color: var(--text-muted); }
+
+  /* ── Callout ──────────────────────────────────── */
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--amber);
+    padding: 20px 24px;
+    margin: 32px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 16px;
+  }
+
+  .callout strong {
+    color: var(--text-bright);
+  }
+
+  /* ── Timeline ─────────────────────────────────── */
+  .timeline {
+    margin: 32px 0;
+    padding-left: 24px;
+    border-left: 2px solid var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 28px 20px;
+  }
+
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -29px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .timeline-item.fail::before { background: var(--accent); }
+  .timeline-item.ok::before { background: var(--green); }
+  .timeline-item.warn::before { background: var(--amber); }
+
+  .timeline-time {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── Stats row ────────────────────────────────── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 2px;
+    margin: 32px 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: var(--serif);
+    font-size: 36px;
+    color: var(--text-bright);
+    line-height: 1;
+  }
+
+  .stat-value.bad { color: var(--accent); }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* ── Blockquote ───────────────────────────────── */
+  blockquote {
+    border-left: 3px solid var(--blue);
+    padding-left: 20px;
+    margin: 28px 0;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  /* ── Footer ───────────────────────────────────── */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  footer a { color: var(--text-muted); }
+
+  /* ── Misc ─────────────────────────────────────── */
+  strong { color: var(--text-bright); }
+  code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: var(--surface-raised);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--amber);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="hero">
+    <div class="hero-label">Field report · Canvas Apps × AI Agents</div>
+    <h1><span class="hours">4 Hours, Zero Results.</span><br>The Canvas App AI Authoring Reality Check</h1>
+    <p class="hero-sub">Microsoft shipped an MCP server for AI-assisted canvas app development. I spent a full session trying to make small UI changes to a production kiosk app. Here's what actually happened.</p>
+    <div class="hero-meta">Jukka Niiranen · Niiranen Advisory Oy · May 2026</div>
+  </header>
+
+  <article>
+
+    <h2>The promise</h2>
+
+    <p>In April 2026, Microsoft published documentation for <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/create-canvas-external-tools">creating and editing canvas apps with AI code generation tools</a>. The page describes a workflow where you describe what you want in natural language, and the AI tool generates <code>.pa.yaml</code> files, validates them against a Canvas Authoring MCP server, and syncs your changes into a live Power Apps Studio coauthoring session.</p>
+
+    <p>The documentation says this:</p>
+
+    <div class="comparison">
+      <div class="col promise">
+        <div class="col-label">The docs say</div>
+        <p>"The tool validates the generated code by using the canvas app authoring MCP server and fixes any errors. Your canvas app syncs with Power Apps Studio through the coauthoring session."</p>
+      </div>
+      <div class="col reality">
+        <div class="col-label">What happened</div>
+        <p>Four hours of MCP timeouts, authentication failures, broken component references, silent deployment failures, and escalating workarounds. Nothing deployed. Nothing changed in the live app.</p>
+      </div>
+    </div>
+
+    <p>This is not a theoretical concern. The app is real, production, and in daily use on factory floor kiosks. The change request was modest: simplify a few gallery row layouts and adjust text presentation on one screen. The kind of thing you'd do in Studio in 20 minutes by hand.</p>
+
+    <h2>What the session looked like</h2>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-value bad">4h</div><div class="stat-label">Time spent</div></div>
+      <div class="stat"><div class="stat-value bad">0</div><div class="stat-label">Changes deployed</div></div>
+      <div class="stat"><div class="stat-value bad">6+</div><div class="stat-label">Distinct failures</div></div>
+      <div class="stat"><div class="stat-value bad">3</div><div class="stat-label">Fallback strategies</div></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item ok">
+        <div class="timeline-time">0:00</div>
+        <div class="timeline-title">Configure Canvas Authoring MCP</div>
+        <div class="timeline-desc">Plugin installed, MCP server configured from the Studio URL. .NET 10 SDK present. Configuration succeeded.</div>
+      </div>
+      <div class="timeline-item fail">
+        <div class="timeline-time">0:10</div>
+        <div class="timeline-title">Authentication opens wrong browser</div>
+        <div class="timeline-desc">The MCP server triggered browser-based auth in the default browser — not the Edge profile where Studio was running. Multi-profile setups are not handled.</div>
+      </div>
+      <div class="timeline-item fail">
+        <div class="timeline-time">0:20</div>
+        <div class="timeline-title">sync_canvas times out — three times</div>
+        <div class="timeline-desc">MCP error -32001: Request timed out. The agent didn't know whether the issue was auth, coauthoring, or the server itself. It guessed four different theories across the attempts.</div>
+      </div>
+      <div class="timeline-item fail">
+        <div class="timeline-time">0:45</div>
+        <div class="timeline-title">Agent fails to set environment variables</div>
+        <div class="timeline-desc">PowerShell quoting stripped by Start-Process. Twice. The agent's generated commands produced <code>CommandNotFoundException</code> for every environment ID.</div>
+      </div>
+      <div class="timeline-item warn">
+        <div class="timeline-time">1:00</div>
+        <div class="timeline-title">MCP server starts, but...</div>
+        <div class="timeline-desc">The manually launched server instance was separate from the one Copilot CLI manages. Auth tokens don't transfer between instances. Dead end.</div>
+      </div>
+      <div class="timeline-item warn">
+        <div class="timeline-time">1:30</div>
+        <div class="timeline-title">compile_canvas blocked by components</div>
+        <div class="timeline-desc">Even after eventually connecting, <code>compile_canvas</code> failed on every screen: "Could not find Canvas Component." The app uses two custom components. Known issue — <a href="https://github.com/microsoft/power-platform-skills/issues/86">GitHub #86</a>.</div>
+      </div>
+      <div class="timeline-item fail">
+        <div class="timeline-time">2:00</div>
+        <div class="timeline-title">Fallback to pac canvas pack</div>
+        <div class="timeline-desc">Agent tried to pack the extracted source. <code>pac canvas pack --layout SourceCode</code> failed with <code>System.FormatException</code>. No deployable .msapp produced.</div>
+      </div>
+      <div class="timeline-item fail">
+        <div class="timeline-time">2:30</div>
+        <div class="timeline-title">Manual .msapp surgery</div>
+        <div class="timeline-desc">Agent edited <code>Src/*.pa.yaml</code>, repacked manually via ZIP, imported, and published. Import succeeded. Publish succeeded. <strong>No visible changes appeared.</strong> The runtime uses <code>Controls/*.json</code>, which was never updated.</div>
+      </div>
+      <div class="timeline-item fail">
+        <div class="timeline-time">3:30</div>
+        <div class="timeline-title">Ad-hoc JSON patching</div>
+        <div class="timeline-desc">Agent wrote Python scripts to patch the runtime JSON directly. PowerShell encoding issues with Finnish characters. Uncertainty about whether patches actually applied. Session confidence near zero.</div>
+      </div>
+      <div class="timeline-item fail">
+        <div class="timeline-time">4:00</div>
+        <div class="timeline-title">Session abandoned</div>
+        <div class="timeline-desc">No changes live. Agent still running. "Still going. I'll wait for the notification when it completes."</div>
+      </div>
+    </div>
+
+    <h2>The five walls</h2>
+
+    <p>The session didn't fail because of one bug. It hit a stack of independent problems, each blocking the next fallback path.</p>
+
+    <p><strong>Wall 1: Authentication doesn't handle multi-profile scenarios.</strong> The MCP server uses browser-based auth that opens the default browser. Consultants and admins who work across multiple tenants in separate browser profiles — basically everyone in the advisory space — get stuck immediately. The agent itself didn't know what auth model the server uses and cycled through four guesses (PAC CLI, Azure CLI, browser interactive, DefaultAzureCredential).</p>
+
+    <p><strong>Wall 2: <code>compile_canvas</code> breaks on apps with custom components.</strong> Any canvas app using component libraries — which is most non-trivial production apps — produces "Could not find Canvas Component" errors on every screen. This is a <a href="https://github.com/microsoft/power-platform-skills/issues/86">known open issue</a>. The MCP server syncs screens but not component definitions. Until this is fixed, the validation loop is broken for real-world apps.</p>
+
+    <p><strong>Wall 3: <code>pac canvas pack</code> is unreliable.</strong> The documented fallback for source-based deployment — pack the <code>Src/</code> folder into a deployable <code>.msapp</code> — failed with a <code>System.FormatException</code> on this app. Without a working pack step, there is no deterministic path from YAML source to runtime artifact.</p>
+
+    <p><strong>Wall 4: The YAML-to-runtime compilation gap.</strong> This is the deepest problem. Canvas apps have two representations: the <code>Src/*.pa.yaml</code> source files and the <code>Controls/*.json</code> runtime files. Studio compiles one into the other internally. But when you edit YAML outside Studio and repackage manually, only the YAML changes. The runtime JSON stays stale. Import succeeds. Publish succeeds. <strong>Nothing changes visually.</strong> The worst kind of failure: operationally successful, functionally silent.</p>
+
+    <p><strong>Wall 5: The formula validation problem.</strong> Even if deployment worked, there's no offline way to validate Power Fx formulas. The Studio formula checker needs live data source schemas, control bindings, delegation rules, and variable scoping — none of which exist outside a running Studio session. <code>pac canvas validate</code> only checks YAML structure, not formula semantics. The MCP server's <code>compile_canvas</code> was supposed to solve this, but it requires Studio open with coauthoring enabled, and it breaks on components.</p>
+
+    <h2>The escalation pattern</h2>
+
+    <p>What makes this particularly painful is the escalation. The task was a small UI tweak. Over four hours, it grew into:</p>
+
+    <div class="terminal">
+      <div class="terminal-bar"><span class="dot red"></span><span class="dot yellow"></span> What the agent actually did</div>
+<pre><span class="dim">1.</span> Configured MCP server
+<span class="dim">2.</span> Tried to sync canvas session <span class="err">(3× timeout)</span>
+<span class="dim">3.</span> Debugged authentication <span class="err">(4 different theories)</span>
+<span class="dim">4.</span> Launched manual server instances <span class="err">(wrong process scope)</span>
+<span class="dim">5.</span> Fell back to pac canvas pack <span class="err">(FormatException)</span>
+<span class="dim">6.</span> Exported and unpacked solution manually
+<span class="dim">7.</span> Edited pa.yaml source files
+<span class="dim">8.</span> Rebuilt .msapp via ZIP packaging <span class="err">(runtime JSON not updated)</span>
+<span class="dim">9.</span> Imported and published <span class="warn">(silent failure)</span>
+<span class="dim">10.</span> Wrote Python scripts to patch runtime JSON
+<span class="dim">11.</span> Hit encoding issues with non-ASCII characters <span class="err">(Finnish)</span>
+<span class="dim">12.</span> Re-imported, re-published <span class="err">(still nothing visible)</span>
+<span class="dim">13.</span> Edited documentation mid-session <span class="warn">(scope drift)</span>
+<span class="dim">14.</span> Session abandoned</pre>
+    </div>
+
+    <p>Every step was individually defensible. Together, they formed an opaque, brittle chain where each failure triggered a more desperate workaround. This is the operational signature of a toolchain that isn't ready: not one catastrophic error, but a cascade of partial failures that eat hours.</p>
+
+    <h2>The formula checker gap</h2>
+
+    <p>Underlying all of this is a fundamental architectural constraint. The Power Fx formula language was designed around the Excel metaphor: you type, the result appears immediately, errors show as red squiggles. This works beautifully inside Studio. But it means the compiler is <strong>inseparable from the live editing session</strong>.</p>
+
+    <p>To validate a formula like <code>Filter(Tasks, Status = [@Status].Active)</code>, the checker needs to know: what columns does the Tasks table have? What type is Status? Is this comparison delegable to Dataverse? What does <code>[@Status]</code> resolve to in this app's context? All of that lives in Studio's runtime — fetched from live data sources, assembled from the control tree, scoped to the current app state.</p>
+
+    <p>There is no offline Power Fx compiler. <code>pac canvas validate</code> checks YAML syntax. The open-source Power Fx SDK has the parser but not the host binding context. The MCP server's <code>compile_canvas</code> was supposed to bridge this gap, but it requires the same Studio session that a human would use.</p>
+
+    <div class="callout">
+      <strong>The shortest path to formula validation runs through Studio.</strong> Microsoft confirmed this by shipping an MCP server that proxies the Studio compiler rather than building a standalone one. The architecture is honest. The execution isn't there yet.
+    </div>
+
+    <h2>What this means</h2>
+
+    <p>This is not a complaint about AI being useless. AI agents are excellent at analyzing screen structure, proposing Power Fx edits, reviewing formulas, and drafting precise diffs for named controls. The model isn't the problem.</p>
+
+    <p>The problem is the workflow. Canvas apps were designed for a world where the human is always in Studio, making changes interactively, with the compiler running live. Every external path — YAML source editing, CLI packing, MCP-based validation, solution import — is either incomplete, unreliable, or both.</p>
+
+    <p>For simple, new apps built from scratch with no custom components, the MCP workflow might work. The documentation examples are clean-sheet scenarios. But production canvas apps — the ones with component libraries, complex delegation patterns, localization, and session management — are exactly where AI assistance would be most valuable, and exactly where the toolchain fails.</p>
+
+    <h2>The question that follows</h2>
+
+    <p>After a session like this, the natural question isn't "how do I prompt the agent better?" It's: <strong>is this the right authoring model for this kind of app?</strong></p>
+
+    <p>Power Apps Code Apps — React/TypeScript apps that run inside Power Platform with full governance — shipped to GA in February 2026. They use standard web tooling: <code>npm run dev</code> for local development, <code>npm run build</code> for deterministic compilation, <code>pac code push</code> for deployment. TypeScript has a compiler that runs locally and gives errors in milliseconds. Git works. CI/CD works. AI agents are deeply fluent in React. The validation problem doesn't exist because it was never built on a live-session compiler.</p>
+
+    <p>That doesn't mean canvas apps are dead. But it means that for apps that have outgrown the point-and-click model — apps where you want AI agents to iterate on the code, where you need reliable deployment pipelines, where you work across environments and tenants — the canvas authoring model is the bottleneck, not the AI.</p>
+
+    <div class="callout">
+      <strong>The real blocker is the workflow and packaging chain, not the model.</strong> Until Microsoft ships a deterministic, offline-capable path from YAML source to deployable canvas app — or until the MCP server works reliably on production apps with components — AI-assisted canvas app development remains a preview in the truest sense of the word.
+    </div>
+
+    <h2>Sources</h2>
+    <p style="font-size: 15px; color: var(--text-muted);">
+      <a href="https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/create-canvas-external-tools">Microsoft Docs: Create and edit canvas apps with AI code generation tools</a><br>
+      <a href="https://github.com/microsoft/power-platform-skills/tree/main/plugins/canvas-apps">Canvas Apps Plugin, microsoft/power-platform-skills</a><br>
+      <a href="https://github.com/microsoft/power-platform-skills/issues/86">GitHub Issue #86: sync_canvas does not include component libraries</a><br>
+      Based on a documented troubleshooting session, May 12, 2026.
+    </p>
+
+  </article>
+
+  <footer>
+    <a href="https://vibes.jukkan.com">vibes.jukkan.com</a> · Jukka Niiranen · Niiranen Advisory Oy
+  </footer>
+</div>
+
+</body>
+</html>
