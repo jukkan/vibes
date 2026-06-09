@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapping the Autopilots — Microsoft's Search for Autonomous AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #f2e8d0;
+    --parchment-dark: #e4d5b0;
+    --parchment-darker: #d4c090;
+    --ink: #2a1f0e;
+    --ink-faded: #5c4a2a;
+    --ink-light: #8a7050;
+    --red-seal: #8b1a1a;
+    --red-seal-light: #c0392b;
+    --green-found: #1a5c2a;
+    --amber-caution: #7a4f00;
+    --blue-sea: #1a3a5c;
+    --gold: #b8860b;
+    --gold-light: #d4a520;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--parchment-dark);
+    font-family: 'IM Fell English', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Parchment texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .page-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 48px 0 32px;
+    position: relative;
+    border-bottom: 3px double var(--parchment-darker);
+    margin-bottom: 40px;
+  }
+
+  .header::before, .header::after {
+    content: '✦';
+    position: absolute;
+    top: 50px;
+    font-size: 24px;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+  .header::before { left: 20px; }
+  .header::after  { right: 20px; }
+
+  .compass-rose {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    animation: spin-slow 30s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    to { transform: rotate(360deg); }
+  }
+
+  .title-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+
+  h1 span {
+    color: var(--red-seal);
+    font-style: normal;
+  }
+
+  .subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-faded);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  .meta-line {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    letter-spacing: 0.2em;
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
+
+  /* ── LEGEND ── */
+  .legend-box {
+    border: 2px solid var(--parchment-darker);
+    border-radius: 2px;
+    background: rgba(255,255,255,0.2);
+    padding: 16px 20px;
+    margin-bottom: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+    align-items: center;
+  }
+
+  .legend-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-faded);
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-mirage    { background: #f9e4b7; color: var(--amber-caution); border: 1px solid #c9922a; }
+  .badge-frontier  { background: #e4eef9; color: var(--blue-sea);     border: 1px solid #4a7ab5; }
+  .badge-charted   { background: #d4edd8; color: var(--green-found);  border: 1px solid #4a9a5a; }
+  .badge-preview   { background: #f0e4f9; color: #5a2a7a;             border: 1px solid #9a5ab5; }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    border-bottom: 1px solid var(--parchment-darker);
+    padding-bottom: 8px;
+    margin: 40px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-heading::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 10px;
+  }
+
+  /* ── EXPEDITION CARD ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+
+  .card {
+    background: var(--parchment);
+    border: 1px solid var(--parchment-darker);
+    border-radius: 2px;
+    padding: 22px 20px 18px;
+    position: relative;
+    box-shadow: 3px 4px 12px rgba(42,31,14,0.12);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 7px 18px rgba(42,31,14,0.18);
+  }
+
+  /* Torn edge effect top */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px 3px,
+      var(--parchment-dark) 3px 4px
+    );
+  }
+
+  .card-stamp {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    opacity: 0.85;
+  }
+
+  .card-code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .card h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    padding-right: 70px;
+    line-height: 1.25;
+  }
+
+  .card-tagline {
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-faded);
+    margin-bottom: 14px;
+    padding-right: 50px;
+    line-height: 1.4;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed var(--parchment-darker);
+    margin: 12px 0;
+  }
+
+  .fact-row {
+    display: flex;
+    gap: 8px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    margin-bottom: 7px;
+    align-items: flex-start;
+  }
+
+  .fact-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    min-width: 70px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .fact-value {
+    color: var(--ink);
+  }
+
+  .fact-value.gap {
+    color: var(--red-seal);
+    font-style: italic;
+  }
+
+  .fact-value.confirmed {
+    color: var(--green-found);
+    font-weight: bold;
+  }
+
+  .fact-value.unknown {
+    color: var(--amber-caution);
+    font-style: italic;
+  }
+
+  /* The treasure chest / what's promised vs found */
+  .promise-found {
+    margin-top: 14px;
+    border: 1px solid var(--parchment-darker);
+    border-radius: 1px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+
+  .pf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pf-header {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 8px;
+    text-align: center;
+  }
+
+  .pf-promised-hdr { background: #f9e4b7; color: var(--amber-caution); border-bottom: 1px solid #c9922a; }
+  .pf-found-hdr    { background: #d4edd8; color: var(--green-found);   border-bottom: 1px solid #4a9a5a; border-left: 1px solid var(--parchment-darker); }
+
+  .pf-cell {
+    padding: 8px 10px;
+    line-height: 1.45;
+    font-size: 11.5px;
+    vertical-align: top;
+    color: var(--ink-faded);
+  }
+
+  .pf-cell.found-cell {
+    border-left: 1px solid var(--parchment-darker);
+  }
+
+  .pf-cell ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .pf-cell ul li::before {
+    content: '• ';
+    color: var(--ink-light);
+  }
+
+  /* ── TREASURE MAP ROUTE ── */
+  .route-section {
+    margin: 44px 0;
+    position: relative;
+  }
+
+  .route-line {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .route-line::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--gold) 0px 6px,
+      transparent 6px 12px
+    );
+    z-index: 0;
+  }
+
+  .route-stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 110px;
+    position: relative;
+    z-index: 1;
+    padding: 0 4px;
+  }
+
+  .route-node {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--parchment);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 2px 2px 8px rgba(42,31,14,0.2);
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+
+  .route-node.mirage   { border-color: #c9922a; background: #fdf3dc; }
+  .route-node.frontier { border-color: #4a7ab5; background: #edf2fa; }
+  .route-node.partial  { border-color: #9a5ab5; background: #f5eefa; }
+  .route-node.charted  { border-color: #4a9a5a; background: #edf7ef; }
+
+  .route-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-align: center;
+    line-height: 1.3;
+    color: var(--ink);
+    max-width: 90px;
+  }
+
+  .route-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-light);
+    margin-top: 3px;
+  }
+
+  /* ── LICENSING TABLE ── */
+  .lic-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-top: 12px;
+  }
+
+  .lic-table thead tr {
+    background: var(--parchment-darker);
+  }
+
+  .lic-table th {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    text-align: left;
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 2px solid var(--ink-light);
+  }
+
+  .lic-table td {
+    padding: 9px 12px;
+    border-bottom: 1px dashed var(--parchment-darker);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  .lic-table tr:nth-child(even) td { background: rgba(255,255,255,0.25); }
+  .lic-table tr:last-child td { border-bottom: none; }
+
+  .lic-table td:first-child {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ── PRACTITIONER NOTES ── */
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .note-card {
+    background: rgba(255,255,255,0.3);
+    border: 1px solid var(--parchment-darker);
+    border-left: 4px solid var(--gold);
+    padding: 14px 16px;
+    border-radius: 1px;
+  }
+
+  .note-card.warning { border-left-color: var(--red-seal); }
+  .note-card.info    { border-left-color: var(--blue-sea); }
+  .note-card.caution { border-left-color: var(--amber-caution); }
+
+  .note-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 7px;
+  }
+
+  .note-body {
+    font-size: 12.5px;
+    color: var(--ink-faded);
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 2px double var(--parchment-darker);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .footer-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--ink-faded);
+  }
+
+  .footer-brand span { color: var(--gold); }
+
+  .footer-sources {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    line-height: 1.8;
+    text-align: right;
+  }
+
+  .footer-sources a {
+    color: var(--ink-light);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--ink-light);
+  }
+
+  .footer-sources a:hover { color: var(--ink); }
+
+  .unknown-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    background: #f9e4b7;
+    color: var(--amber-caution);
+    border: 1px solid #c9922a;
+    padding: 1px 5px;
+    border-radius: 1px;
+  }
+
+  .confirmed-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    background: #d4edd8;
+    color: var(--green-found);
+    border: 1px solid #4a9a5a;
+    padding: 1px 5px;
+    border-radius: 1px;
+  }
+
+  /* Scroll animation */
+  .card, .note-card {
+    opacity: 0;
+    animation: fade-up 0.5s ease forwards;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.12s; }
+  .card:nth-child(3) { animation-delay: 0.19s; }
+  .card:nth-child(4) { animation-delay: 0.26s; }
+  .card:nth-child(5) { animation-delay: 0.33s; }
+  .card:nth-child(6) { animation-delay: 0.40s; }
+
+  @media (max-width: 640px) {
+    .pf-row { grid-template-columns: 1fr; }
+    .pf-cell.found-cell { border-left: none; border-top: 1px solid var(--parchment-darker); }
+    h1 { font-size: 28px; }
+    .header::before, .header::after { display: none; }
+    .footer { flex-direction: column; }
+    .footer-sources { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <header class="header">
+    <!-- Compass Rose SVG -->
+    <svg class="compass-rose" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="30" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <circle cx="32" cy="32" r="5" fill="#b8860b" opacity="0.7"/>
+      <!-- N/S/E/W points -->
+      <polygon points="32,4 29,28 35,28" fill="#8b1a1a"/>
+      <polygon points="32,60 29,36 35,36" fill="#2a1f0e" opacity="0.5"/>
+      <polygon points="4,32 28,29 28,35" fill="#2a1f0e" opacity="0.5"/>
+      <polygon points="60,32 36,29 36,35" fill="#2a1f0e" opacity="0.5"/>
+      <!-- diagonal points -->
+      <polygon points="51,13 33,30 36,33" fill="#b8860b" opacity="0.5"/>
+      <polygon points="13,13 30,30 33,27" fill="#b8860b" opacity="0.5"/>
+      <polygon points="13,51 30,34 27,31" fill="#b8860b" opacity="0.5"/>
+      <polygon points="51,51 34,34 31,37" fill="#b8860b" opacity="0.5"/>
+      <text x="32" y="19" text-anchor="middle" fill="#8b1a1a" font-size="8" font-family="Cinzel,serif" font-weight="700">N</text>
+    </svg>
+
+    <div class="title-eyebrow">An expedition log · June 2026</div>
+    <h1>Mapping the <span>Autopilots</span></h1>
+    <p class="subtitle">Microsoft's search for the treasure of autonomous AI agents — <em>charted honestly</em></p>
+    <div class="meta-line">Build 2026 · Ignite 2025 · Frontier Program · Agent 365 · Power Platform</div>
+  </header>
+
+  <!-- LEGEND -->
+  <div class="legend-box">
+    <div class="legend-title">Map Legend</div>
+    <div class="legend-item"><span class="badge badge-frontier">Frontier Only</span> Active but preview-gated, requires special enrollment</div>
+    <div class="legend-item"><span class="badge badge-charted">GA</span> Generally available, can be purchased</div>
+    <div class="legend-item"><span class="badge badge-preview">Preview</span> Released but incomplete; capabilities still in flux</div>
+    <div class="legend-item"><span class="badge badge-mirage">Unconfirmed</span> Announced but not yet tangible — pricing, dates, or features unverified</div>
+  </div>
+
+  <!-- ROUTE TIMELINE -->
+  <div class="route-section">
+    <div class="section-heading">The Expedition Route</div>
+    <div class="route-line">
+      <div class="route-stop">
+        <div class="route-node charted">🏰</div>
+        <div class="route-label">Copilot Studio Agents</div>
+        <div class="route-year">GA Sep 2025</div>
+      </div>
+      <div class="route-stop">
+        <div class="route-node frontier">🔭</div>
+        <div class="route-label">Project Opal</div>
+        <div class="route-year">Frontier Nov 2025</div>
+      </div>
+      <div class="route-stop">
+        <div class="route-node frontier">🌊</div>
+        <div class="route-label">Agent 365</div>
+        <div class="route-year">GA May 2026*</div>
+      </div>
+      <div class="route-stop">
+        <div class="route-node frontier">📋</div>
+        <div class="route-label">Copilot Tasks</div>
+        <div class="route-year">Waitlist 2026</div>
+      </div>
+      <div class="route-stop">
+        <div class="route-node partial">🌀</div>
+        <div class="route-label">Copilot Cowork</div>
+        <div class="route-year">Frontier Mar 2026</div>
+      </div>
+      <div class="route-stop">
+        <div class="route-node mirage">🗺️</div>
+        <div class="route-label">Microsoft Scout</div>
+        <div class="route-year">Frontier Jun 2026</div>
+      </div>
+      <div class="route-stop">
+        <div class="route-node mirage">💎</div>
+        <div class="route-label">True Autopilot</div>
+        <div class="route-year">Destination Unknown</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="section-heading">The Expedition Dossiers</div>
+  <div class="cards-grid">
+
+    <!-- SCOUT -->
+    <div class="card">
+      <div class="card-stamp"><span class="badge badge-mirage">Frontier Only</span></div>
+      <div class="card-code">MSFT-SCOUT-001 · Build 2026</div>
+      <h2>Microsoft Scout</h2>
+      <p class="card-tagline">"Always-on, cloud-native personal Autopilot" — the flagship Build 2026 announcement</p>
+
+      <div class="fact-row"><span class="fact-label">Announced</span><span class="fact-value">June 2, 2026 at Build 2026</span></div>
+      <div class="fact-row"><span class="fact-label">Runtime</span><span class="fact-value">Local desktop app (Windows 11+ / macOS 12+), built on OpenClaw open-source framework</span></div>
+      <div class="fact-row"><span class="fact-label">Access</span><span class="fact-value">Requires: Frontier enrollment + M365 Copilot license + GitHub Copilot Business/Enterprise + Intune policy + admin attestation</span></div>
+      <div class="fact-row"><span class="fact-label">Pricing</span><span class="fact-value unknown">Unconfirmed. "M365 E3/E5 add-on" cited by press — no SKU published</span></div>
+      <div class="fact-row"><span class="fact-label">GA target</span><span class="fact-value unknown">October 2026 (secondary sources only — not a Microsoft commitment)</span></div>
+      <div class="fact-row"><span class="fact-label">Origin</span><span class="fact-value">CVP Omar Shahine's personal "Project Lobster" (started Feb 6, 2026) → renamed ClawPilot → renamed Scout</span></div>
+      <div class="fact-row"><span class="fact-label">Entra ID</span><span class="fact-value">Each Scout instance gets an Entra Agent ID; full <em>tenant-level controls</em> are still in development</span></div>
+
+      <hr class="divider">
+      <div class="promise-found">
+        <div class="pf-row">
+          <div class="pf-header pf-promised-hdr">📜 Promised</div>
+          <div class="pf-header pf-found-hdr">⛏️ Found</div>
+        </div>
+        <div class="pf-row">
+          <div class="pf-cell"><ul>
+            <li>Always-on, cloud-native</li>
+            <li>Works in Teams</li>
+            <li>Enterprise-trusted day one</li>
+            <li>No prompting needed</li>
+          </ul></div>
+          <div class="pf-cell found-cell"><ul>
+            <li>Local desktop binary</li>
+            <li>No Teams bot in preview</li>
+            <li>Multi-step admin prereqs</li>
+            <li>Approval gates for most actions</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT OPAL -->
+    <div class="card">
+      <div class="card-stamp"><span class="badge badge-frontier">Frontier Only</span></div>
+      <div class="card-code">MSFT-OPAL-002 · Ignite 2025</div>
+      <h2>Project Opal</h2>
+      <p class="card-tagline">Computer-use agent running in a secure cloud PC — the most honest implementation of the "doing" vision</p>
+
+      <div class="fact-row"><span class="fact-label">Announced</span><span class="fact-value">November 19, 2025 at Ignite 2025</span></div>
+      <div class="fact-row"><span class="fact-label">Runtime</span><span class="fact-value confirmed">Cloud — Windows 365 for Agents VM (Entra-joined, Intune-managed, isolated sandbox)</span></div>
+      <div class="fact-row"><span class="fact-label">Access</span><span class="fact-value">M365 Copilot app → Frontier module. Requires M365 Copilot subscription + org enablement</span></div>
+      <div class="fact-row"><span class="fact-label">Pricing</span><span class="fact-value unknown">Consumption-based via Windows 365 for Agents — rate not publicly confirmed</span></div>
+      <div class="fact-row"><span class="fact-label">What it does</span><span class="fact-value">Browser-based computer use: portal navigation, form submission, onboarding tasks, compliance data gathering across internal sites</span></div>
+      <div class="fact-row"><span class="fact-label">Limits</span><span class="fact-value">Browser/web only — no native Dataverse API, no shell, limited to org-approved sites via Intune policy</span></div>
+
+      <hr class="divider">
+      <div class="promise-found">
+        <div class="pf-row">
+          <div class="pf-header pf-promised-hdr">📜 Promised</div>
+          <div class="pf-header pf-found-hdr">⛏️ Found</div>
+        </div>
+        <div class="pf-row">
+          <div class="pf-cell"><ul>
+            <li>Automate repetitive work</li>
+            <li>Full observability & control</li>
+            <li>Enterprise-secure sandbox</li>
+          </ul></div>
+          <div class="pf-cell found-cell"><ul>
+            <li>✓ Cloud VM is accurate</li>
+            <li>✓ Live view + pause/override</li>
+            <li>Browser scope only; no API access</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COPILOT COWORK -->
+    <div class="card">
+      <div class="card-stamp"><span class="badge badge-frontier">Frontier Only</span></div>
+      <div class="card-code">MSFT-COWORK-003 · Wave 3</div>
+      <h2>Copilot Cowork</h2>
+      <p class="card-tagline">Microsoft's Claude-powered "doing" agent — built with Anthropic, wrapped as M365 Copilot Wave 3</p>
+
+      <div class="fact-row"><span class="fact-label">Announced</span><span class="fact-value">March 9, 2026 — "Frontier Suite" launch event</span></div>
+      <div class="fact-row"><span class="fact-label">Runtime</span><span class="fact-value confirmed">Cloud-only. Microsoft: "We don't work locally, and that's a feature, not a bug."</span></div>
+      <div class="fact-row"><span class="fact-label">Engine</span><span class="fact-value">Built on Anthropic's Claude agentic harness — same model as Claude Cowork standalone</span></div>
+      <div class="fact-row"><span class="fact-label">Pricing</span><span class="fact-value">Preview usage included in M365 Copilot at $30/user/month</span></div>
+      <div class="fact-row"><span class="fact-label">Context</span><span class="fact-value">Grounded in Work IQ (M365 Graph-based semantic layer) for email, calendar, files, meetings</span></div>
+      <div class="fact-row"><span class="fact-label">Status</span><span class="fact-value">Frontier preview as of June 2026; no standalone GA date published</span></div>
+      <div class="fact-row"><span class="fact-label">Note</span><span class="fact-value">Microsoft is simultaneously a paying Anthropic customer and a reseller of Anthropic's technology under its own brand</span></div>
+    </div>
+
+    <!-- AGENT 365 -->
+    <div class="card">
+      <div class="card-stamp"><span class="badge badge-preview">GA — Partial</span></div>
+      <div class="card-code">MSFT-A365-004 · Ignite 2025</div>
+      <h2>Agent 365</h2>
+      <p class="card-tagline">The governance control plane — "E5 but for agents" — but GA shipped with key capabilities still in preview</p>
+
+      <div class="fact-row"><span class="fact-label">Announced</span><span class="fact-value">Ignite 2025; GA May 1, 2026</span></div>
+      <div class="fact-row"><span class="fact-label">Pricing</span><span class="fact-value confirmed">$15/user/month standalone; included in M365 E7 Frontier Suite ($99/user/month)</span></div>
+      <div class="fact-row"><span class="fact-label">What's GA</span><span class="fact-value confirmed">On-Behalf-Of (OBO) agent governance — agents acting on a licensed human's delegated token</span></div>
+      <div class="fact-row"><span class="fact-label">Still preview</span><span class="fact-value gap">Agent-identity auth (autonomous agents with own identities); security posture mgmt for Foundry/Copilot Studio agents; runtime threat protection</span></div>
+      <div class="fact-row"><span class="fact-label">The gap</span><span class="fact-value gap">OBO agents inherit a user's delegated token — not a true independent identity. If the user leaves, the agent stops.</span></div>
+      <div class="fact-row"><span class="fact-label">Local control</span><span class="fact-value confirmed">Defender + Intune can now discover and block unmanaged local agents (OpenClaw, etc.) on Windows — GA</span></div>
+
+      <hr class="divider">
+      <div class="promise-found">
+        <div class="pf-row">
+          <div class="pf-header pf-promised-hdr">📜 Promised</div>
+          <div class="pf-header pf-found-hdr">⛏️ Found</div>
+        </div>
+        <div class="pf-row">
+          <div class="pf-cell"><ul>
+            <li>Digital workers with own identities</li>
+            <li>Enterprise-grade autonomous agents</li>
+            <li>Complete governance at GA</li>
+          </ul></div>
+          <div class="pf-cell found-cell"><ul>
+            <li>OBO only — still human-delegated</li>
+            <li>Inventory + control layer is real</li>
+            <li>True autonomous identity: still preview</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COPILOT TASKS -->
+    <div class="card">
+      <div class="card-stamp"><span class="badge badge-mirage">Waitlist</span></div>
+      <div class="card-code">MSFT-TASKS-005 · Consumer Copilot</div>
+      <h2>Copilot Tasks</h2>
+      <p class="card-tagline">Consumer-side autonomous task execution — announced Feb 2026, waitlist-only; most practitioners never got in</p>
+
+      <div class="fact-row"><span class="fact-label">Announced</span><span class="fact-value">February 26, 2026 as a research preview</span></div>
+      <div class="fact-row"><span class="fact-label">Runtime</span><span class="fact-value">Cloud — dedicated browser and "own computer" in Microsoft's infrastructure</span></div>
+      <div class="fact-row"><span class="fact-label">Access</span><span class="fact-value gap">Waitlist at copilot.microsoft.com/tasks/preview — many applicants still waiting as of June 2026</span></div>
+      <div class="fact-row"><span class="fact-label">Pricing</span><span class="fact-value unknown">Not confirmed. Consumer Copilot tier (free/Pro) — no enterprise SKU visible</span></div>
+      <div class="fact-row"><span class="fact-label">GA date</span><span class="fact-value unknown">Not announced</span></div>
+      <div class="fact-row"><span class="fact-label">Positioning</span><span class="fact-value">Framed as the move "from answers to actions" on the consumer Copilot side — consent-gated, observable</span></div>
+      <div class="fact-row"><span class="fact-label">Overlap</span><span class="fact-value">Unclear relationship to Project Opal, Scout, or enterprise Autopilots — different team, different surface</span></div>
+    </div>
+
+    <!-- COPILOT STUDIO AGENTS -->
+    <div class="card">
+      <div class="card-stamp"><span class="badge badge-charted">GA</span></div>
+      <div class="card-code">MSFT-CPS-006 · Power Platform</div>
+      <h2>Copilot Studio Autonomous Agents</h2>
+      <p class="card-tagline">The build-your-own path — low-code, Dataverse-grounded, consumption-priced. The only fully GA autonomous option.</p>
+
+      <div class="fact-row"><span class="fact-label">Status</span><span class="fact-value confirmed">GA — autonomous agents and agent flows reached GA September 2025; multi-agent orchestration GA May 2026</span></div>
+      <div class="fact-row"><span class="fact-label">Runtime</span><span class="fact-value confirmed">Cloud, M365/Power Platform tenant — Dataverse-backed, Entra Agent ID per agent</span></div>
+      <div class="fact-row"><span class="fact-label">Pricing</span><span class="fact-value confirmed">Copilot Credits: 25,000 credits = $200/month (no rollover). Autonomous triggers cost extra even for licensed M365 Copilot users.</span></div>
+      <div class="fact-row"><span class="fact-label">Key trap</span><span class="fact-value gap">Autonomous triggers are metered separately — budgeting on seat licenses alone will cause billing surprises</span></div>
+      <div class="fact-row"><span class="fact-label">Relationship to "Autopilots"</span><span class="fact-value gap">No clear mapping. "Autopilot" is a Scout/Build 2026 marketing term. Copilot Studio agents are not called Autopilots.</span></div>
+      <div class="fact-row"><span class="fact-label">Work IQ</span><span class="fact-value">Copilot Studio agents can consume Work IQ MCP tools; Work IQ API goes GA June 16, 2026. Dataverse is an additive layer.</span></div>
+
+      <hr class="divider">
+      <div class="promise-found">
+        <div class="pf-row">
+          <div class="pf-header pf-promised-hdr">📜 Common Assumption</div>
+          <div class="pf-header pf-found-hdr">⛏️ Reality</div>
+        </div>
+        <div class="pf-row">
+          <div class="pf-cell"><ul>
+            <li>M365 Copilot license covers all agent usage</li>
+            <li>Dataverse is native to all agents</li>
+          </ul></div>
+          <div class="pf-cell found-cell"><ul>
+            <li>Autonomous triggers always billed separately</li>
+            <li>Dataverse MCP requires User SL; Dyn365 data needs Premium license</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LICENSING TABLE -->
+  <div class="section-heading">The Licensing Chart</div>
+  <table class="lic-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>License Required</th>
+        <th>Price Signal</th>
+        <th>Autonomous Use Cost</th>
+        <th>Confirmed?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Scout</td>
+        <td>M365 Copilot + GitHub Copilot Biz/Ent + Frontier</td>
+        <td>AI credit-based usage from day one</td>
+        <td>Unknown</td>
+        <td><span class="unknown-tag">Unconfirmed</span></td>
+      </tr>
+      <tr>
+        <td>Project Opal</td>
+        <td>M365 Copilot + Frontier enrollment</td>
+        <td>Consumption via Windows 365 for Agents</td>
+        <td>Consumption-based — rate not published</td>
+        <td><span class="unknown-tag">Partial</span></td>
+      </tr>
+      <tr>
+        <td>Copilot Cowork</td>
+        <td>M365 Copilot ($30/user/mo)</td>
+        <td>Some usage bundled in M365 Copilot seat</td>
+        <td>Unknown</td>
+        <td><span class="unknown-tag">Unconfirmed</span></td>
+      </tr>
+      <tr>
+        <td>Agent 365</td>
+        <td>Standalone $15/user/mo or M365 E7 ($99)</td>
+        <td>$15/user/month</td>
+        <td>OBO only — per-autonomous-agent pricing TBD</td>
+        <td><span class="confirmed-tag">Price confirmed</span></td>
+      </tr>
+      <tr>
+        <td>Copilot Tasks</td>
+        <td>Consumer Copilot (free/Pro)</td>
+        <td>Unknown</td>
+        <td>Unknown</td>
+        <td><span class="unknown-tag">Unconfirmed</span></td>
+      </tr>
+      <tr>
+        <td>Copilot Studio Agents</td>
+        <td>Power Platform / Copilot Studio license</td>
+        <td>25,000 Copilot Credits = $200/month</td>
+        <td>~25 credits per autonomous trigger (even for M365 Copilot users)</td>
+        <td><span class="confirmed-tag">Confirmed</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PRACTITIONER NOTES -->
+  <div class="section-heading">Notes from the Field</div>
+  <div class="notes-grid">
+    <div class="note-card warning">
+      <div class="note-title">🔴 Scout is not purchasable</div>
+      <div class="note-body">There is no SKU for Scout. If stakeholders ask for "the Build 2026 agent," the answer is: Frontier-only desktop preview, two separate license prereqs, no pricing, GA not before October 2026.</div>
+    </div>
+    <div class="note-card caution">
+      <div class="note-title">⚠️ Agent 365 GA ≠ autonomous agents</div>
+      <div class="note-body">The May 1 GA covers On-Behalf-Of governance only. True autonomous agent identities with their own credentials remain in preview. "Every agent gets an Entra ID" describes an aspiration, not what's available in production today.</div>
+    </div>
+    <div class="note-card info">
+      <div class="note-title">📋 Copilot Studio is the only fully GA path</div>
+      <div class="note-body">For practitioners building or governing autonomous agents today, Copilot Studio agents are the only fully GA and purchasable option. Build policy around autonomous trigger costs before provisioning agents in production environments.</div>
+    </div>
+    <div class="note-card warning">
+      <div class="note-title">🔴 OpenClaw on endpoints is a governance event</div>
+      <div class="note-body">Scout's OpenClaw foundation means the runtime is arriving on managed Windows devices. Microsoft's own Defender guidance treats OpenClaw as untrusted code execution with persistent credentials. Govern before Scout forces the question.</div>
+    </div>
+    <div class="note-card caution">
+      <div class="note-title">⚠️ "Autopilot" is a marketing category, not a product tier</div>
+      <div class="note-body">Introduced at Build 2026 with Scout as the only member, "Autopilot" has no relationship to Copilot Studio autonomous agents, Agent 365, or Copilot Cowork in Microsoft's published product taxonomy. It is not a purchasable category.</div>
+    </div>
+    <div class="note-card info">
+      <div class="note-title">📋 Project Opal is the sleeper</div>
+      <div class="note-body">Opal's cloud-sandboxed Windows 365 for Agents architecture is the most technically coherent implementation of computer-use for enterprise tasks. It received minimal Build airtime but is the most governable of the three computer-use surfaces.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">Compiled for <span>vibes.jukkan.com</span> · June 2026</div>
+      <div style="font-size:11px;color:var(--ink-light);margin-top:6px;font-family:'Share Tech Mono',monospace;">
+        All facts sourced from Microsoft Learn, Microsoft Build Live Blog, and licensing.guide.<br>
+        Unconfirmed items marked explicitly. No pricing should be treated as a commitment without a published Microsoft SKU.
+      </div>
+    </div>
+    <div class="footer-sources">
+      <a href="https://learn.microsoft.com/en-us/microsoft-scout/">learn.microsoft.com/microsoft-scout</a><br>
+      <a href="https://licensing.guide/may-1-ga-is-not-yet-the-final-frontier-for-agent-365/">licensing.guide · Agent 365 GA analysis</a><br>
+      <a href="https://news.microsoft.com/build-2026-live-blog/microsoft-build-2026-live/">news.microsoft.com · Build 2026 live blog</a><br>
+      <a href="https://www.omarknows.ai/p/lobster-got-hired">omarknows.ai · Project Lobster origin</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
