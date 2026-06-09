@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emerging Market Quadrant for No-Code Agent Builders — Claude Fable 5 Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B2545;
+    --navy-2:#14315C;
+    --blue:#1F6FB2;
+    --pale:#E8F2FA;
+    --pale-2:#F4F9FD;
+    --ink:#1E2A3A;
+    --muted:#5B6B7E;
+    --line:#D5DEE8;
+    --gold:#B98A2F;
+    --gold-pale:#FBF4E3;
+    --challenger:#C0622B;
+    --paper:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+  body{
+    font-family:'Libre Franklin',-apple-system,'Segoe UI',Arial,sans-serif;
+    color:var(--ink); background:var(--paper);
+    font-size:16px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--blue)}
+
+  /* ---------- utility bar ---------- */
+  .utility{
+    background:var(--navy); color:#BFD3E8;
+    font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+    padding:7px 24px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .utility b{color:#fff;font-weight:600}
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    border-bottom:4px solid var(--navy);
+    padding:22px 24px 18px;
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    max-width:1180px; margin:0 auto;
+  }
+  .wordmark{font-weight:800; font-size:24px; letter-spacing:-.01em; color:var(--navy)}
+  .wordmark span{font-weight:300; color:var(--blue)}
+  .docid{font-size:12px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; text-align:right}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px}
+
+  /* ---------- title block ---------- */
+  .titleblock{padding:40px 0 8px}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--blue);
+    margin-bottom:14px;
+  }
+  .eyebrow::before{content:""; width:34px; height:2px; background:var(--blue)}
+  h1{
+    font-size:clamp(28px,4.4vw,46px); line-height:1.08; font-weight:800; letter-spacing:-.015em;
+    color:var(--navy); max-width:21ch;
+  }
+  .standfirst{
+    font-family:'Source Serif 4',Georgia,serif;
+    font-size:clamp(17px,2vw,20px); color:#33465C; max-width:62ch; margin-top:18px;
+  }
+  .byline{
+    margin-top:22px; padding-top:16px; border-top:1px solid var(--line);
+    display:flex; gap:28px; flex-wrap:wrap; font-size:13px; color:var(--muted);
+  }
+  .byline b{display:block; color:var(--ink); font-weight:600; font-size:13.5px}
+  .value-badge{
+    display:inline-block; margin-top:20px;
+    background:var(--gold-pale); border:1px solid #E4D2A4; color:#7A5A14;
+    font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    padding:6px 12px; border-radius:3px;
+  }
+
+  /* ---------- controls ---------- */
+  .controls{
+    display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+    margin:34px 0 14px;
+  }
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{
+    font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+    border:1px solid var(--line); background:#fff; color:var(--muted);
+    padding:7px 16px; border-radius:999px; transition:all .15s ease;
+  }
+  .pill:hover{border-color:var(--blue); color:var(--blue)}
+  .pill.active{background:var(--navy); border-color:var(--navy); color:#fff}
+  .pill:focus-visible,.btn:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+  .btn{
+    font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+    background:var(--blue); color:#fff; border:none; padding:9px 18px; border-radius:3px;
+    display:inline-flex; align-items:center; gap:8px; transition:background .15s ease;
+  }
+  .btn:hover{background:#185A92}
+
+  /* ---------- chart ---------- */
+  .chart-card{
+    border:1px solid var(--line); border-radius:6px; background:#fff;
+    box-shadow:0 1px 3px rgba(11,37,69,.06);
+    padding:10px; position:relative; overflow-x:auto;
+  }
+  .chart-inner{min-width:760px; position:relative}
+  svg text{user-select:none}
+  .dot{cursor:pointer}
+  .dot:focus{outline:none}
+  .dot:focus .diamond{stroke:var(--gold); stroke-width:2.5}
+  .tooltip{
+    position:absolute; pointer-events:none; z-index:10; display:none;
+    max-width:300px; background:var(--navy); color:#E8F2FA;
+    border-radius:4px; padding:11px 13px; font-size:12.5px; line-height:1.5;
+    box-shadow:0 8px 24px rgba(11,37,69,.35);
+  }
+  .tooltip .tt-name{font-weight:700; font-size:13.5px; color:#fff; margin-bottom:2px}
+  .tooltip .tt-scores{color:#9DC3E4; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; margin-bottom:6px}
+  .chart-note{font-size:12px; color:var(--muted); margin-top:10px; padding:0 6px 6px}
+
+  /* ---------- legend swatches ---------- */
+  .keyline{display:flex; gap:22px; margin:14px 4px 0; font-size:13px; color:var(--muted); flex-wrap:wrap}
+  .key{display:inline-flex; align-items:center; gap:8px}
+  .sw{width:11px;height:11px;transform:rotate(45deg);display:inline-block;border-radius:1px}
+
+  /* ---------- vendor sections ---------- */
+  section.quads{margin-top:56px}
+  h2{
+    font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:8px;
+  }
+  .quad-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin-top:14px}
+  .quad-block{margin-top:34px}
+  .quad-block > p{color:var(--muted); font-size:14px; max-width:72ch}
+  .vcard{
+    border:1px solid var(--line); border-left:3px solid var(--navy-2); border-radius:4px;
+    padding:13px 15px; background:var(--pale-2);
+  }
+  .vcard.challenger{border-left-color:var(--challenger)}
+  .vcard h3{font-size:15px; font-weight:700; color:var(--navy); display:flex; justify-content:space-between; gap:8px; align-items:baseline}
+  .vcard .scores{font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.04em; white-space:nowrap}
+  .vcard p{font-size:13px; color:#3D4F63; margin-top:6px}
+
+  /* ---------- methodology / disclaimers ---------- */
+  .method{margin-top:64px; border-top:4px solid var(--navy); padding-top:26px}
+  .method-grid{display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-top:14px}
+  @media(max-width:760px){.method-grid{grid-template-columns:1fr}}
+  .method h4{font-size:15px; font-weight:700; color:var(--navy); margin-bottom:8px}
+  .method p, .method li{font-size:14px; color:#3D4F63}
+  .method ul{padding-left:18px; display:grid; gap:6px}
+
+  .fineprint{
+    margin-top:56px; background:var(--pale-2); border:1px solid var(--line); border-radius:6px;
+    padding:24px 26px; font-size:12.5px; color:var(--muted); line-height:1.7;
+  }
+  .fineprint h4{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--navy); margin-bottom:10px}
+  .fineprint p+p{margin-top:8px}
+
+  footer{
+    margin-top:48px; background:var(--navy); color:#9DB6D3; font-size:13px;
+    padding:28px 24px;
+  }
+  footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:0}
+  footer a{color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.35)}
+</style>
+</head>
+<body>
+
+<div class="utility">
+  <div><b>CLAUDE FABLE 5</b> RESEARCH&nbsp;·&nbsp;AGENTIC INTELLIGENCE PRACTICE</div>
+  <div>LICENSED FOR UNLIMITED DISTRIBUTION — UNLIKE SOME FIRMS</div>
+</div>
+
+<div class="masthead">
+  <div class="wordmark">CLAUDE FABLE 5<span> | Research</span></div>
+  <div class="docid">Doc. F5-845805-PARODY<br>Published 9 June 2026</div>
+</div>
+
+<main class="wrap">
+
+  <div class="titleblock">
+    <div class="eyebrow">Emerging Market Quadrant™ (patent not pending)</div>
+    <h1>No-Code Agent Builders: Established Vendors &amp; AI-Native Challengers</h1>
+    <p class="standfirst">Twenty-seven vendors, two axes, zero anonymized "Company" labels. An independent scoring of the platforms that let business users build and deploy AI agents without writing code — researched, scored, and typeset by a large language model in roughly the time it takes a Big Analyst Firm to schedule the kickoff call.</p>
+    <div class="byline">
+      <div><b>Lead Analyst</b>Claude Fable 5 (a large language model)</div>
+      <div><b>Research Director</b>Jukka Niiranen (a human)</div>
+      <div><b>Method</b>Agentic web research, fresh sources, June 2026</div>
+      <div><b>Billable hours</b>0.2 (formerly: 340)</div>
+    </div>
+    <div class="value-badge">Complimentary access · Retail value of comparable report: $49,500</div>
+  </div>
+
+  <div class="controls">
+    <div class="pills" role="group" aria-label="Filter vendors">
+      <button class="pill active" data-filter="all">All vendors</button>
+      <button class="pill" data-filter="established">Established vendors</button>
+      <button class="pill" data-filter="challenger">AI-native challengers</button>
+    </div>
+    <button class="btn" id="dl">⤓&nbsp; Download PNG</button>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-inner" id="chartwrap">
+      <svg id="chart" viewBox="0 0 1200 900" role="img" aria-label="Quadrant chart of no-code agent builder vendors scored on potential to execute and potential for market disruption" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="tooltip" id="tt"></div>
+    </div>
+    <div class="chart-note">Hover or tap a vendor for the one-line rationale. Axis scores 0–10; quadrant thresholds at 6.5. Scores reflect the <b>no-code / business-user persona</b> specifically — pro-code strength earns no credit here.</div>
+    <div class="keyline">
+      <span class="key"><span class="sw" style="background:#1B3A6B"></span>Established enterprise vendor</span>
+      <span class="key"><span class="sw" style="background:#C0622B"></span>AI-native / workflow challenger</span>
+    </div>
+  </div>
+
+  <section class="quads">
+    <h2>Quadrant readout</h2>
+    <div id="quadlist"></div>
+  </section>
+
+  <section class="method">
+    <h2>Methodology</h2>
+    <div class="method-grid">
+      <div>
+        <h4>Potential to Execute (y-axis)</h4>
+        <ul>
+          <li>Enterprise install base and distribution into surfaces business users already inhabit</li>
+          <li>Governance, security and admin depth (the 2026 product cycle's actual battleground)</li>
+          <li>Pricing clarity, connector ecosystem, partner channel, financial resources</li>
+          <li>Evidence of business-user-built agents in production — vendor marketing discounted accordingly</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Potential for Market Disruption (x-axis)</h4>
+        <ul>
+          <li>Pace of innovation; autonomous and multi-agent capabilities, computer use, MCP/A2A support</li>
+          <li>Pricing-model disruption: consumption credits vs. per-seat inertia</li>
+          <li>Ability to redefine how non-developers build agents, not just how developers do</li>
+          <li>Community momentum and mindshare</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="fineprint">
+    <h4>Disclaimers, of which there are necessarily many</h4>
+    <p>Claude Fable 5 Research does not endorse any vendor, product or service depicted above, chiefly because it is a language model and cannot hold equity. This graphic was published as part of a larger research document and should be evaluated in the context of the entire document, which in this case is freely available instead of being gated behind a five-figure seat license.</p>
+    <p>Placements represent independent judgment calls calibrated to the no-code business-user persona as of June 2026, synthesized from earnings calls, SEC filings, vendor announcements and credible journalism. The best-sourced figures are Microsoft's 230,000+ Copilot Studio organizations and ~90% Fortune 500 agent penetration (FY26 Q3 earnings) and Salesforce's $1.2B Agentforce ARR across 29,000+ deals (Q1 FY27 8-K). Challenger ARR and valuations are company- or investor-reported and not independently audited. Borderline placements (Google, AWS, Glean, Zapier, SAP, OpenAI/Anthropic) are genuinely contested and the half-life of this chart is measured in weeks.</p>
+    <p>Any resemblance to the research deliverables of firms whose names rhyme with "Cartner" is satirical, transformative, and frankly the point. No analysts were harmed in the making of this quadrant, though several business models may have been.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 Claude Fable 5 Research, a fictitious division of one consultant and one model.</div>
+    <div>Compiled for <a href="https://vibes.jukkan.com">vibes.jukkan.com</a> · Perspectives on Power Platform</div>
+  </div>
+</footer>
+
+<script>
+/* ============ DATA ============ */
+/* x = Potential for Market Disruption, y = Potential to Execute (0–10) */
+const VENDORS = [
+ // Market Shapers
+ {n:"Microsoft", x:8.0, y:9.5, t:"established", q:"Market Shapers",
+  r:"230k+ orgs on Copilot Studio, ~90% of the Fortune 500 with active low-code agents, Agent 365 governance, Copilot Credits consumption. The incumbent everyone else reacts to.",
+  lx:12, ly:4, a:"start"},
+ {n:"Salesforce", x:8.0, y:9.0, t:"established", q:"Market Shapers",
+  r:"$1.2B Agentforce ARR (+205% YoY), 29k+ deals, aggressive Flex Credits model, CRM data moat plus Slack distribution. Pricing complexity is the friction.",
+  lx:12, ly:4, a:"start"},
+ {n:"Google", x:8.5, y:8.0, t:"established", q:"Market Shapers",
+  r:"Gemini Enterprise Agent Platform with a true no-code Agent Designer, 200+ models including Claude, A2A in production. Frontier pace; younger enterprise execution.",
+  lx:12, ly:4, a:"start"},
+ {n:"ServiceNow", x:7.5, y:8.5, t:"established", q:"Market Shapers",
+  r:"Now Assist tracking toward $1.5B 2026 ACV, AI Control Tower governance, Moveworks absorbed into the 'Otto' front door. The control-tower narrative, consolidated.",
+  lx:-12, ly:4, a:"end"},
+ {n:"Glean", x:8.0, y:7.0, t:"challenger", q:"Market Shapers",
+  r:"$300M ARR in record time, natural-language Agent Builder, Glean Protect governance. The strongest challenger — but no captive install base.",
+  lx:12, ly:-8, a:"start"},
+ {n:"AWS", x:7.5, y:7.0, t:"established", q:"Market Shapers",
+  r:"Bedrock AgentCore is best-in-class infrastructure but developer-first; the Quick Suite no-code surface remains unproven for citizen developers.",
+  lx:-12, ly:14, a:"end"},
+ {n:"Atlassian", x:7.0, y:7.5, t:"established", q:"Market Shapers",
+  r:"Rovo past 5M MAU, Rovo Studio GA, 150B-connection Teamwork Graph. Real business-user adoption, bounded to Atlassian-centric workflows.",
+  lx:12, ly:4, a:"start"},
+ // Pace Setters
+ {n:"IBM", x:6.4, y:7.5, t:"established", q:"Pace Setters",
+  r:"Tri-modal no/low/pro-code watsonx Orchestrate, AI Gateway model neutrality, 700+ integrations, regulated-industry depth. Less mindshare than the hyperscalers.",
+  lx:-12, ly:4, a:"end"},
+ {n:"UiPath", x:6.45, y:6.6, t:"established", q:"Pace Setters",
+  r:"10k+ orgs, mature Maestro orchestration, low-code Agent Builder. Repositioning from RPA rather than redefining the category.",
+  lx:-12, ly:4, a:"end"},
+ {n:"Oracle", x:6.4, y:5.5, t:"established", q:"Specialists",
+  r:"Fusion-embedded agents with native write-back and an agentic apps builder — but bounded to the Oracle estate and its admins.",
+  lx:-12, ly:4, a:"end"},
+ // Pioneers
+ {n:"OpenAI", x:8.45, y:6.1, t:"challenger", q:"Pioneers",
+  r:"Massive mindshare and the AgentKit canvas — yet Agent Builder sunsets Nov 30 2026 and enterprise admin remains thin. Disruption without (yet) execution.",
+  lx:12, ly:0, a:"start"},
+ {n:"Anthropic", x:8.6, y:5.85, t:"challenger", q:"Pioneers",
+  r:"Cowork, Managed Agents and the open Skills standard, with explosive momentum. Desktop/prosumer-leaning; enterprise audit and governance still catching up.",
+  lx:12, ly:12, a:"start"},
+ {n:"SAP", x:7.5, y:6.0, t:"established", q:"Pioneers",
+  r:"Joule Studio GA but developer-skewed; the managed zero-infra no-code edition targets Q3 2026. The n8n stake signals where it wants to go.",
+  lx:12, ly:4, a:"start"},
+ {n:"n8n", x:7.5, y:5.5, t:"challenger", q:"Pioneers",
+  r:"$5.2B valuation with SAP on the cap table, multi-agent orchestration, MCP, source-available. Hugely disruptive — and more developer-leaning than truly no-code.",
+  lx:12, ly:4, a:"start"},
+ {n:"Zapier", x:6.45, y:6.45, t:"challenger", q:"Pioneers",
+  r:"8,000+ integrations and the fastest SMB time-to-value in the category. Light enterprise governance; per-task pricing bites at scale.",
+  lx:-12, ly:4, a:"end"},
+ {n:"Sierra", x:7.0, y:5.0, t:"challenger", q:"Pioneers",
+  r:"~$15.8B valuation and genuine production CX deployments — as a managed agent vendor, not a broad citizen-developer builder.",
+  lx:12, ly:4, a:"start"},
+ {n:"Decagon", x:6.55, y:4.5, t:"challenger", q:"Pioneers",
+  r:"~$4.5B valuation, strong CX-agent deployments in a configured-for-you model rather than an open builder.",
+  lx:12, ly:4, a:"start"},
+ {n:"Writer", x:6.05, y:5.4, t:"challenger", q:"Pioneers",
+  r:"Full-stack enterprise generative platform with no-code agent building; solid traction, smaller scale than Glean or the incumbents.",
+  lx:6, ly:18, a:"start"},
+ {n:"Lindy", x:5.9, y:4.1, t:"challenger", q:"Pioneers",
+  r:"Genuinely multi-purpose SMB agent builder with strong no-code UX; small scale, limited enterprise governance.",
+  lx:-12, ly:0, a:"end"},
+ {n:"Dust", x:6.0, y:3.95, t:"challenger", q:"Pioneers",
+  r:"Enterprise agent platform with a no-code builder and broad connectors; growing, but a small install base.",
+  lx:-12, ly:12, a:"end"},
+ {n:"Relevance AI", x:6.15, y:3.8, t:"challenger", q:"Pioneers",
+  r:"'AI workforce' multi-agent builder with a good business-user fit and early enterprise traction.",
+  lx:12, ly:10, a:"start"},
+ // Specialists
+ {n:"Workday", x:6.6, y:5.62, t:"established", q:"Specialists",
+  r:"Agent System of Record governance, Sana self-service agent, Flowise re-platforming in 1H 2026. Bounded to HR and Finance.",
+  lx:12, ly:0, a:"start"},
+ {n:"HubSpot", x:5.5, y:6.0, t:"established", q:"Specialists",
+  r:"Breeze rides excellent SMB/mid-market CRM distribution; capability depth and governance sit below the enterprise leaders.",
+  lx:12, ly:4, a:"start"},
+ {n:"Adobe", x:5.95, y:5.55, t:"established", q:"Specialists",
+  r:"AEP Agent Orchestrator is strong in the marketing/CX vertical and narrow outside it.",
+  lx:-12, ly:0, a:"end"},
+ {n:"Pega", x:4.95, y:5.55, t:"established", q:"Specialists",
+  r:"Blueprint plus decisioning on a deterministic BPM engine — deeply enterprise, not citizen-developer-led.",
+  lx:-12, ly:0, a:"end"},
+ {n:"Appian", x:5.05, y:5.42, t:"established", q:"Specialists",
+  r:"Agent Studio inside low-code process automation with FedRAMP-grade compliance; bounded to the process persona.",
+  lx:12, ly:10, a:"start"},
+ {n:"Creatio", x:5.0, y:5.0, t:"established", q:"Specialists",
+  r:"No-code CRM/BPM with AI agents and mid-market strength; limited evidence of enterprise-scale agent adoption.",
+  lx:12, ly:4, a:"start"}
+];
+
+const QUADS = {
+ "Market Shapers":"High execution, high disruption. These vendors set the agenda — distribution married to consumption pricing.",
+ "Pace Setters":"High execution, lower disruption. Reliable platforms that follow the leaders' playbook competently.",
+ "Pioneers":"Lower execution (today), high disruption. The ideas come from here; the governance doesn't, yet.",
+ "Specialists":"Bounded scope on both axes. Strong inside their vertical or persona, invisible outside it."
+};
+
+/* ============ CHART GEOMETRY ============ */
+const W=1200,H=900,L=80,R=1170,T=92,B=812;
+const X0=4.5,X1=9.5,Y0=3.5,Y1=10,TH=6.5;
+const px=v=>L+(v-X0)/(X1-X0)*(R-L);
+const py=v=>B-(v-Y0)/(Y1-Y0)*(B-T);
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById('chart');
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);(parent||svg).appendChild(e);return e;}
+function txt(x,y,s,attrs,parent){const e=el('text',Object.assign({x,y,'font-family':'Helvetica,Arial,sans-serif'},attrs),parent);e.textContent=s;return e;}
+
+/* background */
+el('rect',{x:0,y:0,width:W,height:H,fill:'#FFFFFF'});
+/* quadrant fills */
+const tx=px(TH),ty=py(TH);
+el('rect',{x:L,y:T,width:tx-L,height:ty-T,fill:'#EDF5FB',rx:14});      // Pace Setters
+el('rect',{x:tx,y:T,width:R-tx,height:ty-T,fill:'#DCEBF8',rx:14});     // Market Shapers
+el('rect',{x:L,y:ty,width:tx-L,height:B-ty,fill:'#F6FAFD',rx:14});     // Specialists
+el('rect',{x:tx,y:ty,width:R-tx,height:B-ty,fill:'#EDF5FB',rx:14});    // Pioneers
+/* threshold lines + frame */
+el('line',{x1:tx,y1:T,x2:tx,y2:B,stroke:'#A9C6DE','stroke-width':1.5});
+el('line',{x1:L,y1:ty,x2:R,y2:ty,stroke:'#A9C6DE','stroke-width':1.5});
+el('rect',{x:L,y:T,width:R-L,height:B-T,fill:'none',stroke:'#7FA8C9','stroke-width':1.5,rx:14});
+
+/* gridlines + axis ticks */
+for(let v=5;v<=9;v++){
+  el('line',{x1:px(v),y1:B,x2:px(v),y2:B+7,stroke:'#7FA8C9','stroke-width':1.5});
+  txt(px(v),B+26,v.toFixed(1),{'font-size':15,fill:'#5B6B7E','text-anchor':'middle'});
+}
+for(let v=4;v<=9;v++){
+  el('line',{x1:L-7,y1:py(v),x2:L,y2:py(v),stroke:'#7FA8C9','stroke-width':1.5});
+  txt(L-14,py(v)+5,v.toFixed(1),{'font-size':15,fill:'#5B6B7E','text-anchor':'end'});
+}
+
+/* axis arrows + titles */
+el('line',{x1:L,y1:B,x2:R+14,y2:B,stroke:'#43617F','stroke-width':2});
+el('path',{d:`M${R+14} ${B} l-12 -6 v12 z`,fill:'#43617F'});
+el('line',{x1:L,y1:B,x2:L,y2:T-16,stroke:'#43617F','stroke-width':2});
+el('path',{d:`M${L} ${T-16} l-6 12 h12 z`,fill:'#43617F'});
+txt((L+R)/2,B+58,'Potential for Market Disruption →',{'font-size':19,'font-weight':'bold',fill:'#0B2545','text-anchor':'middle'});
+const yt=txt(0,0,'Potential to Execute →',{'font-size':19,'font-weight':'bold',fill:'#0B2545','text-anchor':'middle'});
+yt.setAttribute('transform',`translate(26 ${(T+B)/2}) rotate(-90)`);
+
+/* quadrant labels */
+txt((L+tx)/2,T+34,'Pace Setters',{'font-size':22,'font-weight':'bold',fill:'#1F6FB2','text-anchor':'middle'});
+txt((tx+R)/2,T+34,'Market Shapers',{'font-size':22,'font-weight':'bold',fill:'#1F6FB2','text-anchor':'middle'});
+txt((L+tx)/2,B-18,'Specialists',{'font-size':22,'font-weight':'bold',fill:'#1F6FB2','text-anchor':'middle'});
+txt((tx+R)/2,B-18,'Pioneers',{'font-size':22,'font-weight':'bold',fill:'#1F6FB2','text-anchor':'middle'});
+
+/* in-SVG title + source (so the exported PNG is self-contained) */
+txt(L,40,'Emerging Market Quadrant for No-Code Agent Builders — June 2026',{'font-size':26,'font-weight':'bold',fill:'#0B2545'});
+txt(L,64,'Established vendors (navy) and AI-native challengers (rust) · x = Potential for Market Disruption · y = Potential to Execute',{'font-size':14,fill:'#5B6B7E'});
+txt(L,H-22,'Source: Claude Fable 5 Research × Jukka Niiranen, June 2026. Independent scoring; emphatically not Gartner. vibes.jukkan.com',{'font-size':13,fill:'#5B6B7E'});
+
+/* vendor dots */
+const tt=document.getElementById('tt');
+const wrap=document.getElementById('chartwrap');
+const COLORS={established:'#1B3A6B',challenger:'#C0622B'};
+VENDORS.forEach(v=>{
+  const cx=px(v.x), cy=py(v.y);
+  const g=el('g',{class:'dot',tabindex:0,'data-type':v.t,role:'img','aria-label':`${v.n}: execute ${v.y}, disruption ${v.x}. ${v.r}`});
+  el('path',{d:`M${cx} ${cy-7} L${cx+7} ${cy} L${cx} ${cy+7} L${cx-7} ${cy} Z`,fill:COLORS[v.t],class:'diamond',stroke:'#FFFFFF','stroke-width':1.2},g);
+  txt(cx+v.lx,cy+v.ly+(v.ly===0?5:v.ly>0?2:0),v.n,{'font-size':16,'font-weight':600,fill:'#14315C','text-anchor':v.a},g);
+  const show=(evt)=>{
+    tt.innerHTML=`<div class="tt-name">${v.n}</div><div class="tt-scores">Execute ${v.y.toFixed(1)} · Disruption ${v.x.toFixed(1)} · ${v.q}</div>${v.r}`;
+    tt.style.display='block';
+    const r=wrap.getBoundingClientRect();
+    const sx=r.width/Math.min(r.width,1200);
+    let lx=(cx/W)*r.width+14, lyp=(cy/H)*wrap.querySelector('svg').getBoundingClientRect().height+10;
+    if(lx>r.width-310)lx=lx-330;
+    tt.style.left=Math.max(4,lx)+'px'; tt.style.top=lyp+'px';
+  };
+  const hide=()=>{tt.style.display='none'};
+  g.addEventListener('mouseenter',show); g.addEventListener('mouseleave',hide);
+  g.addEventListener('focus',show); g.addEventListener('blur',hide);
+  g.addEventListener('click',show);
+});
+
+/* ============ FILTERS ============ */
+document.querySelectorAll('.pill').forEach(p=>{
+  p.addEventListener('click',()=>{
+    document.querySelectorAll('.pill').forEach(q=>q.classList.remove('active'));
+    p.classList.add('active');
+    const f=p.dataset.filter;
+    document.querySelectorAll('.dot').forEach(d=>{
+      d.setAttribute('opacity', (f==='all'||d.dataset.type===f)?'1':'0.13');
+    });
+    document.querySelectorAll('.vcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+
+/* ============ VENDOR LIST ============ */
+const ql=document.getElementById('quadlist');
+["Market Shapers","Pace Setters","Pioneers","Specialists"].forEach(q=>{
+  const block=document.createElement('div'); block.className='quad-block';
+  const vs=VENDORS.filter(v=>v.q===q).sort((a,b)=>(b.x+b.y)-(a.x+a.y));
+  block.innerHTML=`<h2>${q}</h2><p>${QUADS[q]}</p>`;
+  const grid=document.createElement('div'); grid.className='quad-grid';
+  vs.forEach(v=>{
+    const c=document.createElement('div');
+    c.className='vcard'+(v.t==='challenger'?' challenger':'');
+    c.dataset.type=v.t;
+    c.innerHTML=`<h3>${v.n}<span class="scores">E ${v.y.toFixed(1)} / D ${v.x.toFixed(1)}</span></h3><p>${v.r}</p>`;
+    grid.appendChild(c);
+  });
+  block.appendChild(grid); ql.appendChild(block);
+});
+
+/* ============ PNG EXPORT ============ */
+document.getElementById('dl').addEventListener('click',()=>{
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('width',W); clone.setAttribute('height',H);
+  const data=new XMLSerializer().serializeToString(clone);
+  const blob=new Blob([data],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const img=new Image();
+  img.onload=()=>{
+    const scale=2;
+    const cv=document.createElement('canvas');
+    cv.width=W*scale; cv.height=H*scale;
+    const ctx=cv.getContext('2d');
+    ctx.fillStyle='#FFFFFF'; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.drawImage(img,0,0,cv.width,cv.height);
+    URL.revokeObjectURL(url);
+    const a=document.createElement('a');
+    a.download='ncab-quadrant-june-2026.png';
+    a.href=cv.toDataURL('image/png');
+    a.click();
+  };
+  img.src=url;
+});
+</script>
+</body>
+</html>
