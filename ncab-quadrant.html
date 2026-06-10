@@ -154,6 +154,59 @@
   .method p, .method li{font-size:14px; color:#3D4F63}
   .method ul{padding-left:18px; display:grid; gap:6px}
 
+  .deck-section{margin-top:40px}
+  .deck-frame{
+    margin-top:14px;
+    background:linear-gradient(180deg, var(--pale-2) 0%, #FFFFFF 100%);
+    border:1px solid var(--line);
+    border-top:4px solid var(--blue);
+    border-radius:6px;
+    padding:20px;
+    box-shadow:0 1px 3px rgba(11,37,69,.06);
+  }
+  .deck-intro{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .deck-copy{max-width:72ch}
+  .deck-copy p{font-size:14px; color:#3D4F63}
+  .deck-kicker{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin-bottom:8px;
+  }
+  .deck-link{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    text-decoration:none;
+  }
+  .deck-embed{
+    position:relative;
+    padding-bottom:56.25%;
+    height:0;
+    overflow:hidden;
+    border:1px solid rgba(11,37,69,.12);
+    border-radius:4px;
+    background:#DCEBF8;
+  }
+  .deck-embed iframe{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    border:0;
+  }
+
   .fineprint{
     margin-top:56px; background:var(--pale-2); border:1px solid var(--line); border-radius:6px;
     padding:24px 26px; font-size:12.5px; color:var(--muted); line-height:1.7;
@@ -242,6 +295,22 @@
           <li>Ability to redefine how non-developers build agents, not just how developers do</li>
           <li>Community momentum and mindshare</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="deck-section" aria-labelledby="deck-title">
+    <div class="deck-frame">
+      <div class="deck-intro">
+        <div class="deck-copy">
+          <div class="deck-kicker">Research Briefing</div>
+          <h2 id="deck-title">Presentation deck</h2>
+          <p>The full market narrative, supporting evidence and vendor-by-vendor commentary are available in the companion slide deck.</p>
+        </div>
+        <a class="deck-link" href="https://slides.jukkan.com/deck/no-code-agent-builders-market/" target="_blank" rel="noreferrer">Open full presentation</a>
+      </div>
+      <div class="deck-embed">
+        <iframe src="https://slides.jukkan.com/embed/no-code-agent-builders-market" allowfullscreen title="Embedded presentation"></iframe>
       </div>
     </div>
   </section>
