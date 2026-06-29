@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Business Apps Legal Terms — the TL;DR · Power Platform &amp; Dynamics 365</title>
+  <meta name="description" content="A plain-language Copilot Cowork interpretation of Microsoft's Business Applications (Power Platform &amp; Dynamics 365) legal landing page — the interesting, surprising and impactful parts, with links to the official terms." />
+  <meta property="og:title" content="Microsoft Business Apps Legal: TL;DR" />
+  <meta property="og:description" content="What Microsoft's legal pages actually mean for you — in human language. A Copilot Cowork interpretation." />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --surface-2: #f8fafd;
+      --text: #0f1a2e;
+      --text2: #2d3a52;
+      --muted: #6b7d94;
+      --border: rgba(150,170,200,0.25);
+      --shadow: 0 12px 40px rgba(0,0,0,.09);
+      --shadow-sm: 0 4px 14px rgba(0,0,0,.06);
+      --brand: #0078d4;
+      --brand2: #5c2d91;
+      --warn: #c9791a;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --header: linear-gradient(135deg, #0a1628 0%, #0c2d4f 50%, #1a0a2e 100%);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #080d1a;
+        --surface: #101828;
+        --surface-2: #0c1520;
+        --text: #dce6f0;
+        --text2: #9ab0c8;
+        --muted: #5d7a96;
+        --border: rgba(80,120,180,0.18);
+        --shadow: 0 12px 40px rgba(0,0,0,.5);
+        --shadow-sm: 0 4px 14px rgba(0,0,0,.35);
+        --brand: #4fa8f7;
+        --brand2: #c19af0;
+        --warn: #e6ad5c;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+    a { color: var(--brand); }
+    a:hover { text-decoration: underline; }
+
+    .wrap { max-width: 940px; margin-inline: auto; padding-inline: 22px; }
+
+    /* ── HERO ── */
+    header {
+      background: var(--header);
+      color: #fff;
+      padding-block: 3rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0,120,212,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-size: 12.5px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase;
+      color: #dfe6ff;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.22);
+      padding: 7px 14px; border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #7fffd0; box-shadow: 0 0 0 4px rgba(127,255,208,.18); }
+    header h1 {
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      font-weight: 800; line-height: 1.12; letter-spacing: -.015em;
+      margin-bottom: .85rem;
+    }
+    header h1 em { font-style: normal; color: #4fa8f7; }
+    header .lede {
+      font-size: clamp(1rem, 2.3vw, 1.2rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 60ch; margin-bottom: 1.5rem;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: .5rem 1.25rem;
+      font-size: .82rem; color: rgba(255,255,255,0.55);
+    }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer-wrap { position: relative; z-index: 2; margin-top: -28px; }
+    .disclaimer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-inline-start: 5px solid var(--warn);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.25rem 1.5rem;
+    }
+    .disclaimer h2 { font-size: 1rem; margin-bottom: .35rem; }
+    .disclaimer p { font-size: .9rem; color: var(--text2); margin: 0; }
+
+    /* ── LAYOUT ── */
+    main { padding-block: 2rem 4rem; }
+    section { padding-block: 2rem; }
+
+    .sec-label {
+      font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--brand); margin-bottom: .4rem;
+    }
+    h2.sec-title {
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 800; letter-spacing: -.01em; margin-bottom: 1rem;
+    }
+    .sec-lead { color: var(--text2); max-width: 68ch; margin-bottom: 1.5rem; font-size: .97rem; }
+
+    /* ── BIG IDEA ── */
+    .bigidea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.5rem 1.5rem;
+      display: grid; grid-template-columns: auto 1fr; gap: 1.1rem; align-items: start;
+    }
+    .bigidea .glyph { font-size: 2rem; line-height: 1; margin-top: .1rem; }
+    .bigidea h3 { font-size: 1.2rem; margin-bottom: .5rem; }
+    .bigidea p { color: var(--text2); font-size: .95rem; }
+    @media (max-width: 500px) { .bigidea { grid-template-columns: 1fr; } }
+
+    /* ── TABLE (purchase path) ── */
+    .tablecard {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      background: var(--surface);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    thead th {
+      background: #0c2d4f; color: #fff;
+      text-align: start; font-weight: 700;
+      padding: .75rem 1rem; font-size: .8rem; letter-spacing: .02em;
+    }
+    @media (prefers-color-scheme: dark) { thead th { background: #0a1a30; } }
+    tbody td { padding: .85rem 1rem; border-top: 1px solid var(--border); vertical-align: top; color: var(--text2); }
+    tbody td:first-child { font-weight: 600; color: var(--text); }
+
+    /* ── CARDS GRID ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.1rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.4rem 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column;
+    }
+    .card-num {
+      font-size: .75rem; font-weight: 800; color: var(--brand);
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-bottom: .6rem; letter-spacing: .04em;
+    }
+    .card-num .ico { font-size: 1.25rem; }
+    .card h3 { font-size: 1.05rem; font-weight: 750; line-height: 1.25; margin-bottom: .55rem; }
+    .card p { color: var(--text2); font-size: .88rem; line-height: 1.6; margin-bottom: .6rem; }
+    .card p:last-of-type { margin-bottom: 0; }
+    .card .why-box {
+      margin-top: auto;
+      font-size: .82rem; color: var(--text);
+      background: rgba(0,120,212,0.07);
+      border: 1px solid rgba(0,120,212,0.18);
+      border-radius: var(--radius-sm);
+      padding: .65rem .85rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      .card .why-box {
+        background: rgba(79,168,247,0.08);
+        border-color: rgba(79,168,247,0.2);
+      }
+    }
+    .card .why-box b { color: var(--brand); }
+
+    /* pills */
+    .pills { display: flex; flex-wrap: wrap; gap: 5px; margin: .35rem 0 .6rem; }
+    .pill {
+      display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .03em;
+      padding: 2px 9px; border-radius: 999px;
+      background: var(--bg); color: var(--muted); border: 1px solid var(--border);
+    }
+    .pill.warn {
+      background: color-mix(in srgb, var(--warn) 12%, transparent);
+      color: var(--warn);
+      border-color: color-mix(in srgb, var(--warn) 28%, transparent);
+    }
+
+    /* ── GROUPED LINKS ── */
+    .links-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    .lgroup { padding: 1rem 1.25rem; border-top: 1px solid var(--border); }
+    .lgroup:first-child { border-top: none; }
+    .lgroup h4 {
+      font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .75rem;
+    }
+    .lgroup ul {
+      list-style: none;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 4px 1.5rem;
+    }
+    .lgroup li { padding: 4px 0; font-size: .9rem; }
+    .lgroup li a { font-weight: 600; text-decoration: none; color: var(--brand); }
+    .lgroup li a:hover { text-decoration: underline; }
+    .lgroup li span { display: block; font-size: .78rem; color: var(--muted); margin-top: 1px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-block: 2rem 3.5rem;
+      font-size: .82rem; color: var(--muted); text-align: center;
+    }
+    footer .logo { font-size: 1.25rem; margin-bottom: .4rem; }
+    footer a { color: var(--brand); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>Copilot Cowork · plain-language TL;DR</div>
+    <h1>Microsoft Business Apps legal terms,<br><em>minus the legal-ese</em></h1>
+    <p class="lede">Power Platform + Dynamics 365 ship with a maze of agreements. Here's what the official legal landing page actually means — the interesting, surprising, and genuinely impactful bits — in human language.</p>
+    <div class="hero-meta">
+      <span>📅 Source last updated <strong>May 2025</strong></span>
+      <span>🧠 Interpreted <strong>29 June 2026</strong></span>
+      <span>⏱️ ~6 min read</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="disclaimer-wrap">
+    <div class="disclaimer">
+      <h2>☕ Read this first</h2>
+      <p>This is a <strong>Copilot Cowork interpretation</strong> of Microsoft's <a href="https://www.microsoft.com/en-us/business-applications/legal/legal-landing-page/" target="_blank" rel="noopener">Business Applications legal landing page</a>, rewritten for humans. It is <strong>not legal advice</strong> and is not the contract. Where this summary and the official terms ever disagree, the official terms win. Always click through before you make a decision.</p>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+
+    <!-- BIG IDEA -->
+    <section>
+      <div class="sec-label">Start here</div>
+      <div class="bigidea">
+        <div class="glyph">🗺️</div>
+        <div>
+          <h3>The legal landing page is a map, not the contract</h3>
+          <p>Microsoft is explicit that this page is just a <em>convenience overview</em> of the terms covering Power Platform and Dynamics 365 (together, "Business Applications"). The documents it points to are the things you actually agreed to — and it warns that other services, software, and content "may be governed by additional or different terms not listed." Translation: the page is a directory. The binding rules live elsewhere, and the list isn't even exhaustive.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHICH CONTRACT -->
+    <section>
+      <div class="sec-label">The fork most people miss</div>
+      <h2 class="sec-title">Which contract governs <em>you</em> depends on how you bought</h2>
+      <p class="sec-lead">There isn't one "Microsoft agreement." Your master contract is decided at checkout — but no matter which road you take, the same two rulebooks get bolted on underneath.</p>
+      <div class="tablecard">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">How you bought</th>
+              <th scope="col">Your master agreement</th>
+              <th scope="col">Always attached underneath</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Online — purchase, renewal, or free trial</td>
+              <td><a href="https://go.microsoft.com/fwlink/?LinkId=2245096" target="_blank" rel="noopener">Microsoft Customer Agreement (MCA)</a>, or the older <a href="https://go.microsoft.com/fwlink/?LinkId=2131104" target="_blank" rel="noopener">Online Subscription Agreement</a> where MCA isn't available in your region</td>
+              <td rowspan="2">The <a href="https://go.microsoft.com/fwlink/?LinkId=2173816" target="_blank" rel="noopener">Product Terms</a> + the <a href="https://go.microsoft.com/fwlink/?LinkId=2153219" target="_blank" rel="noopener">Data Protection Addendum (DPA)</a> — incorporated by reference into whichever master agreement applies</td>
+            </tr>
+            <tr>
+              <td>Volume licensing — e.g. an Enterprise Agreement</td>
+              <td>The volume licensing agreement you signed (contact your Microsoft account rep or volume licensing to get a copy)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAKEAWAYS -->
+    <section>
+      <div class="sec-label">The parts worth knowing</div>
+      <h2 class="sec-title">Surprising &amp; impactful takeaways</h2>
+      <div class="card-grid">
+
+        <div class="card">
+          <div class="card-num"><span class="ico">📜</span>01</div>
+          <h3>The real data promises live in the DPA — not here</h3>
+          <p>The <a href="https://go.microsoft.com/fwlink/?LinkId=2153219" target="_blank" rel="noopener">Data Protection Addendum</a> is where Microsoft's actual commitments about how it handles your data sit: GDPR obligations, processor responsibilities, sub-processors, and security. The <a href="https://go.microsoft.com/fwlink/?LinkId=2173816" target="_blank" rel="noopener">Product Terms</a> define per-product licensing. You agreed to both even if you never opened them.</p>
+          <div class="why-box"><b>Why it matters:</b> if you need to answer "how is our data protected?", the DPA is the document — not this overview page.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">🤖</span>02</div>
+          <h3>Copilot has its own separate rulebook</h3>
+          <p>Copilot features are governed by a distinct set of <a href="https://go.microsoft.com/fwlink/?LinkId=2267192" target="_blank" rel="noopener">Terms for Microsoft Generative AI Services</a>, layered on top of your normal agreement. And some Copilot features that plug into other Microsoft services ("Copilot Integration Services") pull in <em>yet another</em> layer of <a href="https://go.microsoft.com/fwlink/?LinkId=2267080" target="_blank" rel="noopener">Supplemental Terms of Service</a>.</p>
+          <div class="why-box"><b>Why it matters:</b> turning on Copilot means accepting AI-specific terms your standard contract doesn't cover — including ones about data use for model training.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">🧪</span>03</div>
+          <h3>Preview features play by weaker rules</h3>
+          <p>Anything marked "Preview" runs under <a href="https://go.microsoft.com/fwlink/?LinkId=2189520" target="_blank" rel="noopener">supplemental preview terms</a> — generally "as-is", no SLA, and subject to change or removal without notice. Microsoft's normal data protection obligations may also be reduced for preview features.</p>
+          <div class="pills">
+            <span class="pill warn">No SLA</span>
+            <span class="pill warn">May change or vanish</span>
+            <span class="pill">Separate terms</span>
+          </div>
+          <p>There's also a separate <a href="https://go.microsoft.com/fwlink/?linkid=2087259" target="_blank" rel="noopener">Communication Services Preview terms</a> for features involving real-time communications.</p>
+          <div class="why-box"><b>Why it matters:</b> running previews in production is a business decision, not a free upgrade.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">🔎</span>04</div>
+          <h3>Bing Search quietly switches you to consumer terms</h3>
+          <p>Use of Bing Search inside the products is governed by the <a href="https://go.microsoft.com/fwlink/?LinkId=2178408" target="_blank" rel="noopener">Microsoft Services Agreement</a> (the consumer MSA) and the <a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener">Microsoft Privacy Statement</a> — a different, more consumer-style agreement than your enterprise contract.</p>
+          <div class="why-box"><b>Why it matters:</b> one embedded feature can pull in terms that look nothing like the rest of your deal — and carry no enterprise SLA.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">⏱️</span>05</div>
+          <h3>SLAs give you credits — not refunds or downtime compensation</h3>
+          <p>The <a href="https://go.microsoft.com/fwlink/?LinkId=2129940" target="_blank" rel="noopener">Service Level Agreements</a> cover uptime and connectivity for GA services only (previews are excluded). When Microsoft misses the SLA, your remedy is service credits applied to a future billing period — not cash refunds, not compensation for business loss.</p>
+          <p>You must proactively claim them, typically within 30 days of the incident. Exclusions include planned maintenance and issues caused by customer configurations or third-party integrations.</p>
+          <div class="why-box"><b>Why it matters:</b> "it's a Microsoft cloud service" doesn't automatically mean an SLA applies — and even when it does, credits are the only remedy.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">🌍</span>06</div>
+          <h3>Where your data lives — and how to prove it</h3>
+          <p>The <a href="https://go.microsoft.com/fwlink/?linkid=2259686" target="_blank" rel="noopener">Trust Center</a> covers security, privacy, and compliance. The <a href="https://go.microsoft.com/fwlink/?LinkId=2152904" target="_blank" rel="noopener">Service Trust Portal</a> is where the receipts are — audit reports, GDPR documentation, and compliance guides. There's also a <a href="https://go.microsoft.com/fwlink/?linkid=2181275" target="_blank" rel="noopener">data-residency explorer</a> for product availability by geography and where customer data is stored.</p>
+          <div class="why-box"><b>Why it matters:</b> this is your toolkit for audits, RFPs, and "where is our data?" questions.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">🏛️</span>07</div>
+          <h3>Government &amp; sovereign clouds = their own terms</h3>
+          <p><strong>Dynamics 365 US Government (GCC)</strong> has a <a href="https://go.microsoft.com/fwlink/?LinkId=2181156" target="_blank" rel="noopener">separate Service Description</a> — commercial GA features aren't automatically available there. And Dynamics 365 / Power Platform in China are <strong>operated by 21Vianet</strong> — a Chinese company, not Microsoft — under <a href="https://go.microsoft.com/fwlink/?LinkId=2084216" target="_blank" rel="noopener">entirely different terms</a>.</p>
+          <div class="why-box"><b>Why it matters:</b> if you operate in those clouds, the standard commercial terms are <em>not</em> the ones that apply.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">🏷️</span>08</div>
+          <h3>Pricing terms are per-product — there's no single price sheet</h3>
+          <p>Each product has its own "offer details" page carrying that product's pricing and conditions: <a href="https://go.microsoft.com/fwlink/?LinkId=2180990" target="_blank" rel="noopener">Dynamics 365</a>, <a href="https://go.microsoft.com/fwlink/?LinkId=2180991" target="_blank" rel="noopener">Power BI</a>, <a href="https://go.microsoft.com/fwlink/?LinkId=2180992" target="_blank" rel="noopener">Power Apps</a>, <a href="https://go.microsoft.com/fwlink/?LinkId=2180993" target="_blank" rel="noopener">Power Automate</a>, and <a href="https://go.microsoft.com/fwlink/?LinkId=2180995" target="_blank" rel="noopener">Copilot Studio</a> each have separate documents.</p>
+          <div class="why-box"><b>Why it matters:</b> compare the right offer doc per product before assuming how a license behaves — especially across Power Platform products.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">📱</span>09</div>
+          <h3>Every app ships its own software licence</h3>
+          <p>The mobile apps (iOS / Android / Windows), desktop tools like Power BI Desktop and Power Automate Desktop, SDKs, and on-premises builds each carry their <em>own</em> software licence terms and third-party notices — separate from the cloud service terms.</p>
+          <div class="why-box"><b>Why it matters:</b> if you redistribute, embed, or build on these components, the relevant terms are the app's — not the online service agreement.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num"><span class="ico">🧩</span>10</div>
+          <h3>Programs, trials &amp; LCS bring add-on terms</h3>
+          <p>Customer programs run under the <a href="https://go.microsoft.com/fwlink/?linkid=2087260" target="_blank" rel="noopener">Customer Programs Agreement</a>. Trials have their own supplemental terms. And <strong>Lifecycle Services (LCS)</strong> — the admin portal used with Dynamics 365 Finance and Supply Chain Management — is governed by separate <a href="https://go.microsoft.com/fwlink/?LinkId=521463" target="_blank" rel="noopener">Combined Terms</a>.</p>
+          <div class="why-box"><b>Why it matters:</b> "extra" experiences almost always come with extra fine print attached — check before you click Accept.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OFFICIAL LINKS -->
+    <section>
+      <div class="sec-label">Go to the source</div>
+      <h2 class="sec-title">Official Microsoft links</h2>
+      <p class="sec-lead">Everything above is summarized from these. When it matters, read the real thing — start with the landing page that ties them all together.</p>
+      <div class="links-wrap">
+
+        <div class="lgroup">
+          <h4>The agreements</h4>
+          <ul>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2245096" target="_blank" rel="noopener">Microsoft Customer Agreement (MCA)</a><span>Master agreement for most online buyers</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2131104" target="_blank" rel="noopener">Microsoft Online Subscription Agreement</a><span>Used where MCA isn't available</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2173816" target="_blank" rel="noopener">Product Terms</a><span>Per-product licensing &amp; use rights</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2153219" target="_blank" rel="noopener">Data Protection Addendum (DPA)</a><span>How Microsoft handles your data</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2180986" target="_blank" rel="noopener">Licensing Terms page</a><span>Hub where these documents live</span></li>
+          </ul>
+        </div>
+
+        <div class="lgroup">
+          <h4>AI &amp; previews</h4>
+          <ul>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2267192" target="_blank" rel="noopener">Terms for Microsoft Generative AI Services</a><span>Governs all Copilot features</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2267080" target="_blank" rel="noopener">Supplemental Terms of Service</a><span>Copilot Integration Services add-on</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2189520" target="_blank" rel="noopener">Preview Supplemental Terms</a><span>Applies to any preview feature</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?linkid=2087259" target="_blank" rel="noopener">Communication Services Preview Terms</a><span>For real-time comms previews</span></li>
+          </ul>
+        </div>
+
+        <div class="lgroup">
+          <h4>Trust &amp; compliance</h4>
+          <ul>
+            <li><a href="https://go.microsoft.com/fwlink/?linkid=2259686" target="_blank" rel="noopener">Microsoft Trust Center</a><span>Security, privacy &amp; compliance overview</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2152904" target="_blank" rel="noopener">Service Trust Portal</a><span>Audit reports &amp; GDPR documentation</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?linkid=2181275" target="_blank" rel="noopener">Data residency explorer</a><span>Where customer data is stored by region</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2129940" target="_blank" rel="noopener">Service Level Agreements</a><span>Uptime &amp; connectivity commitments</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener">Microsoft Privacy Statement</a><span>Privacy policy across all services</span></li>
+          </ul>
+        </div>
+
+        <div class="lgroup">
+          <h4>Special clouds, programs &amp; offer details</h4>
+          <ul>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2181156" target="_blank" rel="noopener">Dynamics 365 US Government Service Description</a><span>GCC cloud</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2084216" target="_blank" rel="noopener">Dynamics 365 by 21Vianet (China)</a><span>Sovereign cloud terms</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2180989" target="_blank" rel="noopener">Power Platform by 21Vianet (China)</a><span>Sovereign cloud terms</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?linkid=2087260" target="_blank" rel="noopener">Customer Programs Agreement</a><span>Dynamics &amp; Power Platform programs</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=521463" target="_blank" rel="noopener">LCS Combined Terms</a><span>Lifecycle Services (Finance &amp; SCM)</span></li>
+            <li><a href="https://go.microsoft.com/fwlink/?LinkId=2178408" target="_blank" rel="noopener">Microsoft Services Agreement</a><span>Governs Bing Search use in-product</span></li>
+          </ul>
+        </div>
+
+        <div class="lgroup">
+          <h4>The page this summarizes</h4>
+          <ul>
+            <li><a href="https://www.microsoft.com/en-us/business-applications/legal/legal-landing-page/" target="_blank" rel="noopener">Business Applications legal landing page</a><span>The official overview &amp; full link directory — go here first</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">⚡</div>
+    <p>
+      A <strong>Copilot Cowork</strong> interpretation published on <a href="https://vibes.jukkan.com" target="_blank" rel="noopener">vibes.jukkan.com</a> — a home for vibe-coded one-page experiments.<br>
+      Not legal advice. Not affiliated with or endorsed by Microsoft. For anything that carries real consequences, rely on the <a href="https://www.microsoft.com/en-us/business-applications/legal/legal-landing-page/" target="_blank" rel="noopener">official terms</a> and, where needed, your own legal counsel.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
