@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Naming: the timeline of Microsoft Sales Agent — vibes.jukkan.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f7f4;
+      --surface: #ffffff;
+      --border: #e2dfd8;
+      --text: #1c1b18;
+      --muted: #6b6760;
+      --tag-bg: #f0ede8;
+      --docs: #2563a8;      /* docs heading change — blue */
+      --blog: #1d6b3a;      /* public announcement — green */
+      --revert: #9b2c2c;    /* self-revert — red */
+      --origin: #7c5c1e;    /* product origin — amber */
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── SITE HEADER ── */
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 14px 0;
+    }
+    .site-header-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .site-header-inner a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .site-header-inner a:hover { text-decoration: underline; }
+    .breadcrumb-sep { opacity: 0.35; }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── ARTICLE HEADER ── */
+    .article-eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .article-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      font-size: 17px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+      color: #2e2c28;
+    }
+    .intro code {
+      background: var(--tag-bg);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    /* ── SECTION HEADERS ── */
+    h2 {
+      font-family: 'Lora', serif;
+      font-size: 20px;
+      font-weight: 600;
+      margin: 44px 0 14px;
+      letter-spacing: -0.01em;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    p { margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── STATS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 20px 0 36px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .stat-card .num {
+      font-family: 'Lora', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--origin);
+    }
+    .stat-card .label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 4px 0 28px;
+    }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+      border-left: 2px solid var(--border);
+      margin: 8px 0 40px;
+    }
+    .t-item {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+    }
+    .t-item::before {
+      content: "";
+      position: absolute;
+      left: -30px;
+      top: 18px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      background: var(--docs);
+    }
+    .t-item.blog::before { background: var(--blog); }
+    .t-item.revert::before { background: var(--revert); }
+    .t-item.origin::before { background: var(--origin); }
+    .t-item .t-date {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .t-item .t-name {
+      font-weight: 500;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .t-item .t-name .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 7px;
+      border-radius: 3px;
+      margin-left: 8px;
+      position: relative;
+      top: -1px;
+    }
+    .tag.docs { background: #e8f0fc; color: var(--docs); }
+    .tag.blog { background: #ecf6f0; color: var(--blog); }
+    .tag.revert { background: #fdf1f1; color: var(--revert); }
+    .tag.origin { background: #fdf6e8; color: var(--origin); }
+    .t-item .t-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .t-item .t-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .t-item .t-meta a { color: var(--docs); text-decoration: none; }
+    .t-item .t-meta a:hover { text-decoration: underline; }
+    .t-item code {
+      background: var(--tag-bg);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: var(--surface);
+      border-left: 3px solid var(--border);
+      padding: 16px 20px;
+      margin: 24px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 14.5px;
+      color: #2e2c28;
+      line-height: 1.65;
+    }
+    .callout.warn { border-left-color: #d97706; background: #fffbf2; }
+    .callout strong { color: var(--text); }
+
+    /* ── NAME CLOUD ── */
+    .name-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0 8px;
+    }
+    .name-cloud span {
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .name-cloud span.current {
+      color: #fff;
+      background: var(--origin);
+      border: none;
+      font-weight: 500;
+    }
+
+    /* ── FOSSIL NOTE ── */
+    .fossil {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      color: var(--muted);
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin: 8px 0 32px;
+    }
+    .fossil b { color: var(--text); }
+
+    /* ── SOURCES ── */
+    .sources {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .sources h2 {
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border: none;
+      margin: 0 0 14px;
+      padding: 0;
+      font-weight: 500;
+    }
+    .sources ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sources li { font-size: 13px; }
+    .sources a { color: var(--docs); text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+    .sources .src-label {
+      color: var(--muted);
+      font-size: 11px;
+      margin-left: 6px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 20px 0;
+      margin-top: 40px;
+    }
+    .footer-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-inner a { color: var(--muted); text-decoration: none; }
+    .footer-inner a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="https://vibes.jukkan.com">vibes.jukkan.com</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Vibe Naming</span>
+  </div>
+</header>
+
+<main>
+
+  <h1>Vibe Naming: the timeline of Microsoft Sales Agent</h1>
+
+  <p class="intro">
+    Microsoft's Sales Agent has carried at least <strong>seven distinct names</strong> since launching as "Viva Sales" in June 2022. Most of that churn is invisible in the published docs, but it's all sitting in plain sight in the commit history of a single GitHub file: <code>articles/introduction.md</code> in <a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs" target="_blank">MicrosoftDocs/microsoft-salescopilot-docs</a>. Combined with the public rebrand announcements, it reconstructs a naming saga most customers never see.
+  </p>
+
+  <div class="fossil">The docs repo is still called <b>microsoft-salescopilot-docs</b> — a naming fossil from 2023 that survived every rename below.</div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num">7</div><div class="label">Distinct names</div></div>
+    <div class="stat-card"><div class="num">15</div><div class="label">Milestones tracked</div></div>
+    <div class="stat-card"><div class="num">2</div><div class="label">Self-reverts</div></div>
+    <div class="stat-card"><div class="num">~4</div><div class="label">Years, 2022&ndash;2026</div></div>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--origin)"></span> Origin</span>
+    <span><span class="dot" style="background:var(--blog)"></span> Public announcement</span>
+    <span><span class="dot" style="background:var(--docs)"></span> Docs heading change</span>
+    <span><span class="dot" style="background:var(--revert)"></span> Reverted within days</span>
+  </div>
+
+  <h2>The timeline</h2>
+
+  <div class="timeline" id="timeline"></div>
+
+  <div class="callout warn">
+    <strong>The Oct 2025 and Feb–Mar 2026 windows each show the same pattern:</strong> a rename lands, gets walked back a few days later, then gets re-applied a few days after that. That's internal naming indecision playing out in public, in near-real time, inside a docs repo.
+  </div>
+
+  <h2>Every name it's worn</h2>
+
+  <div class="name-cloud" id="nameCloud"></div>
+
+  <!-- SOURCES -->
+  <div class="sources">
+    <h2>Sources</h2>
+    <ul>
+      <li>
+        <a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commits/main/articles/introduction.md" target="_blank">Commit history: articles/introduction.md</a>
+        <span class="src-label">GitHub, 62 commits, Aug 2023–Mar 2026</span>
+      </li>
+      <li>
+        <a href="https://techcommunity.microsoft.com/blog/vivasales-blog/microsoft-viva-sales-is-now-part-of-microsoft-sales-copilot/3876743" target="_blank">Microsoft Viva Sales is now part of Microsoft Sales Copilot</a>
+        <span class="src-label">Tech Community, Jul 18 2023, Aaron Bjork</span>
+      </li>
+      <li>
+        <a href="https://techcommunity.microsoft.com/blog/microsoft365copilotblog/sales-agent---the-copilot-agent-that-speaks-sales/4476894" target="_blank">Sales agent – the Copilot agent that speaks sales</a>
+        <span class="src-label">Tech Community, Dec 12 2025, J Strauss</span>
+      </li>
+      <li>
+        <a href="https://techcommunity.microsoft.com/blog/microsoft365copilotblog/sales-agent-is-now-generally-available-bringing-customer-and-deal-intelligence-i/4532629" target="_blank">Sales Agent is now generally available</a>
+        <span class="src-label">Tech Community, Jul 2 2026, Gurkan Salk</span>
+      </li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span><a href="https://vibes.jukkan.com">vibes.jukkan.com</a> — by <a href="https://niiranenadvisory.com">Jukka Niiranen</a></span>
+    <span>July 2026</span>
+  </div>
+</footer>
+
+<script>
+const events = [
+  {
+    date: "2022-06", type: "origin",
+    name: "Viva Sales",
+    desc: "Announced as part of the Microsoft Viva employee-experience suite, aimed at bridging CRM and Microsoft 365.",
+    meta: "Referenced retrospectively in the Jul 2023 rename post. No dedicated launch post in this dataset."
+  },
+  {
+    date: "2023-07-18", type: "blog",
+    name: "Viva Sales → Sales Copilot",
+    desc: "Viva Sales is pulled out of the Viva suite and rebranded “Microsoft Sales Copilot,” riding the newly-minted “Copilot” naming wave. Product icon/name changed in July, subscription name followed in September.",
+    meta: '<a href="https://techcommunity.microsoft.com/blog/vivasales-blog/microsoft-viva-sales-is-now-part-of-microsoft-sales-copilot/3876743" target="_blank">Blog: Microsoft Viva Sales is now part of Microsoft Sales Copilot</a> — Aaron Bjork'
+  },
+  {
+    date: "2023-08-30", type: "docs",
+    name: "“Introduction to Microsoft Sales Copilot”",
+    desc: "Earliest tracked commit on the docs page. The H1 already reflects the Jul 2023 rename.",
+    meta: 'Commit <code>8b91c27</code> · <a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/8b91c271b873de98e0e906fa4999732ee983d192" target="_blank">view on GitHub</a>'
+  },
+  {
+    date: "2023-09-01", type: "docs",
+    name: "“Welcome to Microsoft Sales Copilot”",
+    desc: "H1 pattern shifts from “Introduction to…” to “Welcome to…”, a phrasing that sticks for every rename that follows.",
+    meta: 'Commit <code>b289782</code> · <a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/b289782aca362290117c4eb20132ed162561c1cc" target="_blank">view on GitHub</a>'
+  },
+  {
+    date: "2023-12-10", type: "docs",
+    name: "“Welcome to Microsoft Copilot for Sales”",
+    desc: "Word order flips: “Sales Copilot” becomes “Copilot for Sales,” aligning with the wider Microsoft 365 Copilot for [X] naming convention rolling out across the portfolio.",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/76949727b2fc264e88eb300c946097140b157f45" target="_blank">Commit <code>7694972</code></a> · “Rebranding update”'
+  },
+  {
+    date: "2024-09-16", type: "docs",
+    name: "“Welcome to Microsoft 365 Copilot for Sales”",
+    desc: "“Microsoft 365” is prefixed onto the name as Microsoft consolidates all Copilot for [X] products under the M365 Copilot umbrella.",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/93a8c5b0f615dd6d0e64f53467e41a09c3db5278" target="_blank">Commit <code>93a8c5b</code></a> · “Rebrand C4S and M365 Copilot”'
+  },
+  {
+    date: "2025-10-07", type: "docs",
+    name: "“Welcome to Sales solution in Microsoft 365 Copilot”",
+    desc: "“Copilot for Sales” is retired in favor of “Sales solution.” Microsoft starts describing these as “solutions” living inside Microsoft 365 Copilot, not standalone Copilot products.",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/000ef6a0bee55d835532d267edddfd2c6b1984ee" target="_blank">Commit <code>000ef6a</code></a> · “rebranding update”'
+  },
+  {
+    date: "2025-10-10", type: "revert",
+    name: "Reverted to “Welcome to Microsoft 365 Copilot for Sales”",
+    desc: "Three days later, the “Sales solution” rename is quietly walked back to the previous name. Commit message: “warnings fixed.”",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/4173e0c02000d99c16ce791b0cede55aca06e3e4" target="_blank">Commit <code>4173e0c</code></a>: the first of two self-reverts'
+  },
+  {
+    date: "2025-10-13", type: "docs",
+    name: "“Welcome to Sales solution in Microsoft 365 Copilot” (again)",
+    desc: "The “Sales solution” name is re-applied, this time alongside file renames, cross-reference updates, and redirects, suggesting the first attempt was incomplete rather than wrong.",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/fbddd80400bc1779a446122104ad1636b96ff78a" target="_blank">Commit <code>fbddd80</code></a> · “Update file names, cross-refs, and add redirects”'
+  },
+  {
+    date: "2025-10-24", type: "docs",
+    name: "“Welcome to Sales in Microsoft 365 Copilot”",
+    desc: "“Solution” is dropped. The product is now simply “Sales”, positioned as a capability inside Microsoft 365 Copilot rather than a named add-on.",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/1052fb7d765ddd8e67f6e40b19a82651fa42a7ba" target="_blank">Commit <code>1052fb7</code></a> · “rebrand update”'
+  },
+  {
+    date: "2025-12-12", type: "blog",
+    name: "Public preview: “Sales agent”",
+    desc: "Microsoft announces the public preview of “Sales agent in Microsoft 365 Copilot,” marking the shift from “Copilot feature” to “agent” framing, riding the industry-wide pivot to agentic AI branding. This is a status change (preview), not a new name — “Sales Agent” is the name that sticks through GA.",
+    meta: '<a href="https://techcommunity.microsoft.com/blog/microsoft365copilotblog/sales-agent---the-copilot-agent-that-speaks-sales/4476894" target="_blank">Blog: Sales agent – the Copilot agent that speaks sales</a> — J Strauss'
+  },
+  {
+    date: "2026-02-25", type: "docs",
+    name: "“Welcome to Sales agent”",
+    desc: "Docs finally catch up to the preview branding from two and a half months earlier.",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/e0efb8c26bb23ea57ae1a38e9f9d3114a31e7425" target="_blank">Commit <code>e0efb8c</code></a> · “Update app name to Sales agent”'
+  },
+  {
+    date: "2026-03-03", type: "revert",
+    name: "Reverted to “Welcome to Sales in Microsoft 365 Copilot”",
+    desc: "A second self-revert: “Sales agent” is walked back to the pre-agent name just six days later. Commit message: “rebrand update.”",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/70f1acc3ad9ae4790916b6308efc8afb8ca9e341" target="_blank">Commit <code>70f1acc</code></a>: the second self-revert'
+  },
+  {
+    date: "2026-03-06", type: "docs",
+    name: "“Welcome to Sales agent” (for good)",
+    desc: "“Sales agent” is re-applied three days after the revert, and holds through general availability.",
+    meta: '<a href="https://github.com/MicrosoftDocs/microsoft-salescopilot-docs/commit/12bc0ad233476e902192bf6ea9a796b273691d64" target="_blank">Commit <code>12bc0ad</code></a> · “app rename”'
+  },
+  {
+    date: "2026-07-02", type: "blog",
+    name: "General availability: “Sales Agent”",
+    desc: "Sales Agent reaches GA, now also available inside Dynamics 365 Sales and Outlook Mobile, alongside a new “Microsoft Sales Bench” evaluation framework. Same name as the Dec 2025 preview, now shipping.",
+    meta: '<a href="https://techcommunity.microsoft.com/blog/microsoft365copilotblog/sales-agent-is-now-generally-available-bringing-customer-and-deal-intelligence-i/4532629" target="_blank">Blog: Sales Agent is now generally available</a> — Gurkan Salk'
+  }
+];
+
+const namesInOrder = [
+  "Viva Sales",
+  "Sales Copilot",
+  "Copilot for Sales",
+  "Microsoft 365 Copilot for Sales",
+  "Sales solution",
+  "Sales (in M365 Copilot)",
+  "Sales Agent"
+];
+
+const timelineEl = document.getElementById('timeline');
+events.forEach(ev => {
+  const div = document.createElement('div');
+  div.className = 't-item ' + ev.type;
+  const tagLabel = ev.type === 'blog' ? 'Announcement' : ev.type === 'revert' ? 'Reverted' : ev.type === 'origin' ? 'Origin' : 'Docs change';
+  div.innerHTML = `
+    <div class="t-date">${ev.date}</div>
+    <div class="t-name">${ev.name}<span class="tag ${ev.type}">${tagLabel}</span></div>
+    <div class="t-desc">${ev.desc}</div>
+    <div class="t-meta">${ev.meta}</div>
+  `;
+  timelineEl.appendChild(div);
+});
+
+const cloudEl = document.getElementById('nameCloud');
+namesInOrder.forEach((n, i) => {
+  const span = document.createElement('span');
+  span.textContent = n;
+  if (i === namesInOrder.length - 1) span.className = 'current';
+  cloudEl.appendChild(span);
+});
+</script>
+
+</body>
+</html>
