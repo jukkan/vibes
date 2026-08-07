@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Six claims from Microsoft's Scout launch blog post, checked side by side against Microsoft's own product documentation.">
+<title>Microsoft Scout — Marketing vs. Reality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #111111;
+    --ink-mid:    #444444;
+    --ink-light:  #888888;
+    --red:        #c0182a;
+    --red-pale:   #fdf0f1;
+    --green:      #0a5c2e;
+    --green-pale: #f0f7f2;
+    --amber:      #7a4f00;
+    --amber-pale: #fdf6e8;
+    --rule:       #d8d8d8;
+    --bg:         #fafaf8;
+    --paper:      #ffffff;
+    --scout-magenta: #b91cbf;
+    --scout-purple:  #691a90;
+    --scout-pink:    #f462ab;
+    --scout-orange:  #ffb180;
+    --scout-pale:    #fbf4fd;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Scout-gradient ribbon: the one place the marketing gloss runs unchallenged */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--scout-purple), var(--scout-magenta), var(--scout-pink), var(--scout-orange));
+    z-index: 5;
+  }
+
+  /* ── PAGE SHELL ── */
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+  }
+
+  /* ── VERTICAL STAMP ── */
+  .stamp {
+    position: fixed;
+    left: calc((100vw - 780px) / 4);
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 2px solid var(--red);
+    padding: 6px 14px;
+    white-space: nowrap;
+    opacity: 0.85;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 1023px) { .stamp { display: none; } }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    padding: 56px 0 32px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px 40px;
+    align-items: center;
+  }
+
+  .masthead-logo {
+    width: clamp(84px, 13vw, 136px);
+    filter: drop-shadow(0 8px 28px rgba(185, 28, 191, 0.28));
+  }
+
+  .masthead-logo svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .masthead-logo-name {
+    margin-top: 12px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    .masthead { gap: 16px 20px; }
+    .masthead-logo { width: 68px; }
+    .masthead-logo-name { font-size: 12px; margin-top: 8px; }
+  }
+
+  .masthead-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .masthead-kicker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--scout-magenta);
+  }
+
+  .masthead-sub {
+    font-size: 17px;
+    color: var(--ink-mid);
+    font-weight: 300;
+    max-width: 540px;
+    line-height: 1.55;
+  }
+
+  .masthead-meta {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+
+  .masthead-meta a {
+    color: var(--ink-light);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--ink-light);
+  }
+
+  /* ── METHODOLOGY BOX ── */
+  .method-box {
+    background: var(--amber-pale);
+    border: 1px solid #e4d5ac;
+    border-radius: 3px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13.5px;
+    color: var(--amber);
+    line-height: 1.55;
+  }
+
+  .method-box strong {
+    font-weight: 600;
+    color: var(--amber);
+  }
+
+  /* ── VERDICT SCOREBOARD ── */
+  .scorecard {
+    margin-bottom: 44px;
+  }
+
+  .score-bar {
+    display: flex;
+    gap: 3px;
+    height: 10px;
+  }
+
+  .score-bar a {
+    flex: 1;
+    border-radius: 2px;
+    transition: transform 0.15s ease;
+  }
+
+  .score-bar a:hover,
+  .score-bar a:focus-visible {
+    transform: scaleY(1.6);
+  }
+
+  .seg-misleading { background: #c0182a; }
+  .seg-partial    { background: #8a6200; }
+  .seg-omitted    { background: #444444; }
+
+  .score-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+  }
+
+  .score-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .score-legend i {
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    font-style: normal;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* ── CLAIM BLOCK ── */
+  .claim-block {
+    margin-bottom: 40px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--paper);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .claim-header {
+    padding: 10px 16px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .claim-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    min-width: 28px;
+  }
+
+  .claim-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .verdict-pill {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .verdict-misleading { background: #c0182a; color: #fff; }
+  .verdict-partial    { background: #8a6200; color: #fff; }
+  .verdict-accurate   { background: #0a5c2e; color: #fff; }
+  .verdict-omitted    { background: #444444; color: #fff; }
+
+  .claim-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 600px) {
+    .claim-body { grid-template-columns: 1fr; }
+    .reality-cell { border-left: none !important; border-top: 1px solid var(--rule); }
+  }
+
+  .marketing-cell, .reality-cell {
+    padding: 16px 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    vertical-align: top;
+  }
+
+  .reality-cell {
+    border-left: 1px solid var(--rule);
+  }
+
+  .cell-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .marketing-cell .cell-label { color: var(--scout-purple); }
+  .reality-cell   .cell-label { color: var(--green); }
+
+  .marketing-cell {
+    background: var(--scout-pale);
+    position: relative;
+  }
+
+  .marketing-cell::after {
+    content: '\201D';
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 48px;
+    line-height: 1.2;
+    color: var(--scout-magenta);
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  .reality-cell {
+    background: var(--paper);
+  }
+
+  .marketing-quote {
+    font-style: italic;
+    color: var(--ink-mid);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .reality-text {
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .reality-text strong {
+    font-weight: 600;
+    color: var(--red);
+  }
+
+  .reality-text .ok {
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .source-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-light);
+    border: 1px solid var(--rule);
+    padding: 1px 6px;
+    border-radius: 2px;
+    margin-top: 8px;
+    text-decoration: none;
+    cursor: default;
+  }
+
+  /* annotation style for key docs quotes */
+  .doc-quote {
+    display: block;
+    margin: 10px 0 6px;
+    padding: 8px 12px;
+    background: #f4f4f2;
+    border: 1px solid #e3e3df;
+    border-radius: 2px;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.55;
+  }
+
+  /* ── WHAT'S ACCURATE BOX ── */
+  .accurate-box {
+    background: var(--green-pale);
+    border: 1px solid #b3d9bf;
+    border-radius: 3px;
+    padding: 20px 22px;
+    margin-bottom: 40px;
+  }
+
+  .accurate-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+
+  .accurate-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .accurate-list li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--ink-mid);
+    border-bottom: 1px dashed #c5e0cf;
+  }
+
+  .accurate-list li:last-child { border-bottom: none; }
+
+  .accurate-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  /* ── WHAT'S MISSING BOX ── */
+  .missing-box {
+    background: #f7f7f7;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 20px 22px;
+    margin-bottom: 40px;
+  }
+
+  .missing-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .missing-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .missing-list li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    font-size: 14px;
+    color: var(--ink-mid);
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .missing-list li:last-child { border-bottom: none; }
+
+  .missing-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--ink-light);
+  }
+
+  /* ── BOTTOM RULE ── */
+  .bottom-rule {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 3px solid var(--ink);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .bottom-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--ink);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+  }
+
+  .bottom-logo {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  .bottom-brand span {
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .bottom-sources {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    line-height: 2;
+    text-align: right;
+  }
+
+  .bottom-sources a {
+    color: var(--ink-light);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--ink-light);
+  }
+
+  /* Animation */
+  .claim-block {
+    opacity: 0;
+    animation: rise 0.4s ease forwards;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    scroll-margin-top: 24px;
+  }
+
+  .claim-block:hover {
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  #c1 { animation-delay: 0.05s; }
+  #c2 { animation-delay: 0.1s; }
+  #c3 { animation-delay: 0.15s; }
+  #c4 { animation-delay: 0.2s; }
+  #c5 { animation-delay: 0.25s; }
+  #c6 { animation-delay: 0.3s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .claim-block {
+      animation: none;
+      opacity: 1;
+      transition: none;
+    }
+    .claim-block:hover { transform: none; }
+    .score-bar a { transition: none; }
+    .score-bar a:hover,
+    .score-bar a:focus-visible { transform: none; }
+  }
+
+  @media print {
+    .stamp { display: none; }
+    body { background: white; }
+    body::before { display: none; }
+    .claim-block { break-inside: avoid; opacity: 1 !important; transform: none !important; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Microsoft Scout logo, defined once and reused via <use>.
+     Source: github.com/loryanstrant/MicrosoftCloudLogos (microsoft-scout-scalable.svg) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="paint0_linear_4993_2168" x1="212.68" y1="383.999" x2="288.68" y2="301.999" gradientUnits="userSpaceOnUse">
+<stop stop-color="#CC23D1"/>
+<stop offset="1" stop-color="#4B20A0"/>
+</linearGradient>
+<radialGradient id="paint1_radial_4993_2168" cx="0" cy="0" r="1" gradientTransform="matrix(69.6529 156 284.538 -121.086 94.0142 -0.0029298)" gradientUnits="userSpaceOnUse">
+<stop stop-color="#D7257D"/>
+<stop offset="0.384772" stop-color="#B91CBF"/>
+<stop offset="0.705678" stop-color="#9529C2"/>
+<stop offset="1" stop-color="#691A90"/>
+</radialGradient>
+<radialGradient id="paint2_radial_4993_2168" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(210.785 79.9971) rotate(180) scale(137.257 134)">
+<stop offset="0.552987" stop-color="#691A90"/>
+<stop offset="1" stop-color="#A931D8" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="paint3_radial_4993_2168" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(245.324 15.9971) rotate(114.963) scale(127.953 267.364)">
+<stop stop-color="#FFB180"/>
+<stop offset="0.20816" stop-color="#FD8797"/>
+<stop offset="0.467311" stop-color="#F462AB"/>
+<stop offset="1" stop-color="#BB45EA"/>
+</radialGradient>
+<linearGradient id="paint4_linear_4993_2168" x1="203.324" y1="105.997" x2="195.324" y2="133.997" gradientUnits="userSpaceOnUse">
+<stop stop-color="#CA59F7" stop-opacity="0"/>
+<stop offset="1" stop-color="#7A41DC"/>
+</linearGradient>
+<radialGradient id="paint5_radial_4993_2168" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(239.324 43.9971) rotate(116.147) scale(122.54 128.117)">
+<stop offset="0.492527" stop-color="#D373FC" stop-opacity="0"/>
+<stop offset="1" stop-color="#9C6CFE"/>
+</radialGradient>
+<linearGradient id="paint6_linear_4993_2168" x1="356.239" y1="269.998" x2="2.77245" y2="140.82" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9C6CFE"/>
+<stop offset="0.264813" stop-color="#CA59F7"/>
+<stop offset="0.554737" stop-color="#F462AB"/>
+<stop offset="1" stop-color="#FFB180"/>
+</linearGradient>
+<linearGradient id="paint7_linear_4993_2168" x1="1.8284" y1="63.9975" x2="101.257" y2="192.323" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFC7A3"/>
+<stop offset="1" stop-color="#FF9C70" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="clip0_4993_2168">
+<rect width="384" height="384" fill="white"/>
+</clipPath>
+<g id="scout-mark" clip-path="url(#clip0_4993_2168)">
+<path d="M326.003 319.468L210 239.675L210 336.022C210 359.752 210 371.616 220.767 378.733C231.533 385.849 239.94 382.268 256.755 375.105C270.213 369.373 283.703 360.508 298.69 347.53C309.409 338.249 318.864 327.948 326.003 319.468Z" fill="url(#paint0_linear_4993_2168)"/>
+<path d="M15.5055 153.936L208.002 156.003L208.002 -0.0294199C87.3931 -0.00292968 -2.62661 28.7939 0.0585191 61.1607C4.01629 108.868 15.5055 153.936 15.5055 153.936Z" fill="url(#paint1_radial_4993_2168)"/>
+<path d="M15.5055 153.936L208.002 156.003L208.002 -0.0294199C87.3931 -0.00292968 -2.62661 28.7939 0.0585191 61.1607C4.01629 108.868 15.5055 153.936 15.5055 153.936Z" fill="url(#paint2_radial_4993_2168)"/>
+<path d="M138.731 40.0037C160.819 1.74672 209.738 -11.3611 247.995 10.7266C286.252 32.8143 299.36 81.7334 277.272 119.99C255.185 158.247 206.266 171.355 168.009 149.268C129.752 127.18 116.644 78.2608 138.731 40.0037Z" fill="url(#paint3_radial_4993_2168)"/>
+<path d="M138.731 40.0037C160.819 1.74672 209.738 -11.3611 247.995 10.7266C286.252 32.8143 299.36 81.7334 277.272 119.99C255.185 158.247 206.266 171.355 168.009 149.268C129.752 127.18 116.644 78.2608 138.731 40.0037Z" fill="url(#paint4_linear_4993_2168)"/>
+<path d="M138.731 40.0037C160.819 1.74672 209.738 -11.3611 247.995 10.7266C286.252 32.8143 299.36 81.7334 277.272 119.99C255.185 158.247 206.266 171.355 168.009 149.268C129.752 127.18 116.644 78.2608 138.731 40.0037Z" fill="url(#paint5_radial_4993_2168)" fill-opacity="0.8"/>
+<path d="M381.514 220.515C396.69 181.93 340.042 151.859 277.353 141.73L105.975 113.628C105.975 113.628 4.14354 99.0027 0.0782321 61.6851C3.75934 104.935 15.2467 165.374 34.6935 217.411C47.6062 251.964 101.728 268.991 137.709 274.839L249.147 292.918C284.203 298.436 330.652 321.447 295.356 350.34C335.141 318.522 363.835 265.466 381.514 220.515Z" fill="url(#paint6_linear_4993_2168)"/>
+<path d="M381.514 220.515C396.69 181.93 340.042 151.859 277.353 141.73L105.975 113.628C105.975 113.628 4.14354 99.0027 0.0782321 61.6851C3.75934 104.935 15.2467 165.374 34.6935 217.411C47.6062 251.964 101.728 268.991 137.709 274.839L249.147 292.918C284.203 298.436 330.652 321.447 295.356 350.34C335.141 318.522 363.835 265.466 381.514 220.515Z" fill="url(#paint7_linear_4993_2168)"/>
+</g>
+</defs>
+</svg>
+
+<div class="stamp">Fact Check · June 2026</div>
+
+<div class="page">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-copy">
+      <div class="masthead-kicker">Microsoft Scout · Build 2026 · Fact check</div>
+      <h1><em>Marketing</em><br>vs. Reality</h1>
+      <p class="masthead-sub">A side-by-side review of what Microsoft's blog post promised on June 2, 2026, compared to what the product documentation actually describes.</p>
+      <div class="masthead-meta">
+        <span>Sources: M365 Blog · Microsoft Learn Docs · Scout FAQ</span>
+        <span>Published: vibes.jukkan.com</span>
+        <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/">Blog post →</a>
+        <a href="https://learn.microsoft.com/en-us/microsoft-scout/overview">Docs →</a>
+      </div>
+    </div>
+    <div class="masthead-logo">
+      <svg viewBox="0 0 384 384" role="img" aria-label="Microsoft Scout logo"><use href="#scout-mark"/></svg>
+      <div class="masthead-logo-name">Microsoft Scout</div>
+    </div>
+  </header>
+
+  <!-- METHOD NOTE -->
+  <div class="method-box">
+    <strong>Method:</strong> Every marketing claim below comes verbatim from the official Microsoft 365 Blog post authored by Omar Shahine (June 2, 2026). Every reality check cites only Microsoft's own public product documentation — the Microsoft Learn overview and FAQ published the same day. No third-party sources. No opinion. Just Microsoft's own words compared to Microsoft's own docs.
+  </div>
+
+  <!-- VERDICT SCOREBOARD -->
+  <nav class="scorecard" aria-label="Verdict summary">
+    <div class="score-bar">
+      <a href="#c1" class="seg-partial" aria-label="Claim 1, Always-on: Partial" title="01 · Partial"></a>
+      <a href="#c2" class="seg-misleading" aria-label="Claim 2, Teams integration: Misleading" title="02 · Misleading"></a>
+      <a href="#c3" class="seg-misleading" aria-label="Claim 3, Cloud, desktop and web: Misleading" title="03 · Misleading"></a>
+      <a href="#c4" class="seg-misleading" aria-label="Claim 4, Trusted from day one: Misleading" title="04 · Misleading"></a>
+      <a href="#c5" class="seg-partial" aria-label="Claim 5, Entra identity: Partial" title="05 · Partial"></a>
+      <a href="#c6" class="seg-omitted" aria-label="Claim 6, Licensing: Not stated" title="06 · Not stated"></a>
+    </div>
+    <div class="score-legend">
+      <span><i class="seg-misleading"></i>3 misleading</span>
+      <span><i class="seg-partial"></i>2 partial</span>
+      <span><i class="seg-omitted"></i>1 not stated</span>
+    </div>
+  </nav>
+
+  <!-- CLAIMS -->
+  <div class="section-label">Six claims, checked</div>
+
+  <!-- 1 -->
+  <div class="claim-block" id="c1">
+    <div class="claim-header">
+      <span class="claim-num">01</span>
+      <span class="claim-title">Always-on, no prompting required</span>
+      <span class="verdict-pill verdict-partial">Partial</span>
+    </div>
+    <div class="claim-body">
+      <div class="marketing-cell">
+        <div class="cell-label">Blog post says</div>
+        <div class="marketing-quote">"Autopilots are always-on agents... that take action without needing to be prompted each time."</div>
+        <span class="source-tag">M365 Blog, June 2, 2026</span>
+      </div>
+      <div class="reality-cell">
+        <div class="cell-label">Docs say</div>
+        <div class="reality-text">
+          The docs confirm that Scout can run autonomously via Heartbeat (every 15–120 minutes) and scheduled Automations. However:
+          <span class="doc-quote">"You approve sensitive actions before they execute (sending email, running commands, writing files)."</span>
+          Sending email, running shell commands, and writing files are gated. The "no prompting" framing applies to background scheduling — not to the most consequential actions.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="claim-block" id="c2">
+    <div class="claim-header">
+      <span class="claim-num">02</span>
+      <span class="claim-title">Integrated into Teams — "you interact with it in Teams"</span>
+      <span class="verdict-pill verdict-misleading">Misleading</span>
+    </div>
+    <div class="claim-body">
+      <div class="marketing-cell">
+        <div class="cell-label">Blog post says</div>
+        <div class="marketing-quote">"You interact with it in Teams, and extend its reach through the desktop app to your browser, local resources, and MCP servers."</div>
+        <span class="source-tag">M365 Blog, June 2, 2026</span>
+      </div>
+      <div class="reality-cell">
+        <div class="cell-label">Docs say</div>
+        <div class="reality-text">
+          The docs' own meta-description — what Microsoft wrote for search engines — reads:
+          <span class="doc-quote">"an AI desktop application that takes action across your files, shell, browser, and Microsoft 365."</span>
+          The FAQ confirms it explicitly: <strong>"Microsoft Scout is a desktop application for Windows and macOS. It requires local file system access, shell access, and browser control capabilities that aren't available on mobile platforms."</strong>
+          <br><br>
+          Teams appears zero times in the overview or FAQ as a current interaction surface. The blog implies Teams is primary; the docs describe a standalone desktop app.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="claim-block" id="c3">
+    <div class="claim-header">
+      <span class="claim-num">03</span>
+      <span class="claim-title">Operates across "cloud, desktop, and web"</span>
+      <span class="verdict-pill verdict-misleading">Misleading</span>
+    </div>
+    <div class="claim-body">
+      <div class="marketing-cell">
+        <div class="cell-label">Blog post says</div>
+        <div class="marketing-quote">"It operates across cloud, desktop, and web, connecting to Teams, Outlook, OneDrive, and SharePoint."</div>
+        <span class="source-tag">M365 Blog, June 2, 2026</span>
+      </div>
+      <div class="reality-cell">
+        <div class="cell-label">Docs say</div>
+        <div class="reality-text">
+          What the docs describe as "cloud" and "web" are <span class="ok">M365 data connections that the desktop app makes outbound</span> — reading your email, calendar, OneDrive. They are not independent cloud or web surfaces.
+          <span class="doc-quote">"Microsoft Scout runs on your desktop with permissioned access to your approved file system and shell, while also connecting to your Microsoft 365 account."</span>
+          The "three pillars" framing overstates the architecture. There is one surface: the local desktop app.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="claim-block" id="c4">
+    <div class="claim-header">
+      <span class="claim-num">04</span>
+      <span class="claim-title">Enterprise-trusted "from day one"</span>
+      <span class="verdict-pill verdict-misleading">Misleading</span>
+    </div>
+    <div class="claim-body">
+      <div class="marketing-cell">
+        <div class="cell-label">Blog post says</div>
+        <div class="marketing-quote">"Microsoft Scout is built with enterprise-grade security and controls so it can be trusted in your organization from day one."</div>
+        <span class="source-tag">M365 Blog, June 2, 2026</span>
+      </div>
+      <div class="reality-cell">
+        <div class="cell-label">Docs say</div>
+        <div class="reality-text">
+          The same blog post that says "day one" also lists what's required to reach day one:
+          <span class="doc-quote">"Access requires Frontier enrollment, Intune policy configuration, and an opt-in attestation. Users with a GitHub Copilot license can then download and install the experience."</span>
+          The docs add: <strong>"Preview features may have restricted functionality and may not be released for general availability."</strong>
+          <br><br>
+          Four prerequisites (Frontier enrollment, Intune policy, admin attestation, GitHub Copilot license) before installation is not "day one" by any standard enterprise deployment definition.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="claim-block" id="c5">
+    <div class="claim-header">
+      <span class="claim-num">05</span>
+      <span class="claim-title">Governed Entra identity — "attributable to a known actor"</span>
+      <span class="verdict-pill verdict-partial">Partial</span>
+    </div>
+    <div class="claim-body">
+      <div class="marketing-cell">
+        <div class="cell-label">Blog post says</div>
+        <div class="marketing-quote">"Every agent operates under its own governed Entra identity, not a shared, anonymous service account, so the work it does is attributable to a known actor your directory already understands."</div>
+        <span class="source-tag">M365 Blog, June 2, 2026</span>
+      </div>
+      <div class="reality-cell">
+        <div class="cell-label">Docs say</div>
+        <div class="reality-text">
+          The docs confirm MSAL/WAM authentication and scoped credentials. However, the FAQ adds a telling detail:
+          <span class="doc-quote">"If Microsoft Scout isn't visible in Microsoft Admin Center Agent management, ensure that the admin account is also enrolled in Frontier."</span>
+          Admin Center visibility is currently gated behind Frontier enrollment — meaning it is not the case that "your directory already understands" the agent without additional setup. The sentence in the blog implies seamless, zero-config Entra governance. The docs reveal it requires Frontier enrollment to even appear in the admin tooling.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="claim-block" id="c6">
+    <div class="claim-header">
+      <span class="claim-num">06</span>
+      <span class="claim-title">Licensing model</span>
+      <span class="verdict-pill verdict-omitted">Not stated</span>
+    </div>
+    <div class="claim-body">
+      <div class="marketing-cell">
+        <div class="cell-label">Blog post says</div>
+        <div class="marketing-quote">The blog post does not mention pricing or licensing at any point.</div>
+        <span class="source-tag">M365 Blog, June 2, 2026</span>
+      </div>
+      <div class="reality-cell">
+        <div class="cell-label">Docs say</div>
+        <div class="reality-text">
+          The docs also do not mention pricing. The product overview, FAQ, and get-started pages contain zero pricing information.
+          <br><br>
+          What the docs do confirm is that a <strong>GitHub Copilot Business or Enterprise license</strong> is a prerequisite for installation — used, per setup instructions, for "consumptive metering." This is the closest thing to a pricing signal in any public Microsoft document: Scout's usage billing routes through GitHub Copilot, not a standalone M365 SKU.
+          <br><br>
+          No pricing, no GA date, and no SKU has been published as of this writing.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT'S ACCURATE -->
+  <div class="section-label" style="margin-top:48px;">What the blog gets right</div>
+  <div class="accurate-box">
+    <h3>Accurately described in the marketing</h3>
+    <ul class="accurate-list">
+      <li>Scout is built on OpenClaw open-source technology — confirmed in both blog and docs.</li>
+      <li>Heartbeat and Automations modes are real, documented, and work as described — periodic background scheduling with configurable intervals and permission policies.</li>
+      <li>The sub-agent delegation model (Explore, Task, Code review, Research agents) is accurately described and documented.</li>
+      <li>Work IQ integration for M365 context is confirmed in the docs — email, calendar, Teams, OneDrive are accessible data sources.</li>
+      <li>Microsoft is contributing policy conformance upstream to OpenClaw rather than creating a closed fork — confirmed in the docs and blog consistently.</li>
+      <li>Custom skills via SKILL.md files are real and documented — the skill directory architecture is accurate.</li>
+    </ul>
+  </div>
+
+  <!-- WHAT'S ABSENT -->
+  <div class="section-label">What neither source addresses</div>
+  <div class="missing-box">
+    <h3>Gaps in both the blog and the documentation</h3>
+    <ul class="missing-list">
+      <li>No pricing or licensing SKU in any public Microsoft document as of June 2026.</li>
+      <li>No GA date — the blog does not mention one; the docs say only "availability and capabilities may change over time."</li>
+      <li>No explanation of what the Frontier Private experience (described as "the broader Microsoft Scout experience") includes that Frontier Public does not.</li>
+      <li>No documentation of how Scout's Entra Agent ID relates to Agent 365 governance — whether Scout-created agents appear in Agent 365 inventory.</li>
+      <li>No Dataverse or Power Platform integration — neither the blog nor the docs mention Dataverse, Copilot Studio, or Power Platform in any context.</li>
+      <li>No roadmap for the cloud-native version the desktop app is described internally as a step toward.</li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="bottom-rule">
+    <div class="bottom-brand">
+      <svg class="bottom-logo" viewBox="0 0 384 384" aria-hidden="true"><use href="#scout-mark"/></svg>
+      <span>vibes.jukkan.com</span>&nbsp;· Perspectives on Power Platform
+    </div>
+    <div class="bottom-sources">
+      <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/">M365 Blog: Introducing Microsoft Scout</a><br>
+      <a href="https://learn.microsoft.com/en-us/microsoft-scout/overview">Microsoft Learn: Scout overview</a><br>
+      <a href="https://learn.microsoft.com/en-us/microsoft-scout/faq">Microsoft Learn: Scout FAQ</a><br>
+      All claims verified against public Microsoft sources only · June 2026
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
