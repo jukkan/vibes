@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plausible RCE: from a hidden endpoint to a cryptominer — Jukka Niiranen</title>
+<meta name="description" content="A plain-English explanation of the Plausible Community Edition Storybook RCE, and lessons from containing and recovering a compromised installation.">
+<meta property="og:title" content="Plausible RCE: from a hidden endpoint to a cryptominer">
+<meta property="og:description" content="What CVE-2026-8467 means for self-hosters, why patching alone is not enough after compromise, and what recovery involved.">
+<meta property="og:type" content="article">
+<meta name="author" content="Jukka Niiranen">
+<style>
+:root{--ink:#202326;--muted:#596268;--line:#d9deda;--paper:#f7f8f4;--accent:#bb3d19;--green:#17674d}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 "Segoe UI",system-ui,sans-serif}a{color:var(--accent);text-underline-offset:3px}a:hover{text-decoration-thickness:2px}a:focus-visible{outline:3px solid #df8a31;outline-offset:5px}code{font: .9em ui-monospace,monospace;background:#e9ece6;padding:.1em .3em;border-radius:3px}.wrap{max-width:1040px;margin:auto;padding:0 32px}.band{background:#111b19;color:#bacbc5;font-size:14px;padding:12px 0}.band a{color:white;text-decoration:none}.band span{margin-left:14px;padding-left:14px;border-left:1px solid #64716b}.hero{background:#111b19;color:#f7f8f4;padding:42px 0 46px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.16em;font-weight:700;color:#f6b284;margin:0 0 14px}h1{font-size:clamp(35px,5.7vw,59px);line-height:1.07;letter-spacing:-.045em;font-weight:750;max-width:850px;margin:0 0 22px}.lead{max-width:750px;font-size:20px;line-height:1.5;color:#d8e1dc;margin:0 0 22px}.byline{font-size:13px;color:#b7c8c0}.byline time{white-space:nowrap}.facts{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:white;margin:28px 0 36px}.fact{padding:16px 22px}.fact+.fact{border-left:1px solid var(--line)}.fact small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}.fact strong{font-size:21px}.fact a{color:inherit}h2{font-size:28px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}h3{font-size:18px;line-height:1.35;margin:0 0 8px}p{margin:0 0 16px}.intro{display:grid;grid-template-columns:1.2fr 1fr;gap:38px}.incident{border-left:3px solid var(--accent);padding-left:24px}.caption{color:var(--muted);font-size:13px}.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;list-style:none;padding:0;margin:12px 0 8px}.flow li{position:relative;border:1px solid var(--line);padding:13px 16px;background:white;font-size:14px;line-height:1.4}.flow li+li:before{content:"→";position:absolute;left:-20px;top:22px;color:var(--accent)}.flow strong{display:block;margin-bottom:4px}.section{margin-top:36px;border-top:1px solid var(--line);padding-top:30px}.steps{counter-reset:step;display:grid;grid-template-columns:repeat(3,1fr);gap:24px 26px;list-style:none;padding:0;margin:24px 0}.steps li{counter-increment:step}.steps li:before{content:"0" counter(step);display:block;color:var(--accent);font-size:13px;font-weight:750;margin-bottom:8px}.steps p{font-size:15px;line-height:1.6;margin:0}.lesson{background:#e9eee5;border-left:3px solid var(--green);padding:22px 26px;margin-top:24px}.lesson p:last-child{margin-bottom:0}.lesson strong{color:var(--green)}.limits{font-size:15px;color:var(--muted);margin-top:22px}.timeline{display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--muted);font-size:13px;margin:0 0 20px}.timeline b{color:var(--ink)}.sources{display:grid;grid-template-columns:1fr 1fr;gap:16px 28px;padding:0;list-style:none;font-size:14px}.sources a{font-weight:650}.sources span{display:block;color:var(--muted);font-size:13px;margin-top:3px}footer{margin-top:36px;border-top:1px solid var(--line);padding:22px 0 28px;font-size:13px;color:var(--muted)}footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;background:white;padding:12px;z-index:1}
+@media(max-width:700px){body{font-size:16px}.wrap{padding:0 22px}.hero{padding:30px 0}.lead{font-size:18px}.intro{grid-template-columns:1fr;gap:24px}.facts{margin:22px 0 28px}.fact{padding:13px 10px}.fact strong{font-size:17px}.fact small{font-size:10px}.steps{grid-template-columns:1fr 1fr;gap:24px 20px}.sources{grid-template-columns:1fr}h2{font-size:25px}.flow{gap:16px}.flow li{padding:12px 10px;font-size:12px}.flow li+li:before{left:-15px}.section{margin-top:28px;padding-top:24px}}
+@media(max-width:400px){.steps{grid-template-columns:1fr}.fact strong{font-size:15px}.flow{grid-template-columns:1fr;gap:18px}.flow li+li:before{content:"↓";left:50%;top:-22px}}
+@media print{body{background:white;font-size:11pt}.band,footer,.skip{display:none}.hero{background:white;color:black;padding:20px 0}.hero p{color:#333}h1{font-size:32pt}.eyebrow{color:#333}.wrap{max-width:none;padding:0}.facts,.flow li,.steps li,.lesson{break-inside:avoid}.section{margin-top:20px;padding-top:18px}a{color:inherit}.sources{font-size:10pt}}
+.title-brand{display:flex;align-items:center;gap:16px}.plausible-icon{width:54px;height:54px;flex-shrink:0}
+@media(max-width:700px){.title-brand{gap:10px;font-size:.95em}.plausible-icon{width:34px;height:34px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to article</a>
+<nav class="band" aria-label="Site"><div class="wrap"><a href="index.html">← vibes</a><span>Field notes / self-hosting</span></div></nav>
+<header class="hero"><div class="wrap">
+<!-- Official icon: https://plausible.io/assets/images/icon/favicon.svg -->
+<h1><span class="title-brand"><svg class="plausible-icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="url(#plausible-icon-a)" d="M27.283 12.301c-.546 5.228-5.116 9.114-10.373 9.114h-2.024V26.2a4.8 4.8 0 0 1-4.8 4.8H6.34a1.68 1.68 0 0 1-1.68-1.68v-9.851l2.52-3.535a1.68 1.68 0 0 1 2.018-.574l1.432.6a1.676 1.676 0 0 0 2.013-.573L16 10.678a1.67 1.67 0 0 1 2.008-.57l2.76 1.16a1.67 1.67 0 0 0 2.01-.57l3.23-4.532a10.2 10.2 0 0 1 1.274 6.135"/><path fill="url(#plausible-icon-b)" d="M6.306 15.436c.412-.577 1.01-1.021 1.707-1.155a2.7 2.7 0 0 1 1.574.157l1.432.6q.125.052.258.052a.68.68 0 0 0 .552-.284l3.297-4.622c.412-.577 1.01-1.02 1.706-1.154a2.7 2.7 0 0 1 1.564.157l2.76 1.16q.126.053.26.053a.68.68 0 0 0 .55-.283l3.46-4.854A10.19 10.19 0 0 0 17.132 1H6.34a1.68 1.68 0 0 0-1.68 1.68v15.066z"/><defs><linearGradient id="plausible-icon-a" x1="12.081" x2="18.397" y1="12.272" y2="23.325" gradientUnits="userSpaceOnUse"><stop stop-color="#909cf7"/><stop offset="1" stop-color="#4b38d8"/></linearGradient><linearGradient id="plausible-icon-b" x1="8.652" x2="15.161" y1=".321" y2="11.711" gradientUnits="userSpaceOnUse"><stop stop-color="#909cf7"/><stop offset="1" stop-color="#4b38d8"/></linearGradient></defs></svg><span>Plausible RCE:</span></span>from a hidden endpoint<br>to a cryptominer.</h1>
+<p class="lead">A routine server health check found a miner inside my analytics container. Here’s the vulnerability behind it, and what it took to recover.</p>
+<div class="byline">Jukka Niiranen · <time datetime="2026-10-02">2 October 2026</time> · approximately 4 minutes</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="facts" aria-label="Vulnerability at a glance">
+<div class="fact"><small>Affected CE releases</small><strong>3.0.0–3.2.0</strong></div>
+<div class="fact"><small>First patched release</small><strong>3.2.1</strong></div>
+<div class="fact"><small>Underlying vulnerability</small><strong><a href="https://github.com/phenixdigital/phoenix_storybook/security/advisories/GHSA-55hg-8qxv-qj4p">CVE-2026-8467</a></strong></div>
+</div>
+<div class="intro">
+<section aria-labelledby="problem"><h2 id="problem">What went wrong?</h2>
+<p>Plausible shipped a developer component preview at <code>/storybook</code>. Its Phoenix Storybook dependency could turn visitor-supplied input into code executed on the server. No account or login was needed. That’s <strong>remote code execution (RCE)</strong>. <a href="https://github.com/phenixdigital/phoenix_storybook/security/advisories/GHSA-55hg-8qxv-qj4p">[1]</a></p>
+<p>The code ran with the application’s permissions inside its container. That puts accessible credentials and data at risk; Docker isolation alone cannot protect them. Plausible’s fix removed the endpoint. <a href="https://github.com/plausible/analytics/security/advisories/GHSA-mhcv-h7gf-57cf">[2]</a></p>
+</section>
+<section class="incident" aria-labelledby="found"><p class="eyebrow" style="color:var(--accent)">My installation</p><h2 id="found">The visible symptom</h2>
+<p>Unexpected CPU and memory use led to a cryptocurrency miner in the Plausible container. Suspicious requests to <code>/storybook</code> and untrusted code in persistent application storage were consistent with this vulnerability.</p>
+<p>The deployment was still on 3.2.0. Similar miner incidents appear in the <a href="https://github.com/plausible/analytics/discussions/6355">GitHub discussion</a>, but that does not establish a shared attacker.</p>
+</section></div>
+<ol class="flow" aria-label="Simplified vulnerability chain"><li><strong>Public preview</strong>A visitor reaches Storybook.</li><li><strong>Input becomes code</strong>The preview evaluates a crafted value.</li><li><strong>Application access</strong>Code runs with the app’s permissions.</li></ol>
+<p class="caption">A simplified explanation of the upstream flaw, without exploit instructions. <a href="https://github.com/phenixdigital/phoenix_storybook/security/advisories/GHSA-55hg-8qxv-qj4p">[1]</a></p>
+<section class="section" aria-labelledby="recovery"><h2 id="recovery">What recovery involved</h2>
+<p>Killing the miner would leave the entry point and compromised files behind. We treated the application environment as compromised.</p>
+<ol class="steps">
+<li><h3>Contain</h3><p>Stopped the application and disabled its automatic restart. Analytics collection paused while we investigated.</p></li>
+<li><h3>Preserve &amp; back up</h3><p>Retained the old container and suspect files. Backed up both databases and tested restores in isolation before relying on the backups.</p></li>
+<li><h3>Rebuild cleanly</h3><p>Deployed the patched 3.2.1 image with fresh application storage. Kept existing database data; copied no suspect executable files. Also blocked the old endpoint at the proxy.</p></li>
+<li><h3>Rotate access</h3><p>Replaced application secrets, database credentials, account credentials and API access; revoked old sessions and tokens. Updated dependent connections too.</p></li>
+<li><h3>Verify the whole pipeline</h3><p>Checked login, historical reports and endpoint removal. Sent a labeled test pageview and confirmed it reached storage. Checked processes and resource use.</p></li>
+<li><h3>Close maintenance gaps</h3><p>Reduced database privileges and tightened container settings. Added daily database backups, verified off-host copies and a recurring upstream release check.</p></li>
+</ol>
+<aside class="lesson"><h3>A working dashboard can hide broken collection</h3><p>Credential rotation initially left an internal database connection out of sync. Historical reports worked and the collector accepted requests, but new events were not saved. <strong>A successful HTTP response is not proof that analytics reached the database.</strong></p></aside>
+<p class="limits"><strong>Recovery has limits.</strong> Targeted checks found no evidence of host escape. They do not prove that credentials or data were never read. Service was restored; historical exposure remains uncertain.</p>
+</section>
+<section class="section" aria-labelledby="takeaway"><h2 id="takeaway">If you self-host Plausible</h2>
+<p>Check the version of your <strong>running container</strong>. OS security updates do not update a pinned Docker application. If affected, move to a maintained patched release; 3.2.1 is the first fix for this issue. Block <code>/storybook</code> as an immediate mitigation if an upgrade must wait. Review logs, processes and unexpected connections. Suspicious activity calls for compromise recovery and rotation of accessible secrets. <a href="https://github.com/plausible/analytics/security/advisories/GHSA-mhcv-h7gf-57cf">[2]</a></p>
+</section>
+<section class="section" aria-labelledby="sources"><h2 id="sources">Sources &amp; context</h2>
+<div class="timeline"><span><b>15 May</b> · CE patch announced</span><span><b>3 June</b> · Plausible advisory</span><span><b>25 August</b> · Researcher write-up</span></div>
+<ul class="sources">
+<li><a href="https://github.com/phenixdigital/phoenix_storybook/security/advisories/GHSA-55hg-8qxv-qj4p">[1] Phoenix Storybook advisory</a><span>The underlying code-injection flaw.</span></li>
+<li><a href="https://github.com/plausible/analytics/security/advisories/GHSA-mhcv-h7gf-57cf">[2] Plausible security advisory</a><span>Affected versions, patch and compromise guidance.</span></li>
+<li><a href="https://github.com/plausible/analytics/discussions/6355">[3] Release discussion &amp; incident reports</a><span>The May patch announcement and later community reports.</span></li>
+<li><a href="https://whoareme.com/blog/plausible-analytics-multiple-criticals/">[4] Whoareme’s technical investigation</a><span>Detailed research covering this and other vulnerabilities.</span></li>
+</ul>
+<p class="caption">Scope: the self-hosted Community Edition Storybook RCE. The researcher’s other findings are separate issues. Sources checked 2 October 2026; the recovery account describes my own installation.</p>
+</section>
+</main>
+<footer><div class="wrap"><span><a href="index.html">← Back to launcher</a> · <a href="https://github.com/jukkan/vibes">View source</a></span><span>Written by GPT-6.1-Sol, prompted by Jukka Niiranen</span></div></footer>
+</body>
+</html>
