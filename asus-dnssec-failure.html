@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASUS missed the DNS root key rollover — Jukka Niiranen</title>
+<meta name="description" content="Websites fail. Reddit images disappear. A scheduled DNS root key change exposes stale trust data in current ASUS firmware. Verified tests and wider reports.">
+<meta name="author" content="Jukka Niiranen">
+<meta property="og:title" content="ASUS missed the key.">
+<meta property="og:description" content="The page can load while its images fail. Current ASUS firmware can reject valid DNS answers after a scheduled root key change. Here is the evidence.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-10-12">
+<meta name="theme-color" content="#191b1c">
+<style>
+:root{--paper:#f5f2eb;--ink:#191b1c;--muted:#5d6263;--line:#d7d3c9;--red:#bc321f;--green:#17634b;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 "Segoe UI",system-ui,sans-serif}a{color:var(--red);text-underline-offset:4px}a:hover{text-decoration-thickness:2px}a:focus-visible,summary:focus-visible{outline:3px solid #d97822;outline-offset:5px}.wrap{max-width:1080px;padding:0 36px;margin:auto}.nav{background:var(--ink);color:#c4c4bd;font:12px/1.5 var(--mono);padding:18px 0;border-bottom:1px solid #454746}.nav .wrap{display:flex;justify-content:space-between;gap:20px}.nav a{color:#f5f2eb;text-decoration:none}.hero{background:var(--ink);color:var(--paper);padding:52px 0 44px}.eyebrow{font:12px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;margin:0 0 20px;color:#f0a38d}h1{font-size:clamp(53px,8.5vw,92px);letter-spacing:-.065em;line-height:1.01;margin:0 0 24px;font-weight:750}h1 span{color:#fa755c}.lead{max-width:780px;font-size:clamp(19px,2.4vw,24px);line-height:1.45;color:#d7d9d3;margin:0 0 24px}.byline{font:12px/1.6 var(--mono);color:#afb5b0}.status{display:flex;align-items:center;gap:8px;color:#afb5b0;margin-top:12px;font:11px/1.5 var(--mono)}.status:before{content:"";width:7px;height:7px;background:#fa755c;border-radius:50%}.context{display:grid;grid-template-columns:1fr 1fr 1fr;margin:0 0 34px;border-bottom:1px solid var(--line)}.context div{padding:20px 0}.context div+div{padding-left:24px;border-left:1px solid var(--line)}.context small{display:block;color:var(--muted);font:10px/1.5 var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}.context strong{font-size:16px}.context code{font:13px/1.5 var(--mono);overflow-wrap:anywhere}.intro{display:grid;grid-template-columns:1.25fr 1fr;gap:42px}h2{font-size:29px;line-height:1.18;letter-spacing:-.03em;margin:0 0 18px}p{margin:0 0 16px}.mechanism{background:#eae6dc;padding:24px;border-top:3px solid var(--red)}.mechanism .eyebrow{color:var(--red);margin-bottom:18px}.intro>*{min-width:0}.keyflow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.keyflow div{background:var(--paper);padding:14px 12px}.keyflow small{display:block;font:10px/1.5 var(--mono);color:var(--muted);margin-bottom:5px}.keyflow b{font:clamp(26px,7vw,36px)/1.2 var(--mono);letter-spacing:-.07em}.keyflow .old{color:var(--red)}.failure{border-top:1px solid #c7bfb1;padding-top:14px;margin-top:15px;font:14px/1.4 var(--mono);color:var(--red)}.mechanism p:last-child{font-size:14px;line-height:1.55;margin:12px 0 0}.section{padding-top:30px;margin-top:32px;border-top:1px solid var(--line)}.timeline{display:grid;grid-template-columns:repeat(5,1fr);list-style:none;padding:0;margin:24px 0 12px;gap:0}.timeline li{border-top:2px solid var(--ink);padding:15px 16px 0 0;position:relative}.timeline li:before{content:"";position:absolute;top:-5px;left:0;width:8px;height:8px;border-radius:50%;background:var(--ink)}.timeline li:last-child{border-color:var(--red)}.timeline li:last-child:before{background:var(--red)}.timeline time{font:11px/1.5 var(--mono);display:block;margin-bottom:7px}.timeline strong{font-size:15px;display:block;line-height:1.4;margin-bottom:6px}.timeline p{font-size:13px;line-height:1.55;color:var(--muted);margin:0}.note{font-size:13px;color:var(--muted)}.evidence{width:100%;border-collapse:collapse;font-size:15px;margin:20px 0}.evidence th{text-align:left;font:10px/1.5 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--ink)}.evidence td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}.evidence td:last-child{width:115px;font:12px/1.5 var(--mono);font-weight:700}.fail{color:var(--red)}.pass{color:var(--green)}code{font:.85em var(--mono);overflow-wrap:anywhere}.columns{display:grid;grid-template-columns:1fr 1fr;gap:42px}.verdict{margin-top:30px;background:var(--ink);color:var(--paper);padding:26px 28px;border-left:4px solid #fa755c}.verdict p{font-size:22px;line-height:1.4;letter-spacing:-.02em;margin:0}.scope{margin:22px 0 0;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--muted)}.sources{margin-top:28px;padding:22px 0;border-top:1px solid var(--line)}summary{cursor:pointer;font-size:15px;font-weight:650}summary::marker{color:var(--red)}.sources ol{padding-left:22px;font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:12px 32px;line-height:1.5;margin-top:20px}.sources li{padding-left:3px}.sources span{display:block;color:var(--muted)}footer{border-top:1px solid var(--line);font-size:12px;color:var(--muted);padding:20px 0 28px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;padding:10px;background:white;z-index:5}
+@media(max-width:760px){.wrap{padding:0 22px}.hero{padding:36px 0}.nav .wrap{font-size:10px}.context{grid-template-columns:1fr}.context div{padding:12px 0}.context div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}.intro,.columns{grid-template-columns:1fr;gap:22px}.timeline{grid-template-columns:1fr;gap:0;margin:20px 0}.timeline li{border-top:0;border-left:2px solid var(--ink);padding:0 0 20px 20px}.timeline li:before{top:4px;left:-5px}.timeline li:last-child{padding-bottom:0}.timeline time{margin-bottom:3px}.timeline p{max-width:36em}.evidence th,.evidence td{padding:11px 8px}.sources ol{grid-template-columns:1fr}.verdict{padding:22px}.verdict p{font-size:20px}.section{margin-top:26px;padding-top:26px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{background:white;font-size:10.5pt}.nav,.skip,footer{display:none}.wrap{max-width:none;padding:0}.hero{background:white;color:black;padding:20px 0}.hero .lead,.byline,.status{color:#333}h1{font-size:42pt}h1 span,.eyebrow{color:#333}.context{margin-bottom:20px}.section{padding-top:20px;margin-top:20px}.intro,.columns{gap:24px}.mechanism,.verdict,.timeline li{break-inside:avoid}.verdict{background:#eee;color:#111}.sources summary{display:none}.sources ol{display:grid}.sources{padding:12px 0}a{color:inherit}}
+</style>
+</head>
+<body>
+<a class="skip" href="#article">Skip to article</a>
+<nav class="nav" aria-label="Site"><div class="wrap"><a href="index.html">← vibes</a><span>FIELD NOTES / NETWORK RELIABILITY</span></div></nav>
+<header class="hero"><div class="wrap">
+<p class="eyebrow">DNS root key rollover · 11 October 2026</p>
+<h1>ASUS missed<br><span>the key.</span></h1>
+<p class="lead">Websites fail. Images disappear. The connection still works.<br>A scheduled DNS change exposed stale trust data in current ASUS firmware—and a security feature became the cause of broken browsing.</p>
+<div class="byline">Jukka Niiranen · <time datetime="2026-10-12">12 October 2026</time> · 3 minute read</div>
+<div class="status">Investigation snapshot · no router settings changed</div>
+</div></header>
+<main id="article" class="wrap">
+<div class="context" aria-label="Verified installation">
+<div><small>Verified ASUS case</small><strong>TUF Gaming AX6000</strong></div>
+<div><small>Latest published stock firmware</small><code>3.0.0.4.388_34098</code></div>
+<div><small>Configuration in this case</small><strong>Local DNSSEC + Cloudflare DoT</strong></div>
+</div>
+<div class="intro">
+<section aria-labelledby="happened"><h2 id="happened">The page can load.<br>Its images can fail.</h2>
+<p>Modern pages load images and other resources from separate hostnames. On 12 October, <code>www.reddit.com</code> resolved through my ASUS router, while <code>preview.redd.it</code> and <code>i.redd.it</code> returned <code>SERVFAIL</code>. The main site’s DNS worked; its image hosts’ DNS did not.</p>
+<p>The router’s DNSSEC validator trusted only root key <strong>20326</strong>. The root had switched to replacement <strong>38696</strong> the day before. This one-year-old router had the latest stock firmware, but its installed binary and active configuration still lacked the replacement anchor. <a href="#source-iana" aria-label="Source 1: IANA">[1]</a></p>
+</section>
+<aside class="mechanism" aria-label="Why valid DNS answers were rejected">
+<p class="eyebrow">The broken trust chain</p>
+<div class="keyflow"><div><small>ROOT NOW SIGNS WITH</small><b>38696</b></div><div><small>ASUS TRUSTS ONLY</small><b class="old">20326</b></div></div>
+<div class="failure">Valid answer → validation fails → SERVFAIL</div>
+<p>DNSSEC checks signatures to detect forged DNS answers. With the replacement trust anchor missing, the router rejects legitimate answers too.</p>
+</aside>
+</div>
+<section class="section" aria-labelledby="notice"><h2 id="notice">This was announced long in advance.</h2>
+<ol class="timeline">
+<li><time datetime="2024-07">JUL 2024</time><strong>Cloudflare prepares</strong><p>Adds the new key to its resolver software. <a href="#source-cloudflare">[2]</a></p></li>
+<li><time datetime="2025-01-11">11 JAN 2025</time><strong>Key is pre-published</strong><p>IANA makes it available in the root zone. <a href="#source-iana">[1]</a></p></li>
+<li><time datetime="2026-02-22">22 FEB 2026</time><strong>Merlin prepares</strong><p>Third-party ASUS firmware adds the anchor. <a href="#source-merlin">[3]</a></p></li>
+<li><time datetime="2026-08-31">31 AUG 2026</time><strong>My ASUS firmware</strong><p>Latest stock release. Locally verified: old anchor only. <a href="#source-asus">[4]</a></p></li>
+<li><time datetime="2026-10-11">11 OCT 2026</time><strong>Root signing changes</strong><p>Unprepared validators start failing. <a href="#source-iana">[1]</a></p></li>
+</ol>
+<p class="note">The new key was pre-published for 21 months. The signature algorithm stayed the same. This required current trust data, not more powerful hardware. <a href="#source-guide">[5]</a></p>
+</section>
+<section class="section" aria-labelledby="evidence"><h2 id="evidence">The failure is reproducible.</h2>
+<table class="evidence"><caption class="note" style="text-align:left">Read-only DNS checks on the same desktop and Internet connection.</caption><thead><tr><th scope="col">Hostname / role</th><th scope="col">ASUS DNS</th></tr></thead><tbody>
+<tr><td><code>www.reddit.com</code><br><span class="note">Main site hostname</span></td><td class="pass">RESOLVES</td></tr>
+<tr><td><code>preview.redd.it</code><br><span class="note">Reddit image previews</span></td><td class="fail">FAILS</td></tr>
+<tr><td><code>i.redd.it</code><br><span class="note">Reddit image hosting</span></td><td class="fail">FAILS</td></tr>
+<tr><td><code>nordicsummit.info</code> / <code>espc.tech</code><br><span class="note">Two unrelated website domains</span></td><td class="fail">BOTH FAIL</td></tr>
+</tbody></table>
+<p>Cloudflare and Google resolve all these hostnames. Query-specific validation bypass also restores the failed router lookups. A failed Reddit preview image returns <strong>HTTP 200</strong> when supplied its resolved IP, with normal HTTPS certificate checks. No router setting was changed.</p>
+<p class="note">Five additional controls—GitHub, jsDelivr, Microsoft sign-in, Unsplash images and Wikipedia—resolved through the router at this check. Cache expiry and different resource hostnames can make a broken validator look like intermittent website trouble. ICANN describes this delayed failure pattern. <a href="#source-guide">[5]</a></p>
+</section>
+<div class="section columns">
+<section aria-labelledby="known"><h2 id="known">Evidence beyond<br>this router.</h2>
+<p>An RT-BE88U owner reports the same defect on ASUS’s ZenTalk forum, including firmware they identify as released on <strong>7 October 2026</strong>. They say adding the new anchor to an independent dnsmasq instance restores validation. <a href="#source-report">[6]</a></p>
+<p>A Flint 2 owner reports rollover-related Unbound failures in a configured AdGuard/Unbound stack and says updating the root anchors fixed them. An Ezee Fiber customer reports DNSSEC disablement restoring browsing on 12 October; their router model and root-key state are unspecified. These corroborate the broader problem, not additional verified ASUS models. <a href="#source-flint">[10]</a> <a href="#source-ezeefiber">[11]</a></p>
+<p class="note">Reports are separate from our local tests. I found no ASUS affected-model advisory or repair ETA, and no reliable count of affected customers.</p>
+</section>
+<section aria-labelledby="responsibility"><h2 id="responsibility">Who was supposed<br>to maintain the key?</h2>
+<p>The router uses dnsmasq. Its maintainer’s stated approach is to rely on authenticated software-provider updates for root anchors, rather than built-in automatic key rollover. <a href="#source-dnsmasq">[7]</a></p>
+<p>ASUS describes DNS Guard as “ensuring secure and authentic DNS resolutions.” The trust data is part of that promise. Customers should not need to inspect cryptographic key IDs to keep an advertised feature working on current firmware. <a href="#source-asus-security">[12]</a></p>
+</section>
+</div>
+<aside class="verdict"><p>Shipping a security feature also means maintaining it. A scheduled DNS change should not turn a fully updated router into the reason legitimate websites disappear.</p></aside>
+<p class="scope"><strong>Scope matters.</strong> This case had local DNSSEC enabled. It does not establish failure on untouched factory defaults or every ASUS router. Public ASUS-derived source sets DNSSEC off by default; exact factory state on this model was not tested. Caches can delay failures, making the symptoms look random. ICANN reports no widespread disruption. <a href="#source-defaults">[8]</a> <a href="#source-guide">[5]</a> <a href="#source-status">[9]</a></p>
+<details class="sources" open><summary>Sources &amp; verification notes</summary>
+<ol>
+<li id="source-iana"><a href="https://www.iana.org/dnssec/files">IANA: trust anchors &amp; rollover schedule</a><span>Key IDs, pre-publication and activation dates.</span></li>
+<li id="source-cloudflare"><a href="https://blog.cloudflare.com/root-ksk-2024-rollover/">Cloudflare: preparing for the rollover</a><span>New anchor built into its resolver in July 2024.</span></li>
+<li id="source-merlin"><a href="https://github.com/RMerl/asuswrt-merlin.ng/blob/main/Changelog-3006.txt">Asuswrt-Merlin: primary changelog</a><span>3006.102.7, 22 February 2026. Separate firmware project.</span></li>
+<li id="source-asus"><a href="https://www.asus.com/us/networking-iot-servers/wifi-routers/asus-gaming-routers/tuf-gaming-ax6000/helpdesk_bios?model2Name=TUF-Gaming-AX6000">ASUS: TUF-AX6000 firmware releases</a><span>Latest published version checked on 12 October.</span></li>
+<li id="source-guide"><a href="https://www.icann.org/en/system/files/files/ksk-rollover-expect-27jul26-en.pdf">ICANN: what to expect during the rollover</a><span>Preparation period, unchanged algorithm, cache delays.</span></li>
+<li id="source-report"><a href="https://zentalk.asus.com/t5/networking/rt-be88u-firmware-bug-dnssec-root-ksk-2024-38696-missing-dns/td-p/512415">ASUS ZenTalk: RT-BE88U customer report</a><span>Independent report; another model was not tested by me.</span></li>
+<li id="source-dnsmasq"><a href="https://lists.thekelleys.org.uk/pipermail/dnsmasq-discuss/2018q4/012562.html">dnsmasq maintainer: trust-anchor update design</a><span>2018 explanation of relying on software updates.</span></li>
+<li id="source-defaults"><a href="https://github.com/RMerl/asuswrt-merlin.ng/blob/main/release/src/router/shared/defaults.c">Public ASUS-derived defaults</a><span>dnssec_enable = 0. Not an audit of every stock firmware.</span></li>
+<li id="source-status"><a href="https://www.icann.org/resources/pages/ksk-rollover-en">ICANN: rollover status</a><span>No widespread disruption reported at this check.</span></li>
+<li id="source-flint"><a href="https://www.reddit.com/r/GlInet/comments/1x4661m/unbound_broke_on_my_flint_2_after_the_oct_11_dns/">Flint 2 owner: root-anchor failure</a><span>12 October. Configured Unbound stack; AI-assisted customer account.</span></li>
+<li id="source-ezeefiber"><a href="https://www.reddit.com/r/EzeeFiber/comments/1x460yn/dnssec_issues_today/">Ezee Fiber customer: DNSSEC failures</a><span>12 October. Matching symptoms; hardware and anchor state unknown.</span></li>
+<li id="source-asus-security"><a href="https://www.asus.com/us/support/faq/1053612/">ASUS: its DNS Guard security promise</a><span>Vendor describes secure and authentic DNS resolution.</span></li>
+</ol>
+<p class="note">Local evidence: read-only firmware/configuration inspection, Windows DNS comparisons and HTTPS checks on 12 October 2026. Failures verified for preview.redd.it, i.redd.it, nordicsummit.info and espc.tech. Other domains listed as controls resolved at that snapshot. The corrected-anchor repair was reported by other customers; it has not been run on this ASUS router. No repair or global incident count is claimed.</p>
+</details>
+</main>
+<footer><div class="wrap"><span><a href="index.html">← Back to launcher</a> · <a href="https://github.com/jukkan/vibes">View source</a></span><span>AI-assisted research &amp; writing, directed by Jukka Niiranen</span></div></footer>
+</body>
+</html>
